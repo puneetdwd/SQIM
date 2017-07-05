@@ -80,7 +80,6 @@ class Timecheck_model extends CI_Model {
 
     function get_timecheck_plan_report($filters, $count = false, $limit = '') {
         $pass_array = array();
-        
         $sql = "SELECT p.*, pp.code as part_no, pp.name as part_name,
         COUNT(f.id) as frequency_count,
         SUM(IF(f.result = 'OK', 1, 0)) as ok_count, 
@@ -99,10 +98,12 @@ class Timecheck_model extends CI_Model {
             $pass_array[] = $filters['start_range'];
             $pass_array[] = $filters['end_range'];
         }
-        
-        if(!empty($filters['part_id'])) {
-            $wheres[] = "p.part_id = ?";
-            $pass_array[] = $filters['part_id'];
+        //$filters['part_no']
+        if(!empty($filters['part_no'])) {
+			$sql_part_id = "SELECT id FROM `product_parts` WHERE `code` LIKE '".$filters['part_no']."'";
+			$sql_part_id = $this->db->query($sql_part_id)->row_array();
+			$wheres[] = "p.part_id = ?";
+            $pass_array[] = $sql_part_id['id'];
         }
         
         
@@ -122,8 +123,9 @@ class Timecheck_model extends CI_Model {
         } else {
             $sql .= " ".$limit;
         }
-        
-        return $this->db->query($sql, $pass_array)->result_array();
+		
+		return $this->db->query($sql, $pass_array)->result_array();
+		
     }
     
     function update_plan_freq_result($data, $id){
