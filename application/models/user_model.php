@@ -49,7 +49,7 @@ class User_model extends CI_Model {
         $sql = "SELECT u.*
         FROM users u
         where FIND_IN_SET(".$product_id.", u.product_id) and u.user_type = 'Admin' and is_active = 1 GROUP BY u.id";        
-        return $this->db->query($sql, $product_id)->row_array();
+        return $this->db->query($sql, $product_id)->result_array();
     }
     
     function get_user_by_id($id) {
