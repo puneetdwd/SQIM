@@ -150,6 +150,8 @@
                                             <th>Insp Type</th>
                                             <th>Insp Item</th>
                                             <th>Insp Specification</th>
+                                            <th>Created</th>
+                                            <th>Modified</th>
                                             <th>Status</th>
                                             <th class="no_sort" style="width:100px;">Action</th>
                                         </tr>
@@ -165,6 +167,8 @@
                                                 <td><?php echo $approval_item['insp_item']; ?></td>
                                                 <td><?php echo $approval_item['insp_item2']; ?></td>
                                                 <td><?php echo $approval_item['spec']; ?></td>
+                                                <td><?php echo date('jS M, Y', strtotime($approval_item['created'])); ?></td>
+                                                <td><?php echo date('jS M, Y', strtotime($approval_item['modified'])); ?></td>
                                                 <td><?php if($approval_item['status'] == NULL){ echo "Pending";}else{ echo $approval_item['status'];} ?></td>
                                                 <td nowrap>
                                                     <button type="button" class="btn btn-default btn-xs accordion-toggle" data-toggle="collapse" data-target="#detail-<?php echo $key; ?>">
@@ -175,7 +179,6 @@
                                                         href="<?php echo base_url()."checkpoints/checkpoint_status/".$approval_item['id']."/Approved";?>">
                                                         <i class="fa fa-edit"></i> Approve
                                                     </a>
-
                                                     <a class="btn btn-xs btn-outline sbold red-thunderbird" data-confirm="Are you sure you want to decline this request ?"
                                                         href="<?php echo base_url()."checkpoints/checkpoint_status/".$approval_item['id']."/Declined";?>">
                                                         <i class="fa fa-trash-o"></i> Decline
@@ -187,7 +190,6 @@
                                             <tr>
                                                 <td colspan="7" class="hiddenRow">
                                                     <div class="accordian-body collapse row" id="detail-<?php echo $key; ?>">
-
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-5">LSL:</label>
