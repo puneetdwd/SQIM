@@ -21,18 +21,17 @@ class Reports_cron extends Admin_Controller {
 		if(!empty($product_ids)){
 			foreach($product_ids as $product_id) {
 				$admins = $this->user_model->get_admin_users($product_id['id']);
+				//echo "<pre>";print_r($admins);
 				foreach($admins as $admin) {
-					// $admins['email'];
+					//echo '<br>'.$admin['email'];
 					$filters['start_range'] = date('Y-m-d',time() - 60 * 60 * 240);
 					$filters['end_range'] = date('Y-m-d',time() - 60 * 60 * 24);
 					$filters['product_id'] = $product_id['id'];
 					$data['audits'] = $this->Audit_model->get_completed_audits($filters, false);
 					$data['yesterday'] = date('jS M, Y', strtotime(date('Y-m-d',time() - 60 * 60 * 24)));
-					//echo '<pre>';print_r($data['audits']);
 					$mail_content = $this->load->view('cron/mail_part_inspection_report', $data,true);
 					$this->load->library('email');
-					// $toemail = "komal@crgroup.co.in";
-					$toemail = $admins['email'];
+					$toemail = $admin['email'];
 					$subject = "Part Inspection - Completed Inspection Report";
 					//$this->sendMail($toemail,$subject,$mail_content);
 				}
@@ -57,7 +56,7 @@ class Reports_cron extends Admin_Controller {
 					$data['yesterday'] = date('jS M, Y', strtotime(date('Y-m-d',time() - 60 * 60 * 24)));
 					$mail_content = $this->load->view('cron/mail_lot_wise_report', $data,true);
 					$this->load->library('email');
-					$toemail = $admins['email'];
+					$toemail = $admin['email'];
 					$subject = "Lot wise - Completed Inspection Report";
 					//$this->sendMail($toemail,$subject,$mail_content);
 					//echo $this->email->print_debugger();exit;
@@ -86,7 +85,7 @@ class Reports_cron extends Admin_Controller {
 					
 					$mail_content = $this->load->view('cron/mail_timecheck_report', $data,true);
 					$this->load->library('email');
-					$toemail = $admins['email'];
+					$toemail = $admin['email'];
 					$subject = "Timecheck  - Completed Inspection Report";
 					//$this->sendMail($toemail,$subject,$mail_content);
 					//echo $this->email->print_debugger();exit;
