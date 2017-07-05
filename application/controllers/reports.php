@@ -30,6 +30,9 @@ class Reports extends Admin_Controller {
         $data['total_records'] = 0;
         
         if(count($filters) > 1) {
+			
+			$_SESSION['report_filter'] = $filters;
+			
             if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
                 $filters['supplier_id'] = $this->supplier_id;
             }
@@ -59,6 +62,50 @@ class Reports extends Admin_Controller {
         $this->template->write_view('content', 'reports/index', $data);
         $this->template->render();
     }
+	
+	public function report_download($type) {
+        $data = array();
+        $this->load->model('Audit_model');
+        
+        if($type == 'report_download') {
+			
+			$filters = $_SESSION['report_filter'];
+			
+            if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
+                $filters['supplier_id'] = $this->supplier_id;
+            }
+            if(@$filters['product_all']) {
+                $filters['product_id'] = "all";
+            } else {
+                $filters['product_id'] = $this->product_id;
+            }
+            
+            $per_page = 25;
+            $page_no = $this->input->post('page_no');
+            
+            $limit = 'LIMIT '.($page_no-1)*$per_page.' ,'.$per_page;
+            
+            $data['page_no'] = $page_no;
+            
+            $count = $this->Audit_model->get_completed_audits($filters, true);
+            $count = $count[0]['c'];
+            $data['total_records'] = $count;
+            $data['total_page'] = ceil($count/50);
+            
+            $data['audits'] = $this->Audit_model->get_completed_audits($filters, false);
+			//echo "<pre>";print_r($data['audits']);
+            //echo $this->db->last_query();exit;
+			
+			$str = $this->load->view("reports/report_download",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=part_report.xls");
+        }
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+    }
     
     public function lot_wise_report() {
         $data = array();
@@ -66,7 +113,8 @@ class Reports extends Admin_Controller {
 
         if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector'){
             $sup_id = $this->supplier_id;
-        }else{
+        }
+		else{
             $sup_id = '';
         }
         
@@ -82,6 +130,8 @@ class Reports extends Admin_Controller {
         $data['total_records'] = 0;
         
         if(count($filters) > 1) {
+			
+			$_SESSION['lot_report_filter'] = $filters;
             if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector'){
                 $filters['supplier_id'] = $this->supplier_id;
             }
@@ -112,8 +162,43 @@ class Reports extends Admin_Controller {
         $this->template->write_view('content', 'reports/lot_wise_report', $data);
         $this->template->render();
     }
-
-    public function part_inspection_report($audit_id) {
+	
+    public function lot_wise_report_download($type) {
+        $data = array();
+        $this->load->model('Audit_model');
+		if($type == 'lot_wise_report_download'){				
+			$filters = $_SESSION['lot_report_filter'];			
+			if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector'){
+				$filters['supplier_id'] = $this->supplier_id;
+			}
+				
+			if(@$filters['product_all']) {
+				$filters['product_id'] = "all";
+			} else {
+				$filters['product_id'] = $this->product_id;
+			}
+				
+			$per_page = 25;
+			$page_no = $this->input->post('page_no');
+			$data['page_no'] = $page_no;
+			$count = $this->Audit_model->get_consolidated_audit_report($filters, true);
+			$count = $count[0]['c'];
+			$data['total_records'] = $count;
+			$data['total_page'] = ceil($count/50);
+			echo "123";
+			$data['audits'] = $this->Audit_model->get_consolidated_audit_report($filters, false);
+			
+			$str = $this->load->view("reports/lot_wise_report_download",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=lot_wise_report.xls");
+        }
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+    }
+	public function part_inspection_report($audit_id) {
         $data = array();
         $this->load->model('Audit_model');
         $filters = array('id' => $audit_id);
@@ -203,11 +288,16 @@ class Reports extends Admin_Controller {
 
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
-        $data['page_no'] = 1;
+		
+		//print_r($filters);exit;
+        
+		$data['page_no'] = 1;
         
         $data['total_records'] = 0;
         
         if(count($filters) > 1) {
+			
+			$_SESSION['timecheck_report_filter'] = $filters;
             if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
                 $filters['supplier_id'] = $this->supplier_id;
             }
@@ -231,6 +321,53 @@ class Reports extends Admin_Controller {
         $this->template->write('title', 'SQIM | Timecheck Report');
         $this->template->write_view('content', 'reports/timecheck', $data);
         $this->template->render();
+    }
+    
+    public function timecheck_download($type) {
+        //echo $type;exit;
+		if($this->user_type == 'Supplier Inspector') {
+            //redirect($_SERVER['HTTP_REFERER']);
+        }
+        
+        $data = array();
+        $this->load->model('Audit_model');
+        $this->load->model('Timecheck_model');
+
+        if($type == 'timecheck_download') {
+			$filters = $_SESSION['timecheck_report_filter'];
+			
+			/* if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
+				$sup_id = $this->supplier_id;
+			}
+			$filters = $this->input->post() ? $this->input->post() : array();
+			$filters = array_filter($filters);
+			 */
+			if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
+				$filters['supplier_id'] = $this->supplier_id;
+			}
+            
+            $per_page = 25;
+            $page_no = $this->input->post('page_no');
+            
+            
+            $data['page_no'] = $page_no;
+            
+            $count = $this->Timecheck_model->get_timecheck_plan_report($filters, true);
+            $count = $count[0]['c'];
+            $data['total_records'] = $count;
+            $data['total_page'] = ceil($count/50);
+            
+            $data['plans'] = $this->Timecheck_model->get_timecheck_plan_report($filters, false);
+            //echo $this->db->last_query();exit;
+			$str = $this->load->view("reports/timecheck_download",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=timecheck_report.xls");
+        }
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
     }
     
     function foolproof(){

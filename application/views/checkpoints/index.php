@@ -95,6 +95,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th class="text-center">Product</th>
                                         <th class="text-center">Part</th>
                                         <th>Supplier</th>
                                         <th>Insp. Type</th>
@@ -103,6 +104,9 @@
                                         <th>LSL</th>
                                         <th>USL</th>
                                         <th>TGT</th>
+                                        <th>Images</th>
+                                        <th>Approved By</th>
+                                        <th>Created Date</th>
                                         <th>Status</th>
                                         <th class="no_sort" style="width:150px;"></th>
                                     </tr>
@@ -110,7 +114,7 @@
                                 <tbody>
                                     <?php if($this->user_type !== 'Supplier') { ?>
                                         <tr class="warning">
-                                            <td colspan="11">LG Checkpoints</td>
+                                            <td colspan="15">LG Checkpoints</td>
                                         </tr>
                                     <?php } ?>
                                     <?php $first = true; ?>
@@ -118,13 +122,14 @@
                                     
                                         <?php if($this->user_type !== 'Supplier' && $checkpoint['checkpoint_type'] == 'Supplier' && $first) { ?>
                                             <tr class="warning">
-                                                <td colspan="11">Suppliers Checkpoints</td>
+                                                <td colspan="15">Suppliers Checkpoints</td>
                                             </tr>
                                             <?php $first = false; ?>
                                         <?php } ?>
                                     
                                         <tr class="checkpoint-<?php echo $checkpoint['id']; ?>">
                                             <td><?php echo $checkpoint['checkpoint_no']; ?></td>
+                                            <td><?php echo $product['name']; ?></td>
                                             <td><?php echo $checkpoint['part_no']; ?></td>
                                             <td><?php echo $checkpoint['supplier_name'] ? $checkpoint['supplier_name'] : '--'; ?></td>
                                             <td><?php echo $checkpoint['insp_item']; ?></td>
@@ -144,6 +149,34 @@
                                                     <?php echo ($checkpoint['tgt']) ? $checkpoint['tgt'].' '.$checkpoint['unit'] : ''; ?>
                                                 </td>
                                             <?php } ?>
+
+											<td nowrap class="text-center">
+                                                <?php if(($checkpoint['checkpoint_type'] == 'LG' || $this->user_type === 'Supplier') && empty($checkpoint['images'])) { ?>
+                                                    <a target="_blank" href=<?php echo base_url()."assets/inspection_guides/default_guide.jpg"; ?>>
+														See Image
+													</a>
+												<?php }else{ ?>
+													<a target="_blank" href="<?php echo base_url()."assets/inspection_guides/".$product['name'].'/'.$checkpoint['part_no'].'/'.$checkpoint['images']; ?>">
+														See Image
+													</a>
+                                                    
+                                                <?php } ?>
+                                            </td>
+											
+											<td nowrap class="text-center">
+                                                <?php if(($checkpoint['checkpoint_type'] == 'LG' || $this->user_type === 'Supplier') && !empty($checkpoint['approved_by'])) { 
+                                                    echo $checkpoint['approved_by'];
+													
+												 } ?>
+                                            </td>
+											
+											<td nowrap class="text-center">
+                                                <?php if(($checkpoint['checkpoint_type'] == 'LG' || $this->user_type === 'Supplier') && !empty($checkpoint['created'])) { 
+                                                    $created_date = explode(" ",$checkpoint['created']);
+													echo $created_date[0];
+												 } ?>
+                                            </td>
+
                                             <td nowrap>
                                                 <?php if($checkpoint['status'] == NULL && $this->user_type === 'Supplier'){ echo "Pending";}else{ echo $checkpoint['status'];} ?>
                                             </td>

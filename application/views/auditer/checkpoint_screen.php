@@ -275,10 +275,14 @@ body {display:none;}
                                
                                 
                                 <div class="row guideline-image-section">
-                                    <?php if(sizeof($checkpoint_images) == 1){ 
+                                    <?php 
+									// print_r($checkpoint_images);exit;
+									if(sizeof($checkpoint_images) == 1){ 
                                         for($i=0; $i<sizeof($checkpoint_images); $i++){ 
                                             if($checkpoint_images[$i] != ''){
-                                                $img_path = base_url().'assets/inspection_guides/'.$audit['product_name'].'/'.$audit['part_no'].'/'.$checkpoint_images[$i].'.JPG';
+                                                // $img_path = base_url().'assets/inspection_guides/'.$audit['product_name'].'/'.$audit['part_no'].'/'.$checkpoint_images[$i];//.'.JPG'
+                                                // $img_path = base_url().'assets/inspection_guides/'.str_replace(' ', '_',$audit['product_name']).'/'.$audit['part_no'].'/'.$checkpoint_images[$i];//.'.JPG'
+                                                $img_path = base_url().'assets/inspection_guides/'.$audit['product_name'].'/'.$audit['part_no'].'/'.$checkpoint_images[$i];//.'.JPG'
                                             }else{
                                                 $img_path = base_url().'assets/inspection_guides/default_guide.jpg';
                                             }
@@ -368,6 +372,7 @@ body {display:none;}
                                         <form role="form" class="validate-form" action="<?php echo base_url().'auditer/record_result/'.$checkpoint['id']; ?>" method="post" enctype="multipart/form-data">
                                             <?php
                                                 $v = array('checkpoint' => $checkpoint);
+												// echo "<pre>";print_r($v);
                                                 $this->view('auditer/checkpoint_result_form', $v);
                                             ?>
                                         </form>

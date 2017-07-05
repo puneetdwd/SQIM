@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="portlet-body form">
-                    <form role="form" id="add-checkpoint-form" class="validate-form" method="post">
+                    <form role="form" id="add-checkpoint-form" class="validate-form" method="post" enctype="multipart/form-data">
                         <div class="form-body">
                             <div class="alert alert-danger display-hide">
                                 <button class="close" data-close="alert"></button>
@@ -186,7 +186,14 @@
                                             <option value="Fixed" <?php if($sampling_type == 'Fixed') { ?> selected="selected" <?php } ?>>Fixed Samples</option>
                                         </select>
                                     </div>
-                                </div>                                        
+                                </div>  
+								<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="images">Upload Checkpoint Guide:</label>
+                                        <input type="file" class="form-control" name="images" id="images"
+                                        value="<?php echo isset($checkpoint['images']) ? $checkpoint['images'] : ''; ?>">
+                                    </div>
+                                </div>								
                             </div>
                             
                             <div class="row type-specific-div" id="type-auto-div" <?php if($sampling_type != 'Auto') { ?> style="display:none;" <?php } ?>>

@@ -53,16 +53,21 @@ class Audit_model extends CI_Model {
             $sql .= ' AND a.product_id = ?';
             $pass_array[] = $this->product_id;
         }
-        
+        elseif($filters['product_id']){
+			$sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id'];
+		}
         $sql .= " GROUP BY a.id
         ORDER BY a.audit_date DESC, a.id DESC";
-        
+        //echo $sql;exit;
         if($count) {
             $sql = "SELECT count(id) as c FROM (".$sql.") as sub";
         } else {
             $sql .= " ".$limit;
         }
         
+        //$this->db->query($sql, $pass_array)->result_array();
+		//echo $this->db->last_query();exit;
         return $this->db->query($sql, $pass_array)->result_array();
     }
     
@@ -111,6 +116,10 @@ class Audit_model extends CI_Model {
             $wheres[] = " a.product_id = ?";
             $pass_array[] = $this->product_id;
         }
+        elseif($filters['product_id']){
+			$sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id'];
+		}
         
         if(!empty($wheres)) {
             $sql .= " WHERE ".implode(' AND ', $wheres);
@@ -125,6 +134,13 @@ class Audit_model extends CI_Model {
         }
         
         return $this->db->query($sql, $pass_array)->result_array();
+    }
+    
+	function get_judgement_result($lot_no) {
+        $sql = "SELECT * 
+        FROM audits_completed where lot_no = '".$lot_no."'";
+        
+        return $this->db->query($sql)->result_array();
     }
     
     function get_audit($auditer_id, $state = '', $date = '', $id = '', $on_hold = 0, $product_id = '') {

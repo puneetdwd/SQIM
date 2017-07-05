@@ -605,4 +605,20 @@ class fool_proof extends Admin_Controller {
         redirect(base_url().'fool_proof/checkpoint_approval_index');
     }
 
+	public function delete_checkpoint($checkpoint_id){
+        
+        $data = array();
+        $this->load->model('foolproof_model');
+        
+        echo $update_status = $this->foolproof_model->hide_fp_checkpoints($checkpoint_id);
+        
+        if($update_status) {
+            $this->session->set_flashdata('success', 'Foolproof Checkpoint deleted.');
+        } else {
+            $this->session->set_flashdata('error', 'Foolproof Checkpoint not deleted.');
+        }
+        
+        redirect(base_url().'fool_proof');
+    }
+
 }

@@ -592,5 +592,19 @@ class foolproof_model extends CI_Model {
         
         return $this->db->query($sql, array($status, $checkpoint_id));
     }
+	
+	function get_last_foolproofs($id) {
+        $sql = "SELECT * FROM foolproofs WHERE supplier_id = ? order by foolproofs.created DESC";
+        
+        $pass_array = array($id);
+        return $this->db->query($sql, $pass_array)->row_array();
+    }
+	
+	/* Remove Foolproof Checkpoints */
+	function hide_fp_checkpoints($id) {
+        $sql = "UPDATE foolproof_checkpoints
+				SET is_deleted = 1 WHERE id  = ?";        
+        return $this->db->query($sql, array($id, $id));
+    }
     
 }

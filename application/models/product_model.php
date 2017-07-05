@@ -35,6 +35,12 @@ class Product_model extends CI_Model {
 
         return $this->db->get('products')->row_array();
     }
+	
+	function get_part($id) {
+        $this->db->where('id', $id);
+
+        return $this->db->get('product_parts')->row_array();
+    }
     
     function get_product_id_by_name($code) {
         $this->db->where('code', $code);

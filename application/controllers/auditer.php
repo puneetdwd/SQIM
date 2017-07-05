@@ -34,6 +34,13 @@ class Auditer extends Admin_Controller {
             redirect(base_url().'auditer/register_inspection');
         }
     }
+	
+    public function part_inspection_check() {
+		$data = '';
+		$this->template->write('title', 'SQIM | Part Inspection | Checklist');
+		$this->template->write_view('content', 'auditer/part_inspection_check', $data);
+		$this->template->render();
+    }
     
     public function review_inspection($audit_id, $new = false) {
         $this->load->model('Audit_model');
@@ -90,8 +97,11 @@ class Auditer extends Admin_Controller {
     public function register_inspection() {
         $data = array();
         $this->load->model('Audit_model');
-        
+        $this->load->model('Timecheck_model');
+        $this->load->model('Foolproof_model');
+        //echo $this->id;exit;
         $audit = $this->Audit_model->get_audit($this->id, array('registered','started', 'finished'));
+		//print_r($audit);exit;
         if(!empty($audit)) {
             $this->check_inspection($audit);
         }
@@ -108,14 +118,30 @@ class Auditer extends Admin_Controller {
         }
         
 
-        if(@$user['checklist_checked'] != date('Y-m-d')) {
+        /* if(@$user['checklist_checked'] != date('Y-m-d')) {
             $this->load->model('Checklist_model');
             $checklists = $this->Checklist_model->get_all_checklists($this->product_id);
             if(!empty($checklists)) {
                 redirect(base_url().'auditer/checklist');
             }
+        } */
+		
+		//Timecheck & Foolproof --> Komal
+		
+		$supplier_id = $user['supplier_id'];
+		$timecheck_last_date = $this->Timecheck_model->get_last_timecheck($supplier_id);
+		$foolproof_last_date = $this->Foolproof_model->get_last_foolproofs($supplier_id);
+		$timecheck_date =  date("Y-m-d",strtotime( $timecheck_last_date['created']));
+		$foolproof_date =  date("Y-m-d",strtotime( $foolproof_last_date['created']));
+		
+		if($timecheck_date != date('Y-m-d') && $foolproof_date != date('Y-m-d')) {
+			//echo "not done today";exit;
+            $this->load->model('Checklist_model');
+            $checklists = $this->Checklist_model->get_all_checklists($this->product_id);
+            if(!empty($checklists)) {
+                redirect(base_url().'auditer/part_inspection_check');
+            }
         }
-
         if($this->input->post()) {
             $this->load->library('form_validation');
 
@@ -272,7 +298,7 @@ class Auditer extends Admin_Controller {
         
         ini_set("memory_limit","-1");
         
-	$conn = $this->oracle_connect();	
+		/*$conn = $this->oracle_connect();	
         
         $sql = "select part_code, drawing_name, drawing_no, doc
                 from lg_epis.xxsqis_part_drawing_v
@@ -289,7 +315,9 @@ class Auditer extends Admin_Controller {
             
         }else{
             $doc = '';
-        }
+        }*/
+		
+		$doc = '';
         
 	$data['doc'] = $doc;
         

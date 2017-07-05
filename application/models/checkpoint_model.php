@@ -5,6 +5,7 @@ class Checkpoint_model extends CI_Model {
         $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
         c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,
         c.supplier_id, c.checkpoint_type, c.approved_by, c.has_multiple_specs,
+		c.images, c.created,
         c.part_id, p.code as part_no, p.name as part_name,
         s.name as supplier_name
         FROM checkpoints c
@@ -68,7 +69,7 @@ class Checkpoint_model extends CI_Model {
     
     function get_checkpoint($id, $supplier_id = '') {
         $sql = "SELECT c.id, c.product_id, c.part_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
-        c.insp_item3, c.insp_item4, c.spec, c.lsl, c.usl, c.tgt, c.unit, 
+        c.insp_item3,c.images, c.insp_item4, c.spec, c.lsl, c.usl, c.tgt, c.unit, 
         c.supplier_id, c.checkpoint_type, c.approved_by
         FROM checkpoints c
         WHERE c.id = ?
@@ -117,10 +118,11 @@ class Checkpoint_model extends CI_Model {
     }
 
     function update_checkpoint($data, $checkpoint_id){
+		// print_r($data);exit;
         $needed_array = array('product_id', 'part_id', 'checkpoint_no', 'insp_item', 'insp_item2', 
         'spec', 'lsl', 'usl', 'tgt', 'unit', 'period', 'cycle', 'images', 'supplier_id', 'checkpoint_type', 'is_deleted');
         $data = array_intersect_key($data, array_flip($needed_array));
-
+		//print_r($data);exit;
         if(empty($checkpoint_id)) {
             $data['created'] = date("Y-m-d H:i:s");
             return (($this->db->insert('checkpoints', $data)) ? $this->db->insert_id() : False);

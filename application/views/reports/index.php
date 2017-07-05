@@ -125,6 +125,13 @@
                             <div class="caption">
                                 <i class="fa fa-reorder"></i>List of Inspections (Total Records - <?php echo $total_records; ?>)
                             </div>
+							<?php if(!empty($audits)){ ?>
+							<div class="actions">
+								<a class="button normals btn-circle" href="<?php echo base_url().'reports/report_download/report_download'; ?>">
+									<i class="fa fa-download"></i> Excel Export
+								</a>
+							</div>
+							<?php } ?>
                         </div>
                         <div class="portlet-body">
                             <?php if(empty($audits)) { ?>

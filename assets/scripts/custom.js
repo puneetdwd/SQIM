@@ -8,7 +8,8 @@
         $('#add-checkpoint-form').submit(function() {
             var check_no = $('#add-checkpoint-no').val();
             var existing = $('#existing_checkpoints').val();
-            
+           //alert(check_no);alert(existing);exit;
+		  
             existing = existing.split(','); 
             if($.inArray(check_no, existing) > -1) {
                 bootbox.dialog({
@@ -501,7 +502,7 @@
     $('#register-inspection-submit').click(function() {
         $result_type = $('#checkpoint-result-type').val();
         var elem = $('#register-inspection-submit');
-        
+        //alert($result_type);
         if($result_type == 'value') {
             var lsl = $('#register-inspection-checkpoint-lsl').val();
             var usl = $('#register-inspection-checkpoint-usl').val();
@@ -583,6 +584,7 @@
             $ngflag = false;
             $('.radio-list').each(function(i, obj) {
                 $checked = $(obj).find('.audit_result_'+(i+1)+':checked').val();
+				// alert($checked);
                 if($checked == undefined) {
                     bootbox.dialog({
                         message: 'Please fill result for all the samples before submit.',

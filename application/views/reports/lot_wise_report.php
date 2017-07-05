@@ -130,11 +130,16 @@
                                 </a>-->
                                 <?php $supplier_id = ($this->input->post('supplier_id'))?$this->input->post('supplier_id'):$this->supplier_id; ?>
                                 <?php if($this->input->post()){ ?>
-                                <a class="button normals btn-circle" href="<?php echo base_url()."reports/lot_wise_report/".$this->input->post('date')."/".$supplier_id;?>">
+                                <!--a class="button normals btn-circle" href="<?php echo base_url()."reports/lot_wise_report/".$this->input->post('date')."/".$supplier_id;?>">
                                     <i class="fa fa-print"></i> Download
-                                </a>
+                                </a>-->
+									<?php if(!empty($audits)){ ?>
+									<a class="button normals btn-circle" href="<?php echo base_url().'reports/lot_wise_report_download/lot_wise_report_download'; ?>">
+										<i class="fa fa-download"></i> Excel Export
+									</a>
+									<?php } ?>
                                 <?php } ?>
-                            </div>
+							</div>
                         </div>
                         <div class="portlet-body">
                             <?php if(empty($audits)) { ?>
@@ -162,7 +167,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach($audits as $audit) { ?>
+                                            <?php foreach($audits as $audit) {
+											// echo "<pre>";print_r($audit);												
+											if($audit['ng_lots'] > 0)
+												$bg = 'background-color:red;';
+											?>
                                                 <tr>
                                                     <td nowrap><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
                                                     <td><?php echo $audit['product_name']; ?></td>
@@ -172,7 +181,9 @@
                                                     <td><?php echo $audit['part_no'].' - '.$audit['part_name']; ?></td>
                                                     <td class="text-center"><?php echo $audit['no_of_lots']; ?></td>
                                                     <td class="text-center"><?php echo $audit['ok_lots']; ?></td>
-                                                    <td class="text-center"><?php echo $audit['ng_lots']; ?></td>
+                                                    <td class="text-center" style=<?php echo $bg; ?>>
+														<?php echo $audit['ng_lots']; ?>
+													</td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

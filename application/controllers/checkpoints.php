@@ -20,6 +20,7 @@ class Checkpoints extends Admin_Controller {
             redirect(base_url().'products');
 
         $data['product'] = $product;
+		//print_r($data['product']);exit;
         if($this->user_type == 'Admin'){
             $data['parts'] = $this->Product_model->get_all_product_parts($this->product_id);
         }else{
@@ -49,7 +50,7 @@ class Checkpoints extends Admin_Controller {
     
     public function add_checkpoint($checkpoint_id = '') {
         $data = array();
-
+		//echo "<pre>";print_r($_FILES);print_r($_POST);exit;
         $this->load->model('Checkpoint_model');
         $data['existing_checkpoints'] = '';
         
@@ -60,6 +61,7 @@ class Checkpoints extends Admin_Controller {
         }
         if(!empty($checkpoint_id)) {
             $checkpoint = $this->Checkpoint_model->get_checkpoint($checkpoint_id);
+			//print_r($checkpoint);exit;
             if(empty($checkpoint))
                 redirect(base_url().'checkpoints');
             
@@ -83,10 +85,10 @@ class Checkpoints extends Admin_Controller {
                 $range = $this->Sampling_model->get_lot_range_samples($config['id']);
 
                 $sampling_config = $this->Sampling_model->get_lot_range_samples_c($config['id']);
-                //echo "<pre>";print_r($range);exit;
                 $data['inspection_config'] = $config;
                 $data['config_range'] = $range;
                 $data['sampling_config'] = $sampling_config;
+                // echo "<pre>";print_r($data);exit;
             }
         }
         
@@ -123,12 +125,56 @@ class Checkpoints extends Admin_Controller {
             } else if($this->input->post('sampling_type') == 'Fixed') { 
                 $validate->set_rules('sample_qty', 'Sample Qty', 'trim|required|xss_clean');
             }
-            
+			
+			//Checkpoint Image Upload --> Komal
+            $product = $this->Product_model->get_product($this->product_id);
+			//print_r($product);;exit;
+			$part = $this->Product_model->get_part($_POST['part_id']);
+            // $product_dir = str_replace(' ', '_',$product['name']);
+            $product_dir = $product['name'];
+            $part_dir = $part['code'];
+            $fullpath = 'assets/inspection_guides/';
+			//for Product directory
+			if (!is_dir('assets/inspection_guides/'.$product_dir)) {
+				mkdir('./assets/inspection_guides/' . $product_dir, 0777, TRUE);
+			}			
+            $fullpath = $fullpath . $product_dir.'/';			
+			//for Part directory
+			if (!is_dir('assets/inspection_guides/'.$product_dir. '/' .$part_dir )) {
+				mkdir('./assets/inspection_guides/'.$product_dir. '/' .$part_dir, 0777, TRUE);
+			}			
+			$fullpath = $fullpath . $part_dir.'/';
+			
+			if($_FILES['images']['name'] != '') {			
+				$config['upload_path'] = $fullpath;
+				//echo $config['upload_path'] = 'uploads/';
+                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $config['file_name'] = uniqid() .$_FILES['images']['name'];
+                
+                //Load upload library and initialize configuration
+                $this->load->library('upload',$config);
+                $this->upload->initialize($config);
+                
+                if($this->upload->do_upload('images')){
+                    $uploadData = $this->upload->data();
+                    $images = $uploadData['file_name'];
+                }
+			}
+			//End Image Upload
+			
             if($validate->run() === TRUE) {
                 $post_data = $this->input->post();
                 $part = $this->Product_model->get_product_part($this->product_id, $post_data['part_id']);
                 $post_data['product_id'] = $this->product_id;
-                
+				
+				//Image To Array
+                if($images){
+					$post_data['images'] = $images;
+				}
+				else{
+					$post_data['images'] = '';
+				}//end of if-else
+					
                 $id = !empty($checkpoint['id']) ? $checkpoint['id'] : '';
                 $checkpoint_no = $this->input->post('checkpoint_no');
             
@@ -141,7 +187,7 @@ class Checkpoints extends Admin_Controller {
                     $post_data['checkpoint_type'] = 'Supplier';
                     $post_data['supplier_id'] = $this->id;
                 }
-
+				//print_r($post_data);exit;
                 $checkpoint_id = $this->Checkpoint_model->update_checkpoint($post_data, $id);
                 $post_data['checkpoint_id'] = $checkpoint_id;
                 if($checkpoint_id) {
@@ -223,6 +269,42 @@ class Checkpoints extends Admin_Controller {
     }
     
     public function upload_checkpoints() {
+        $data = array();
+        $this->load->model('Product_model');
+        
+        $product = $this->Product_model->get_product($this->product_id);
+        if(empty($product))
+            redirect(base_url().'products');
+        
+        $data['product'] = $product;
+        //echo "upload ";
+        if($this->input->post()) {
+             //echo "upload1 ";
+            if(!empty($_FILES['checkpoints_excel']['name'])) {
+                $output = $this->upload_file('checkpoints_excel', 'checkpoints_excel', "assets/uploads/");
+                //echo "upload2 ";
+                if($output['status'] == 'success') {
+                    //echo "upload3 ";
+                    $res = $this->parse_checkpoints($this->product_id, $product['org_name'], $output['file']);
+                    
+                    if($res) {
+                        $this->session->set_flashdata('success', 'Checkpoints successfully uploaded.');
+                        redirect(base_url().'checkpoints');
+                    } else {
+                        $data['error'] = 'Error while uploading excel';
+                    }
+                } else {
+                    $data['error'] = $output['error'];
+                }
+
+            }
+        }
+        
+        $this->template->write_view('content', 'checkpoints/upload_checkpoints', $data);
+        $this->template->render();
+    }
+	
+	public function upload_checkpoints_guide() {
         $data = array();
         $this->load->model('Product_model');
         

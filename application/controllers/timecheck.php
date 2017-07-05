@@ -201,6 +201,15 @@ class Timecheck extends Admin_Controller {
         
         $data['freq_results'] = $freq_results;
         $data['production_qties'] = $production_qties;
+		
+		$remark = array();
+        foreach($results as $result) {
+            $freq_results[$result['freq_index']] = $result['result'];
+            $remark[$result['freq_index']] = $result['remark'];
+        }
+        
+        $data['freq_results'] = $freq_results;
+        $data['remark'] = $remark;
         //echo "<pre>";print_r($production_qties);exit;
         
         /* $allowed[0] = 'No';
@@ -268,7 +277,7 @@ class Timecheck extends Admin_Controller {
         
         $data['allowed'] = $allowed;
         $data['frequency_headers'] = $frequency_headers;
-        
+        //echo "<pre>";print_r($data);exit;
         $this->template->write('title', 'SQIM | Timechecks');
         $this->template->write_view('content', 'timecheck/timecheck', $data);
         $this->template->render();
@@ -280,8 +289,8 @@ class Timecheck extends Admin_Controller {
         }
 
         $part_id = $this->input->post('part_id');
-        $current_frequency = $this->input->post('current_frequency');
-        $plan_id = $this->input->post('plan_id');
+		$current_frequency = $this->input->post('current_frequency');
+		$plan_id = $this->input->post('plan_id');
         
         $this->load->model('TC_Checkpoint_model');
         $plan = $this->TC_Checkpoint_model->get_plan($plan_id, $this->supplier_id);
@@ -403,8 +412,11 @@ class Timecheck extends Admin_Controller {
         if($plan['total_frequencies'] != $freq) {
             $this->TC_Checkpoint_model->update_plan_freq($plan['id'], $freq);
         }
+		
+        $production_qties_tc = $this->input->post('production_qty');
+		$remark_tc = $this->input->post('remark');
         
-        $this->Timecheck_model->update_result($case_res, $case_val, $case_fin, $plan['id']);
+        $this->Timecheck_model->update_result($case_res, $case_val, $case_fin, $plan['id'],$production_qties_tc,$remark_tc);
 
         $plan_freq = array();
         $plan_freq['plan_id'] = $plan_id;
@@ -414,6 +426,7 @@ class Timecheck extends Admin_Controller {
         $plan_freq['result'] = $freq_result;
         $plan_freq['org_result'] = $freq_result;
         $plan_freq['production_qty'] = $this->input->post('production_qty');
+        $plan_freq['remark'] = $this->input->post('remark');
         
         $plan_freq_exists = $this->Timecheck_model->get_plan_freq_result($plan_id, $current_frequency+1);
         $plan_freq_id = !empty($plan_freq_exists) ? $plan_freq_exists['id'] : '';

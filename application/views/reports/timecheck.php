@@ -125,6 +125,13 @@
                             <div class="caption">
                                 <i class="fa fa-reorder"></i>List of Timechecks (Total Records - <?php echo $total_records; ?>)
                             </div>
+							<?php if(!empty($plans)){ ?>
+							<div class="actions">
+								<a class="button normals btn-circle" href="<?php echo base_url().'reports/timecheck_download/timecheck_download'; ?>">
+									<i class="fa fa-download"></i> Excel Export
+								</a>
+							</div>
+							<?php } ?>
                         </div>
                         <div class="portlet-body">
                             <?php if(empty($plans)) { ?>
@@ -140,14 +147,17 @@
                                                 <th>Part</th>
                                                 <th>Date</th>
                                                 <th>From Time</th>
-                                                <th>To Item</th>
+                                                <th>To Time</th>
                                                 <th>Result</th>
                                                 <th>Progress</th>
                                                 <th class="no_sort">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach($plans as $plan) { ?>
+                                            <?php foreach($plans as $plan) {
+											/* if($plan['ng_lots'] > 0)
+												$bg = 'background-color:red;'; */
+											?>
                                                 <tr>
                                                     <td><?php echo $plan['part_name'].' ('.$plan['part_no'].')'; ?></td>
                                                     <td><?php echo date('jS M, Y', strtotime($plan['plan_date'])); ?></td>

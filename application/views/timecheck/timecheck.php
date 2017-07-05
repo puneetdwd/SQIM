@@ -48,7 +48,9 @@
                 </div>
                 <div class="portlet-body">
                     
-                    <?php if(empty($checkpoints)) { ?>
+                    <?php 
+					
+					if(empty($checkpoints)) { ?>
                         <p class="text-center">No Checkpoints.</p>
                     <?php } else { ?>
                         <form method="post" action="<?php echo base_url().'timecheck/save_result'; ?>">
@@ -223,6 +225,21 @@
                                                     </td>
                                                 <?php } else { ?>
                                                     <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($production_qties[$i+1]) ? $production_qties[$i+1] : ''; ?></td>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </tr>
+                                         <tr>
+                                            <td colspan="11" class="text-right">Remark</td>
+                                            
+                                            <?php for($i = 0; $i < $frequency; $i++) {
+												?>
+                                                <?php //if($allowed[$i] == 'Yes' && !isset($remark[$i+1]) && $last_allowed_freq == $i) { ?>
+                                                <?php if($allowed[$i] == 'Yes') { ?>
+                                                    <td colspan="<?php echo $sample_qty; ?>" class="text-center timecheck-required">
+                                                        <input type="text" class="form-control input-sm timecheck-result-input" name="remark">
+                                                    </td>
+                                                <?php } else { ?>
+                                                    <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($remark[$i+1]) ? $remark[$i+1] : ''; ?></td>
                                                 <?php } ?>
                                             <?php } ?>
                                         </tr>

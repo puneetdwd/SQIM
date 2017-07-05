@@ -59,14 +59,24 @@ class Timecheck_model extends CI_Model {
         $this->db->update('timechecks');
     }
 
-    function update_result($all_results, $all_values, $result, $plan_id) {
+    /*function update_result($all_results, $all_values, $result, $plan_id) {
         $sql = "UPDATE timechecks SET all_results = ".$all_results."
         , all_values = ".$all_values.", result = ".$result.", org_all_results = ".$all_results."
         , org_all_values = ".$all_values."
         WHERE plan_id = ?";
         
         $this->db->query($sql, array($plan_id));
-    }
+    }*/
+	function update_result($all_results, $all_values, $result, $plan_id,$production_qties_tc,$remark_tc) {
+        $sql = "UPDATE timechecks SET all_results = ".$all_results."
+        , all_values = ".$all_values.", result = ".$result.", org_all_results = ".$all_results."
+        , org_all_values = ".$all_values."
+        , production_qties = ".$production_qties_tc."
+        , remark = '".$remark_tc."'
+        WHERE plan_id = ?";
+        
+        $this->db->query($sql, array($plan_id));
+    } 
 
     function get_timecheck_plan_report($filters, $count = false, $limit = '') {
         $pass_array = array();
@@ -117,7 +127,7 @@ class Timecheck_model extends CI_Model {
     }
     
     function update_plan_freq_result($data, $id){
-        $needed_array = array('plan_id', 'freq_index', 'from_time', 'to_time', 'result', 'org_result', 'production_qty');
+        $needed_array = array('plan_id', 'freq_index', 'from_time', 'to_time', 'result', 'org_result', 'production_qty', 'remark');
         $data = array_intersect_key($data, array_flip($needed_array));
 
         if(empty($id)) {
@@ -154,4 +164,12 @@ class Timecheck_model extends CI_Model {
         
         return $this->db->get('tc_frequency_result')->result_array();
     }
+	
+	function get_last_timecheck($id) {
+        $sql = "SELECT * FROM timechecks WHERE supplier_id = ? order by timechecks.created DESC";
+        
+        $pass_array = array($id);
+        return $this->db->query($sql, $pass_array)->row_array();
+    }
+	
 }
