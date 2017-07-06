@@ -24,7 +24,7 @@ class Reports_cron extends Admin_Controller {
 				//echo "<pre>";print_r($admins);
 				foreach($admins as $admin) {
 					//echo '<br>'.$admin['email'];
-					$filters['start_range'] = date('Y-m-d',time() - 60 * 60 * 240);
+					$filters['start_range'] = date('Y-m-d',time() - 60 * 60 * 24);
 					$filters['end_range'] = date('Y-m-d',time() - 60 * 60 * 24);
 					$filters['product_id'] = $product_id['id'];
 					$data['audits'] = $this->Audit_model->get_completed_audits($filters, false);

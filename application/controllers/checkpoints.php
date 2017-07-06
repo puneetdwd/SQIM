@@ -121,16 +121,14 @@ class Checkpoints extends Admin_Controller {
                 $validate->set_rules('inspection_level', 'Inspection Level', 'trim|required|xss_clean');
                 //$validate->set_rules('acceptable_quality', 'Acceptance Quality', 'trim|required|xss_clean');
             } else if($this->input->post('sampling_type') == 'C=0') { 
-                $validate->set_rules('acceptable_quality', 'Acceptance Quality', 'trim|required|xss_clean');
+                $validate->set_rules('acceptable_quality', 'Acceptance Quality', 'trim|xss_clean');
             } else if($this->input->post('sampling_type') == 'Fixed') { 
                 $validate->set_rules('sample_qty', 'Sample Qty', 'trim|required|xss_clean');
             }
 			
 			//Checkpoint Image Upload --> Komal
             $product = $this->Product_model->get_product($this->product_id);
-			//print_r($product);;exit;
 			$part = $this->Product_model->get_part($_POST['part_id']);
-            // $product_dir = str_replace(' ', '_',$product['name']);
             $product_dir = $product['name'];
             $part_dir = $part['code'];
             $fullpath = 'assets/inspection_guides/';
@@ -650,7 +648,24 @@ class Checkpoints extends Admin_Controller {
         
         $this->load->model('Checkpoint_model');
         $data['approval_items'] = $this->Checkpoint_model->get_supplier_checkpoints_by_product($this->product_id);
+		$data['selected_status'] = '';
         
+        //echo "<pre>";print_r($data['approval_items']);exit;
+        $this->template->write_view('content', 'checkpoints/checkpoint_approval_index', $data);
+        $this->template->render();
+    }
+    
+	public function search_checkpoints_by_status(){
+        $sel_checkpoint = $this->input->post('checkpoint_status');		
+		$data = array();       
+        $this->load->model('Checkpoint_model');
+		if($sel_checkpoint != 'All')
+			$data['approval_items'] = $this->Checkpoint_model->get_checkpoints_by_status($this->product_id,$sel_checkpoint);
+		elseif($sel_checkpoint == 'All')
+			$data['approval_items'] = $this->Checkpoint_model->get_supplier_checkpoints_by_product($this->product_id);
+        
+        $data['selected_status'] = $sel_checkpoint;
+        //echo "<pre>";print_r($data);exit;
         $this->template->write_view('content', 'checkpoints/checkpoint_approval_index', $data);
         $this->template->render();
     }
@@ -661,6 +676,23 @@ class Checkpoints extends Admin_Controller {
         $this->load->model('Checkpoint_model');
         
         $update_status = $this->Checkpoint_model->change_status($checkpoint_id, $status);
+        
+        if($update_status) {
+            $this->session->set_flashdata('success', 'Inspection Item successfully Approved.');
+        } else {
+            $this->session->set_flashdata('error', 'Inspection Item Declined.');
+        }
+        
+        redirect(base_url().'checkpoints/checkpoint_approval_index');
+    }
+    
+	public function change_checkpoints_status_all($status){
+        
+		//echo $status.$this->product_id;exit;
+        $data = array();
+        $this->load->model('Checkpoint_model');
+        
+        $update_status = $this->Checkpoint_model->change_status_all($status,$this->product_id);
         
         if($update_status) {
             $this->session->set_flashdata('success', 'Inspection Item successfully Approved.');

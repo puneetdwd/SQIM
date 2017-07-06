@@ -370,6 +370,41 @@ class Reports extends Admin_Controller {
 		echo $str;
     }
     
+	public function timecheck_count_by_supplier() {
+        $data = array();
+        $this->load->model('TC_Checkpoint_model');
+
+        $plan_date = '2017-05-04';//date('Y-m-d',time() - 60 * 60 * 240);
+        $data['plan_date'] = $plan_date;
+        $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
+
+        
+        $data['plans'] = $plans;
+
+        $this->template->write('title', 'SQIM | Scheduled Timechecks');
+        $this->template->write_view('content', 'reports/timecheck_count', $data);
+        $this->template->render();
+    }
+	
+	public function timecheck_count_by_supplier_download() {
+        $data = array();
+        $this->load->model('TC_Checkpoint_model');
+
+        $plan_date = '2017-05-04';//date('Y-m-d',time() - 60 * 60 * 240);
+        $data['plan_date'] = $plan_date;
+        $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
+
+        $data['plans'] = $plans;
+		$str = $this->load->view("reports/timecheck_count_download",$data,true);
+			
+		header("Content-Type: application/force-download");
+		header("Content-Disposition: attachment; filename=timecheck_count_report.xls");
+             
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+	}
+	
     function foolproof(){
         
         if($this->user_type == 'Supplier Inspector') {

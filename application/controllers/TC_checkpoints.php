@@ -270,12 +270,31 @@ class TC_Checkpoints extends Admin_Controller {
         $this->template->render();
     }
     
+	
+	
     public function checkpoint_status($checkpoint_id, $status){
         
         $data = array();
         $this->load->model('TC_Checkpoint_model');
         
         $update_status = $this->TC_Checkpoint_model->change_status($checkpoint_id, $status);
+        
+        if($update_status && $status == 'Approved') {
+            $this->session->set_flashdata('success', 'Inspection Item successfully Approved.');
+        } else {
+            $this->session->set_flashdata('error', 'Inspection Item Declined.');
+        }
+        
+        redirect(base_url().'tc_checkpoints/checkpoint_approval_index');
+    }
+
+	
+    public function change_checkpoints_status_all($status){
+        
+        $data = array();
+        $this->load->model('TC_Checkpoint_model');
+        
+        $update_status = $this->TC_Checkpoint_model->change_status_all($status,$this->product_id);
         
         if($update_status && $status == 'Approved') {
             $this->session->set_flashdata('success', 'Inspection Item successfully Approved.');

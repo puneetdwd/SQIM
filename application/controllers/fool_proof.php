@@ -589,6 +589,25 @@ class fool_proof extends Admin_Controller {
         $this->template->render();
     }
     
+	
+	
+	public function change_checkpoints_status_all($status){
+        
+		//echo $status;exit;
+        $data = array();
+        $this->load->model('foolproof_model');
+        
+        $update_status = $this->foolproof_model->change_status_all($status);
+        
+        if($update_status) {
+            $this->session->set_flashdata('success', 'Inspection Item successfully Approved.');
+        } else {
+            $this->session->set_flashdata('error', 'Inspection Item Declined.');
+        }
+        
+        redirect(base_url().'fool_proof/checkpoint_approval_index');
+    }
+	
     public function checkpoint_status($checkpoint_id, $status){
         
         $data = array();
