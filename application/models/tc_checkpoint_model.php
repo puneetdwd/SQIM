@@ -538,6 +538,11 @@ class TC_Checkpoint_model extends CI_Model {
         
         return $this->db->query($sql, array($status, $checkpoint_id));
     }
+    function change_status_all($status,$product_id){
+        
+        $sql = "UPDATE tc_checkpoints SET status = ? WHERE (status = '' or status is NULL or status like 'Pending') and product_id=".$product_id;
+        return $this->db->query($sql, array($status));
+    }
     
     function get_child_parts_by_part_id($part_id, $supplier_id, $product_id){
         $sql = "SELECT DISTINCT child_part_no as child_part_no
@@ -558,6 +563,13 @@ class TC_Checkpoint_model extends CI_Model {
                AND supplier_id = ?";
         
         return $this->db->query($sql, array($product_id, $part_id, $child_part_no, $supplier_id))->result_array();
+    }
+	
+    function get_timecheck_counts($product_id,$plan_date){
+        $sql = "SELECT count(tp.supplier_id) as cnt, sp.name,tp.supplier_id FROM `tc_frequency_result` tr INNER JOIN timecheck_plans tp ON (tr.plan_id = tp.id and tp.plan_date like '".$plan_date."') INNER JOIN suppliers sp ON (sp.id = tp.supplier_id) GROUP BY tp.supplier_id ORDER BY tp.supplier_id ASC";
+        //echo $sql;
+        return $this->db->query($sql, array($plan_date))->result_array();
+		
     }
     
 }

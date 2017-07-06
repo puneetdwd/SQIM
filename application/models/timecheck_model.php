@@ -99,7 +99,11 @@ class Timecheck_model extends CI_Model {
             $pass_array[] = $filters['end_range'];
         }
         //$filters['part_no']
-        if(!empty($filters['part_no'])) {
+        if(!empty($filters['part_id'])) {
+			$wheres[] = "p.part_id = ?";
+            $pass_array[] = $filters['part_id'];
+        }
+		elseif(!empty($filters['part_no'])) {
 			$sql_part_id = "SELECT id FROM `product_parts` WHERE `code` LIKE '".$filters['part_no']."'";
 			$sql_part_id = $this->db->query($sql_part_id)->row_array();
 			$wheres[] = "p.part_id = ?";

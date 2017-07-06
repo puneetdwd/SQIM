@@ -363,7 +363,7 @@ class Checkpoint_model extends CI_Model {
     
     function get_supplier_checkpoints_by_product($product_id){
         
-        $sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
+        $sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,c.images,
                 p.name as product_name, pp.code as part_number, pp.name as part_name,
                 s.supplier_no, s.name as supplier_name
                 FROM checkpoints c
@@ -375,11 +375,39 @@ class Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($product_id))->result_array();
     }
     
+	function get_checkpoints_by_status($product_id, $status){
+		if($status == 'Pending')
+			$status1 = 'c.status = "" or c.status is NULL or status like "Pending"';
+		else
+			$status1 = 'c.status = ?';
+			
+		
+		$sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
+                p.name as product_name, pp.code as part_number, pp.name as part_name,
+                s.supplier_no, s.name as supplier_name
+                FROM checkpoints c
+                LEFT JOIN products p ON p.id = c.product_id
+                LEFT JOIN product_parts pp ON pp.id = c.part_id
+                LEFT JOIN suppliers s ON s.id = c.supplier_id
+                where c.product_id = ? and ".$status1." and c.checkpoint_type = 'Supplier' ";
+        
+         return $this->db->query($sql, array($product_id,$status))->result_array();
+		 //echo $this->db->last_query();
+		 
+    }
+    
     function change_status($checkpoint_id, $status){
         
         $sql = "UPDATE checkpoints SET status = ? WHERE id = ?";
         
         return $this->db->query($sql, array($status, $checkpoint_id));
+    }
+    
+	function change_status_all($status,$product_id){
+        
+        $sql = "UPDATE checkpoints SET status = ? WHERE (status = '' or status is NULL or status like 'Pending') and product_id = ".$product_id;
+        
+        return $this->db->query($sql, array($status));
     }
     
 }

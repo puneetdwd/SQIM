@@ -593,6 +593,12 @@ class foolproof_model extends CI_Model {
         return $this->db->query($sql, array($status, $checkpoint_id));
     }
 	
+	function change_status_all($status){
+        
+        $sql = "UPDATE foolproof_checkpoints SET status = ? WHERE status = '' or status is NULL or status like 'Pending'";
+        return $this->db->query($sql, array($status));
+    }
+	
 	function get_last_foolproofs($id) {
         $sql = "SELECT * FROM foolproofs WHERE supplier_id = ? order by foolproofs.created DESC";
         
