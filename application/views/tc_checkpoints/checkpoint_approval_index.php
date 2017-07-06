@@ -55,6 +55,10 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."sampling/sort_inspections"; ?>">
                             <i class="fa fa-plus"></i> Sort Inspections
                         </a>-->
+						<?php if(!empty($approval_items)) { ?>
+							<a href='<?php echo base_url()."tc_checkpoints/change_checkpoints_status_all/Approved" ?>' class="button" type="submit">Approve All</a>
+							<a href='<?php echo base_url()."tc_checkpoints/change_checkpoints_status_all/Declined" ?>' class="button" type="submit">Decline All</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body form">
@@ -82,6 +86,8 @@
                                             <th>Sample Qty</th>
                                             <th>Frequency</th>
                                             <th>Status</th>
+                                            <th>Created</th>
+                                            <th>Modified</th>
                                             <th class="no_sort" style="width:100px;">Action</th>
                                         </tr>
                                     </thead>
@@ -114,6 +120,16 @@
                                                 <td><?php echo $approval_item['frequency'].' hours'; ?></td>
                                                 <td>
                                                     <?php if($approval_item['status'] == NULL || $approval_item['status'] == 'Pending'){ echo "Pending"; } else { echo $approval_item['status']; } ?>
+                                                </td>
+												<td>
+                                                    <?php echo date('jS M, Y', strtotime($approval_item['created'])); ?>
+                                                </td>
+												<td> 
+                                                    <?php if(!empty($approval_item['modified']))
+															echo date('jS M, Y', strtotime($approval_item['modified']));
+														else 
+															echo 'Not modified yet';
+													?>
                                                 </td>
                                                 <td nowrap>
                                                     <?php if($approval_item['status'] == NULL || $approval_item['status'] == 'Pending'){ ?>
