@@ -10,6 +10,8 @@ class Reports extends Admin_Controller {
     }
 
     public function index() {
+		
+		ini_set('memory_limit',-1);
         $data = array();
         $this->load->model('Audit_model');
 
@@ -22,7 +24,7 @@ class Reports extends Admin_Controller {
         
         $this->load->model('Supplier_model');
         $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
-        
+        //print_r($_POST);exit;
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
         $data['page_no'] = 1;
@@ -374,7 +376,8 @@ class Reports extends Admin_Controller {
         $data = array();
         $this->load->model('TC_Checkpoint_model');
 
-        $plan_date = '2017-05-04';//date('Y-m-d',time() - 60 * 60 * 240);
+        $plan_date = date('Y-m-d',time() - 60 * 60 * 24 * 60);
+		$data['yesterday'] = date('jS M, Y', strtotime($plan_date));
         $data['plan_date'] = $plan_date;
         $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
 
@@ -390,10 +393,10 @@ class Reports extends Admin_Controller {
         $data = array();
         $this->load->model('TC_Checkpoint_model');
 
-        $plan_date = '2017-05-04';//date('Y-m-d',time() - 60 * 60 * 240);
+        $plan_date = date('Y-m-d',time() - (60 * 60 * 24));
         $data['plan_date'] = $plan_date;
         $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
-
+		//print_r($plans);
         $data['plans'] = $plans;
 		$str = $this->load->view("reports/timecheck_count_download",$data,true);
 			
