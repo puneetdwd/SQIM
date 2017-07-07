@@ -14,7 +14,7 @@ class Audit_model extends CI_Model {
     
     function get_completed_audits($filters, $count = false, $limit = '') {
         $pass_array = array();
-        
+         //print_r($filters);exit;
         $sql = "SELECT a.*, s.supplier_no, s.name as supplier_name,
         si.name as inspector_name, pr.name as product_name
         FROM audits a
@@ -53,18 +53,22 @@ class Audit_model extends CI_Model {
             $sql .= ' AND a.product_id = ?';
             $pass_array[] = $this->product_id;
         }
-        elseif($filters['product_id']){
-			$sql .= ' AND a.product_id = ?';
+        elseif($filters['product_id'] == 'all'){
+			 $sql .= ' AND a.product_id = ?';
             $pass_array[] = $filters['product_id'];
-		}
+		} 
+		/* elseif($filters['product_id'] == 'all'){
+			  $sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id']; 
+		} */
         $sql .= " GROUP BY a.id
         ORDER BY a.audit_date DESC, a.id DESC";
-        //echo $sql;exit;
         if($count) {
             $sql = "SELECT count(id) as c FROM (".$sql.") as sub";
         } else {
             $sql .= " ".$limit;
         }
+        // echo $sql;exit;
         
         //$this->db->query($sql, $pass_array)->result_array();
 		//echo $this->db->last_query();exit;
@@ -92,18 +96,18 @@ class Audit_model extends CI_Model {
         }
 
         if(!empty($filters['start_range']) && !empty($filters['end_range'])) {
-            $wheres[] = "a.audit_date BETWEEN ? AND ?";
+            $wheres[] = " a.audit_date BETWEEN ? AND ?";
             $pass_array[] = $filters['start_range'];
             $pass_array[] = $filters['end_range'];
         }
         
         if(!empty($filters['part_id'])) {
-            $wheres[] = "a.part_id = ?";
+            $wheres[] = " a.part_id = ?";
             $pass_array[] = $filters['part_id'];
         }
         
         if(!empty($filters['part_no'])) {
-            $wheres[] = "a.part_no = ?";
+            $wheres[] = " a.part_no = ?";
             $pass_array[] = $filters['part_no'];
         }
         
@@ -116,10 +120,10 @@ class Audit_model extends CI_Model {
             $wheres[] = " a.product_id = ?";
             $pass_array[] = $this->product_id;
         }
-        elseif($filters['product_id']){
+        /* elseif($filters['product_id'] ){
 			$sql .= ' AND a.product_id = ?';
             $pass_array[] = $filters['product_id'];
-		}
+		} */
         
         if(!empty($wheres)) {
             $sql .= " WHERE ".implode(' AND ', $wheres);

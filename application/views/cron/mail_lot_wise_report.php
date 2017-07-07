@@ -1,23 +1,25 @@
+<html>
+<body>
 <p style="font-size: 16px;"><b>
-Timecheck - Completed Inspection Report</br>
+Timecheck - Completed Inspection Report<br>
 Date: <?php echo $yesterday; ?>
 </b></p>
 <p style="font-size: 20px;"><b>
 </b></p>
 <?php if(!empty($audits)) { ?>
-	<table class="table table-hover table-light">
+	<table style='border: 1px solid black;border-collapse: collapse;'>
 		<thead>
-			<tr>
-				<th rowspan="2" class="merged-cell text-center">Last Inspect Date</th>
-				<th rowspan="2" class="merged-cell text-center">Product</th>
-				<th rowspan="2" class="merged-cell text-center">Supplier</th>
-				<th rowspan="2" class="merged-cell text-center">Part</th>
-				<th colspan="3" class="merged-cell text-center">No. Of Lots</th>
+			<tr style="background-color:#D3D3D3;">
+				<th style='border: 1px solid black;' rowspan="2" class="merged-cell text-center">Last Inspect Date</th>
+				<th style='border: 1px solid black;'  rowspan="2" class="merged-cell text-center">Product</th>
+				<th style='border: 1px solid black;'  rowspan="2" class="merged-cell text-center">Supplier</th>
+				<th style='border: 1px solid black;'  rowspan="2" class="merged-cell text-center">Part</th>
+				<th  style='border: 1px solid black;' colspan="3" class="merged-cell text-center">No. Of Lots</th>
 			</tr>
-			<tr>
-				<th class="text-center">Inspected</th>
-				<th class="text-center">OK</th>
-				<th class="text-center">NG</th>
+			<tr  style="background-color:#D3D3D3;">
+				<th  style='border: 1px solid black;' class="text-center">Inspected</th>
+				<th style='border: 1px solid black;'  class="text-center">OK</th>
+				<th  style='border: 1px solid black;' class="text-center">NG</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,19 +28,19 @@ Date: <?php echo $yesterday; ?>
 					$bg = 'background-color:red;';
 			?>
 				<tr>
-					<td nowrap><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
-					<td><?php echo $audit['product_name']; ?></td>
-					<td><?php echo $audit['supplier_no'].' - '.$audit['supplier_name']; ?></td>
-					<td><?php echo $audit['part_no'].' - '.$audit['part_name']; ?></td>
-					<td class="text-center"><?php echo $audit['no_of_lots']; ?></td>
-					<td class="text-center"><?php echo $audit['ok_lots']; ?></td>
+					<td  style='border: 1px solid black;' nowrap><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
+					<td  style='border: 1px solid black;' ><?php echo $audit['product_name']; ?></td>
+					<td style='border: 1px solid black;' ><?php echo $audit['supplier_no'].' - '.$audit['supplier_name']; ?></td>
+					<td style='border: 1px solid black;' ><?php echo $audit['part_no'].' - '.$audit['part_name']; ?></td>
+					<td style='border: 1px solid black;'  class="text-center"><?php echo $audit['no_of_lots']; ?></td>
+					<td  style='border: 1px solid black;' class="text-center"><?php echo $audit['ok_lots']; ?></td>
 					<?php
 						if($audit['ng_lots'] > 0) { ?>
-							<td class="text-center" style='background-color:red'>
+							<td  style='border: 1px solid black;background-color:red' class="text-center">
 								<?php echo $audit['ng_lots']; ?>
 							</td>
 					<?php } else {?>
-							<td class="text-center">
+							<td  style='border: 1px solid black;' class="text-center">
 								<?php echo $audit['ng_lots']; ?>
 							</td>					
 					<?php } ?>
@@ -54,7 +56,7 @@ No Timechecks has been done yesterday.
 <br>
 <br>
 <p>
-Regards,</br>
+Regards,<br>
 SQIM Administrator
 <br>
 <br>
@@ -80,3 +82,5 @@ tr{
 	    padding: 0 auto;
 }
 </style>
+</body>
+</html>

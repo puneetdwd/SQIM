@@ -56,11 +56,11 @@
                                             <div class="form-group">
                                                 <label class="control-label">Date Range</label>
                                                 <div class="input-group date-picker input-daterange" data-date-format="yyyy-mm-dd">
-                                                    <input type="text" class="form-control" name="start_range" 
+                                                    <input type="text" class="form-control required" name="start_range" 
                                                     value="<?php echo $this->input->post('start_range'); ?>">
                                                     <span class="input-group-addon">
                                                     to </span>
-                                                    <input type="text" class="form-control" name="end_range"
+                                                    <input type="text" class="form-control required" name="end_range"
                                                     value="<?php echo $this->input->post('end_range'); ?>">
                                                 </div>
                                             </div>

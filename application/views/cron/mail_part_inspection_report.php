@@ -1,5 +1,7 @@
+<html>
+<body>
 <p style="font-size: 16px;"><b>
-Timecheck - Completed Inspection Report</br>
+<h3>Part Inspection - Completed Inspection Report</h3></br>
 Date: <?php echo $yesterday; ?>
 </b></p>
 <p style="font-size: 20px;"><b>
@@ -9,29 +11,29 @@ $CI = &get_instance();
 $CI->load->model('audit_model');
 ?>
 <?php if(!empty($audits)) { ?>
-	<table class="table table-hover table-light">
+	<table class="table table-hover table-light" style='border: 1px solid black;border-collapse: collapse;'>
 		<thead>
-			<tr>
-				<th>Date</th>
-				<th>Supplier</th>
-				<th>Lot No</th>
-				<th>Part Name</th>
-				<th>Part No</th>
-				<th>Insp Qty.</th>
-				<th>Judgment</th>
-				<th>Inspector Name</th>
+			<tr style="background-color:#D3D3D3;">
+				<th style='border: 1px solid black;'>Date</th>
+				<th style='border: 1px solid black;'>Supplier</th>
+				<th style='border: 1px solid black;'>Lot No</th>
+				<th style='border: 1px solid black;'>Part Name</th>
+				<th style='border: 1px solid black;'>Part No</th>
+				<th style='border: 1px solid black;'>Insp Qty.</th>
+				<th style='border: 1px solid black;'>Judgment</th>
+				<th style='border: 1px solid black;'>Inspector Name</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach($audits as $audit) { ?>
 				<tr>
-					<td><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
-					<td><?php echo $audit['supplier_name']; ?></td>
-					<td><?php echo $audit['lot_no']; ?></td>
-					<td><?php echo $audit['part_name']; ?></td>
-					<td><?php echo $audit['part_no']; ?></td>
-					<td><?php echo $audit['prod_lot_qty']; ?></td>
-					<td class="judgement-col">
+					<td style='border: 1px solid black;'><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
+					<td style='border: 1px solid black;'><?php echo $audit['supplier_name']; ?></td>
+					<td style='border: 1px solid black;'><?php echo $audit['lot_no']; ?></td>
+					<td style='border: 1px solid black;'><?php echo $audit['part_name']; ?></td>
+					<td style='border: 1px solid black;'><?php echo $audit['part_no']; ?></td>
+					<td style='border: 1px solid black;'><?php echo $audit['prod_lot_qty']; ?></td>
+					<td class="judgement-col" style='border: 1px solid black;'>
 						<?php
 							$res = $CI->audit_model->get_judgement_result($audit['lot_no']);
 							if($res[0]['ng_count'] > 0)
@@ -40,7 +42,7 @@ $CI->load->model('audit_model');
 								echo 'OK';
 						?>
 					</td>
-					<td><?php echo $audit['inspector_name']; ?></td>				   
+					<td style='border: 1px solid black;'><?php echo $audit['inspector_name']; ?></td>				   
 				</tr>
 			<?php } ?>
 		</tbody>		
@@ -55,7 +57,7 @@ No Part Inspection has been done yesterday.
 <br>
 <br>
 <p>
-	Regards,</br>
+	Regards,<br>
 	SQIM Administrator
 	<br>
 	<br>
@@ -81,3 +83,5 @@ tr{
 	    padding: 0 auto;
 }
 </style>
+</body>
+</html>
