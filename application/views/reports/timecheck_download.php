@@ -55,7 +55,7 @@ table, td, th {
                                                 <th>Part</th>
                                                 <th>Date</th>
                                                 <th>From Time</th>
-                                                <th>To Item</th>
+                                                <th>To Time</th>
                                                 <th>Result</th>
                                                 <!--<th>Progress</th>-->
                                                </tr>
