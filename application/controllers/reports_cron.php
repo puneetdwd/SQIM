@@ -5,11 +5,11 @@ class Reports_cron extends Admin_Controller {
     public function __construct() {
         parent::__construct(true);
         
-        $this->template->write_view('header', 'templates/header', array('page' => 'reports'));
-        $this->template->write_view('footer', 'templates/footer');
+        //$this->template->write_view('header', 'templates/header', array('page' => 'reports'));
+        //$this->template->write_view('footer', 'templates/footer');
         $this->load->model('Audit_model');
-		$this->load->model('product_model');
-		$this->load->model('user_model');
+	$this->load->model('product_model');
+	$this->load->model('user_model');
     }
 
 	public function part_inspection_report_mail() {
@@ -31,9 +31,10 @@ class Reports_cron extends Admin_Controller {
 					$data['yesterday'] = date('jS M, Y', strtotime(date('Y-m-d',time() - 60 * 60 * 24)));
 					$mail_content = $this->load->view('cron/mail_part_inspection_report', $data,true);
 					$this->load->library('email');
-					$toemail = $admin['email'];
+					//$toemail = $admin['email'];
+                                        $toemail = 'puneet.dwivedi@crgroup.co.in,komal@crgroup.co.in';
 					$subject = "Part Inspection - Completed Inspection Report";
-					//$this->sendMail($toemail,$subject,$mail_content);
+					$this->sendMail($toemail,$subject,$mail_content);
 				}
 			}
 		}
