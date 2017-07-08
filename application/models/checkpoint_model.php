@@ -377,7 +377,7 @@ class Checkpoint_model extends CI_Model {
     
 	function get_checkpoints_by_status($product_id, $status){
 		if($status == 'Pending')
-			$status1 = 'c.status = "" or c.status is NULL or status like "Pending"';
+			$status1 = 'c.status = "" or c.status is NULL or c.status like "Pending"';
 		else
 			$status1 = 'c.status = ?';
 			
@@ -391,8 +391,8 @@ class Checkpoint_model extends CI_Model {
                 LEFT JOIN suppliers s ON s.id = c.supplier_id
                 where c.product_id = ? and ".$status1." and c.checkpoint_type = 'Supplier' ";
         
-         return $this->db->query($sql, array($product_id,$status))->result_array();
-		 //echo $this->db->last_query();
+         $this->db->query($sql, array($product_id,$status))->result_array();
+		 echo $this->db->last_query();exit;
 		 
     }
     
