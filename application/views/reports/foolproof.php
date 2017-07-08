@@ -54,8 +54,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Date Range</label>
-                                                <div class="input-group date date-picker col-md-6" data-date-format="yyyy-mm-dd" data-date-end-date="<?php echo date('Y-m-d'); ?>">
+                                                <label class="control-label">Select Date</label>
+                                                <div class="required input-group date date-picker col-md-6" data-date-format="yyyy-mm-dd" data-date-end-date="<?php echo date('Y-m-d'); ?>">
                                                     <input name="date" type="text" class="required form-control" readonly
                                                     value="<?php echo $date; ?>">
                                                     <span class="input-group-btn">
@@ -108,7 +108,7 @@
                                     <i class="fa fa-print"></i> Print
                                 </a>-->
                                 <?php $supplier_id = ($this->input->post('supplier_id'))?$this->input->post('supplier_id'):$this->supplier_id; ?>
-                                <?php if($this->input->post()){ ?>
+                                <?php if(!empty($foolproofs)){ ?>
                                 <a class="button normals btn-circle" href="<?php echo base_url()."reports/download_foolproof_report/".$this->input->post('date')."/".$supplier_id;?>">
                                     <i class="fa fa-print"></i> Download
                                 </a>
@@ -116,7 +116,9 @@
                             </div>
                         </div>
                         <div class="portlet-body">
-                            <?php if(empty($foolproofs)) { ?>
+                            <?php 
+							//echo '<pre>';print_r($foolproofs);
+							if(empty($foolproofs)) { ?>
                                 <p class="text-center">No Fool-Proof Done Yet.</p>
                             <?php } else { ?>
                                 <div class="pagination-sec pull-right"></div>
@@ -144,11 +146,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $i=0; foreach($foolproofs as $foolproof) { $i++; ?>
+                                            <?php $i=0; foreach($foolproofs as $foolproof) { $i++; 
+											// echo '<pre>';print_r($foolproof);
+											?>
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
                                                     <td><?php echo $foolproof['supplier_name']; ?></td>
-                                                    <td><?php echo date('jS M, Y', strtotime($foolproof['created'])); ?></td>
+                                                    <td><?php if(!empty($foolproof['created'])){ echo date('jS M, Y', strtotime($foolproof['created'])); }else { echo 'NA'; }?></td>
                                                     <td><?php echo $foolproof['stage']; ?></td>
                                                     <td><?php echo $foolproof['sub_stage']; ?></td>
                                                     <td><?php echo $foolproof['major_control_parameters']; ?></td>
