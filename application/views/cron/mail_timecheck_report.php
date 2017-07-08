@@ -46,25 +46,6 @@ No Timechecks has been done yesterday.
 	<br>
 	<i><b>Note:</b>&nbsp;This is a system generated mail. Please do not reply.</i>
 </p>
-<style>
-table {
-    border-collapse: collapse;
-}
 
-table, td, th {
-    border: 1px solid black;
-}
-table{
-    margin: 0% 0% 0% 5%;
-    width: 90%;
-th{
-		text-align: center;
-	    font-size: 30px !important;
-		padding:10px
-}
-tr{
-	    padding: 0 auto;
-}
-</style>
 </body>
 </html>
