@@ -391,8 +391,8 @@ class Checkpoint_model extends CI_Model {
                 LEFT JOIN suppliers s ON s.id = c.supplier_id
                 where c.product_id = ? and ".$status1." and c.checkpoint_type = 'Supplier' ";
         
-         $this->db->query($sql, array($product_id,$status))->result_array();
-		 echo $this->db->last_query();exit;
+         return $this->db->query($sql, array($product_id,$status))->result_array();
+		 //echo $this->db->last_query();
 		 
     }
     

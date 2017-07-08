@@ -566,8 +566,8 @@ class TC_Checkpoint_model extends CI_Model {
     }
 	
     function get_timecheck_counts($product_id,$plan_date){
-        $sql = "SELECT count(tp.supplier_id) as cnt, sp.name,tp.supplier_id FROM `tc_frequency_result` tr INNER JOIN timecheck_plans tp ON (tr.plan_id = tp.id and tp.plan_date like '".$plan_date."') INNER JOIN suppliers sp ON (sp.id = tp.supplier_id) GROUP BY tp.supplier_id ORDER BY tp.supplier_id ASC";
-        //echo $sql;
+        $sql = "SELECT count(tp.supplier_id) as cnt, sp.name,tp.supplier_id FROM `tc_frequency_result` tr INNER JOIN timecheck_plans tp ON (tr.plan_id = tp.id and tp.plan_date like '".$plan_date."' and tp.plan_status = 'Completed' ) INNER JOIN suppliers sp ON (sp.id = tp.supplier_id) GROUP BY tp.supplier_id ORDER BY tp.supplier_id ASC";
+        //echo $sql;exit;
         return $this->db->query($sql, array($plan_date))->result_array();
 		
     }
