@@ -53,7 +53,7 @@
                                             <th style='border: 1px solid black;'>TGT</th>
                                             <th style='border: 1px solid black;'>Unit</th>
                                             <th style='border: 1px solid black;'>Measuring Equipment</th>
-                                            <!--<th style='border: 1px solid black;'>Image</th>-->
+                                            <th style='border: 1px solid black;'>Image</th>
                                             <th style='border: 1px solid black;'>Input Value</th>
                                             <th style='border: 1px solid black;'>Result</th>
                                         </tr>
@@ -72,12 +72,12 @@
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['usl']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['unit']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['measuring_equipment']; ?></td>
-                                                <!--<td style='border: 1px solid black;'>
+												<td style='border: 1px solid black;height:70px;width:100px'>
                                                     <?php if($foolproof['image'] == NULL){ echo 'NA'; }else{ ?>
                                                     <img src="<?php echo base_url().'assets/foolproof_captured/'.$foolproof['image']; ?>" 
                                                          height="70" width="100" alt="<?php $foolproof['image']; ?>" />
                                                     <?php } ?>
-                                                </td>-->
+                                                </td>
                                                 <?php 
                                                     if($foolproof['lsl'] == NULL && $foolproof['usl'] == NULL){
                                                         $value = 'NA';
