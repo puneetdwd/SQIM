@@ -301,6 +301,11 @@
                                         <i class="icon-layers"></i> Timecheck Count Report
                                     </a>
                                 </li>
+								<li>
+                                    <a href="<?php echo base_url(); ?>reports/foolproof" target="_blank" class="text-uppercase">
+                                        <i class="icon-layers"></i> Fool Proof Report
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <?php //} ?>
