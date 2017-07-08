@@ -39,45 +39,45 @@
                     <?php } else { ?>
                         <form method="post">
                             <div class="table-responsive">
-                                <table class="table table-hover table-light">
+                                <table class="table table-hover table-light" style='border: 1px solid black;border-collapse: collapse;'>
                                     <thead>
-                                        <tr>
-                                            <th style="vertical-align:middle;">Sr.No.</th>
-                                            <th style="vertical-align:middle;">Supplier</th>
-                                            <th style="vertical-align:middle;">Date</th>
-                                            <th style="vertical-align:middle;">Stage</th>
-                                            <th style="vertical-align:middle;">Sub Stage</th>
-                                            <th style="vertical-align:middle;">Major Control Parameter</th>
-                                            <th style="vertical-align:middle;">LSL</th>
-                                            <th style="vertical-align:middle;">USL</th>
-                                            <th style="vertical-align:middle;">TGT</th>
-                                            <th style="vertical-align:middle;">Unit</th>
-                                            <th style="vertical-align:middle;">Measuring Equipment</th>
-                                            <th style="vertical-align:middle;">Image</th>
-                                            <th style="vertical-align:middle;">Input Value</th>
-                                            <th style="vertical-align:middle;">Result</th>
+                                        <tr style='background-color:"#D3D3D3"'>
+                                            <th style='border: 1px solid black;'>Sr.No.</th>
+                                            <th style='border: 1px solid black;'>Supplier</th>
+                                            <th style='border: 1px solid black;'>Date</th>
+                                            <th style='border: 1px solid black;'>Stage</th>
+                                            <th style='border: 1px solid black;'>Sub Stage</th>
+                                            <th style='border: 1px solid black;'>Major Control Parameter</th>
+                                            <th style='border: 1px solid black;'>LSL</th>
+                                            <th style='border: 1px solid black;'>USL</th>
+                                            <th style='border: 1px solid black;'>TGT</th>
+                                            <th style='border: 1px solid black;'>Unit</th>
+                                            <th style='border: 1px solid black;'>Measuring Equipment</th>
+                                            <!--<th style='border: 1px solid black;'>Image</th>-->
+                                            <th style='border: 1px solid black;'>Input Value</th>
+                                            <th style='border: 1px solid black;'>Result</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $i=0; foreach($foolproofs as $foolproof) { $i++; ?>
                                             <tr>
-                                                <td><?php echo $i; ?></td>
-                                                <td><?php echo $foolproof['supplier_name']; ?></td>
-                                                <td><?php echo date('jS M, Y', strtotime($foolproof['created'])); ?></td>
-                                                <td><?php echo $foolproof['stage']; ?></td>
-                                                <td><?php echo $foolproof['sub_stage']; ?></td>
-                                                <td><?php echo $foolproof['major_control_parameters']; ?></td>
-                                                <td><?php echo $foolproof['lsl']; ?></td>
-                                                <td><?php echo $foolproof['tgt']; ?></td>
-                                                <td><?php echo $foolproof['usl']; ?></td>
-                                                <td><?php echo $foolproof['unit']; ?></td>
-                                                <td><?php echo $foolproof['measuring_equipment']; ?></td>
-                                                <td>
+                                                <td style='border: 1px solid black;'><?php echo $i; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['supplier_name']; ?></td>
+                                                <td style='border: 1px solid black;'><?php if(!empty($foolproof['created'])){ echo date('jS M, Y', strtotime($foolproof['created'])); } else { echo 'NA'; } ?></td>
+                                                <td  style='border: 1px solid black;'><?php echo $foolproof['stage']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['sub_stage']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['major_control_parameters']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['lsl']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['tgt']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['usl']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['unit']; ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $foolproof['measuring_equipment']; ?></td>
+                                                <!--<td style='border: 1px solid black;'>
                                                     <?php if($foolproof['image'] == NULL){ echo 'NA'; }else{ ?>
                                                     <img src="<?php echo base_url().'assets/foolproof_captured/'.$foolproof['image']; ?>" 
                                                          height="70" width="100" alt="<?php $foolproof['image']; ?>" />
                                                     <?php } ?>
-                                                </td>
+                                                </td>-->
                                                 <?php 
                                                     if($foolproof['lsl'] == NULL && $foolproof['usl'] == NULL){
                                                         $value = 'NA';
@@ -88,8 +88,8 @@
                                                         $value = $foolproof['all_values'];
                                                     }
                                                 ?>
-                                                <td><?php echo $value; ?></td>
-                                                <td><?php if($foolproof['result'] == NULL){ echo 'NA'; }else{ echo $foolproof['result']; } ?></td>
+                                                <td style='border: 1px solid black;'><?php echo $value; ?></td>
+                                                <td style='border: 1px solid black;'><?php if($foolproof['result'] == NULL){ echo 'NA'; }else{ echo $foolproof['result']; } ?></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
