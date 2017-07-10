@@ -1,39 +1,13 @@
-<style>
-    .form-inline .select2-container--bootstrap{
-        width: 300px !important;
-    }
-    
-</style>
+<html>
+<body>
 
-<style type="text/css" media="print">
-  @page { 
-      /*size: landscape;*/
-      size: A4;
-      margin: 0;
-  }
-</style>
-
-<div class="page-content">
-
-    <?php if(!isset($download)) { ?>
-        <!-- BEGIN PAGE HEADER-->
-        <div class="breadcrumbs">
-            <h1>
-                Fool-Proof Report
-            </h1>
-        </div>
-        <!-- END PAGE HEADER-->
-    <?php } ?>
-    
-    <!-- BEGIN PAGE CONTENT-->
-    
-    <div class="row" style="margin-top:15px;"  id="part_insp_table">
-        
-        <div class="col-md-12">
-
-            <div class="portlet light bordered">
-                <div class="portlet-body">
-                    
+<p style="font-size: 16px;"><b>
+<h3>Fool-Proof - Completed Inspection Report</h3><br>
+Date: <?php echo $yesterday; ?>
+</b></p>
+<p style="font-size: 20px;"><b>
+</b></p>
+                
                     <?php if(empty($foolproofs)) { ?>
                         <p class="text-center">No Fool-Proof Report.</p>
                     <?php } else { ?>
@@ -41,7 +15,7 @@
                             <div class="table-responsive">
                                 <table class="table table-hover table-light" style='border: 1px solid black;border-collapse: collapse;'>
                                     <thead>
-                                        <tr style='background-color:"#D3D3D3"'>
+                                        <tr style='background-color:#D3D3D3'>
                                             <th style='border: 1px solid black;'>Sr.No.</th>
                                             <th style='border: 1px solid black;'>Supplier</th>
                                             <th style='border: 1px solid black;'>Date</th>
@@ -72,7 +46,7 @@
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['usl']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['unit']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['measuring_equipment']; ?></td>
-												<td style='border: 1px solid black;height:70px;width:100px'>
+                                                <td style='border: 1px solid black;'>
                                                     <?php if($foolproof['image'] == NULL){ echo 'NA'; }else{ ?>
                                                     <img src="<?php echo base_url().'assets/foolproof_captured/'.$foolproof['image']; ?>" 
                                                          height="70" width="100" alt="<?php $foolproof['image']; ?>" />
@@ -97,11 +71,14 @@
                             </div>
                         </form>
                     <?php } ?>
-                    
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- END PAGE CONTENT-->
-</div>
+            <br>
+<br>
+<p>
+	Regards,<br>
+	SQIM Administrator
+	<br>
+	<br>
+	<i><b>Note:</b>&nbsp;This is a system generated mail. Please do not reply.</i>
+</p>
+</body>
+</html>

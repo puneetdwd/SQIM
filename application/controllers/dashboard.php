@@ -17,16 +17,52 @@ class Dashboard extends Admin_Controller {
     }
 
     public function index() {
-        
         if(!$this->session->userdata('dashboard_date')) {
             $this->session->set_userdata('dashboard_date', date('Y-m-d'));
         }
+		if($_POST){
+			$dashboard_date = $_POST['date'];
+            $this->session->set_userdata('dashboard_date', $dashboard_date);
+		}else{
+			$dashboard_date = date('Y-m-d');
+		}
+		//echo $dashboard_date;exit;
 
         if($this->user_type == 'Admin') {
+			$data = $this->admin_dashboard();
+             $data = array();
+			
+			//Part Inspection Completed Count
+			 $this->load->model('Audit_model');
+			 $filters['product_id'] = $this->product_id;
+			 $filters['inspection_date'] = $dashboard_date;//date('Y-m-d');
+			$count_completed = $this->Audit_model->get_completed_admin_audits_completed($filters,true);
+            $data['inspection_count_completed'] = $count_completed[0]['c'];
+			$count_total = $this->Audit_model->get_completed_admin_audits($filters,true);
+            $data['inspection_count_total'] = $count_total[0]['c'];
+            			
             
-            $data = $this->admin_dashboard();
-            //render template
-            $this->template->write_view('content', 'admin_dashboard', $data);
+            //Timecheck Completed Count
+            $this->load->model('TC_Checkpoint_model');
+			$plans = $this->TC_Checkpoint_model->get_all_admin_plans($this->product_id, $dashboard_date);//date('Y-m-d')
+            $data['plans'] = $plans;
+			$data['tc_completed'] = count($plans);
+			$plans_all = $this->TC_Checkpoint_model->get_all_admin_plans($this->product_id,$dashboard_date);//date('Y-m-d')
+			$data['tc_all'] = count($plans_all);
+			
+            //Foolproof Completed Count
+            $this->load->model('foolproof_model');
+            $foolproofs = $this->foolproof_model->get_checkpoint_admin_count($dashboard_date);//(date('Y-m-d'));
+            $sum_completed = 0;$sum_total = 0;
+			foreach($foolproofs as $foolproof){
+				$sum_total += $foolproof['total'];
+				$sum_completed += $foolproof['completed'];
+			}
+			$data['foolproof_total'] = $sum_total;
+			$data['foolproof_completed'] = $sum_completed;
+			
+			
+			$this->template->write_view('content', 'admin_dashboard', $data);
             $this->template->render();
         } else if($this->user_type == 'Audit') {
             
@@ -37,8 +73,39 @@ class Dashboard extends Admin_Controller {
 
         } else if($this->user_type == 'LG Inspector') {
             
-            $data = $this->dashboard();
-            //render template
+            $data = $this->admin_dashboard();
+             $data = array();
+            
+			//Part Inspection Completed Count
+			 $this->load->model('Audit_model');
+			 $filters['product_id'] = $this->product_id;
+			 $filters['inspection_date'] = $dashboard_date;//date('Y-m-d');
+			$count_completed = $this->Audit_model->get_completed_admin_audits_completed($filters,true);
+            $data['inspection_count_completed'] = $count_completed[0]['c'];
+			$count_total = $this->Audit_model->get_completed_admin_audits($filters,true);
+            $data['inspection_count_total'] = $count_total[0]['c'];
+            			
+            
+            //Timecheck Completed Count
+            $this->load->model('TC_Checkpoint_model');
+			$plans = $this->TC_Checkpoint_model->get_all_admin_plans($this->product_id,$dashboard_date);//date('Y-m-d')
+            $data['plans'] = $plans;
+			$data['tc_completed'] = count($plans);
+			$plans_all = $this->TC_Checkpoint_model->get_all_admin_plans($this->product_id,$dashboard_date);//date('Y-m-d')
+			$data['tc_all'] = count($plans_all);
+			
+            //Foolproof Completed Count
+            $this->load->model('foolproof_model');
+            $foolproofs = $this->foolproof_model->get_checkpoint_admin_count($dashboard_date);//(date('Y-m-d'));
+            $sum_completed = 0;$sum_total = 0;
+			foreach($foolproofs as $foolproof){
+				$sum_total += $foolproof['total'];
+				$sum_completed += $foolproof['completed'];
+			}
+			$data['foolproof_total'] = $sum_total;
+			$data['foolproof_completed'] = $sum_completed;
+			
+			//render template
             $this->template->write_view('content', 'lg_inspector_dashboard', $data);
             $this->template->render();
 

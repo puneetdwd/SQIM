@@ -548,6 +548,21 @@ class foolproof_model extends CI_Model {
         return $this->db->query($sql)->result_array();
     }
     
+	function get_checkpoint_admin_count($date){
+        $sql = "SELECT fc.supplier_id, s.name as supplier_name, 
+                count(fc.id) as total,count(f.id) as completed
+                FROM foolproofs f 
+                inner JOIN foolproof_checkpoints fc 
+                ON (fc.id = f.org_checkpoint_id AND f.created like '".$date."%')
+                inner JOIN suppliers s 
+                ON s.id = fc.supplier_id 
+                WHERE fc.status = 'Approved' and fc.is_deleted = 0 ";
+        
+        $sql.= " GROUP BY fc.supplier_id";
+        
+         return $this->db->query($sql)->result_array();
+	}
+    
     /*Inspection Model Ends*/
     
     function get_foolproof_report($filters) {
@@ -555,9 +570,9 @@ class foolproof_model extends CI_Model {
         
         $sql = "SELECT s.name as supplier_name, fc.*, f.image, f.all_values, f.all_results, f.created, f.result
                 FROM foolproofs f 
-                RIGHT JOIN foolproof_checkpoints fc 
+                inner JOIN foolproof_checkpoints fc 
                 ON (fc.id = f.org_checkpoint_id AND f.created like '".$filters['date']."%')
-                LEFT JOIN suppliers s ON s.id = fc.supplier_id";
+                inner JOIN suppliers s ON s.id = fc.supplier_id";
         
         $wheres = array();
         
@@ -571,10 +586,26 @@ class foolproof_model extends CI_Model {
         }
         
         $sql .= " ORDER BY fc.supplier_id";
-        
-        return $this->db->query($sql, $pass_array)->result_array();
+       return $this->db->query($sql, $pass_array)->result_array();
+       // echo $this->db->last_query();exit;
     }
     
+	function get_foolproof_report_mail($filters) {
+        //$pass_array = array();
+        
+        $sql = "SELECT s.name as supplier_name, fc.*, f.image, f.all_values, f.all_results, f.created, f.result
+                FROM foolproofs f 
+                inner JOIN foolproof_checkpoints fc 
+                ON (fc.id = f.org_checkpoint_id AND f.created like '".$filters."%')
+                inner JOIN suppliers s ON s.id = fc.supplier_id";
+        
+        
+        
+        $sql .= " ORDER BY fc.supplier_id";
+        $this->db->query($sql, $filters)->result_array();
+        echo $this->db->last_query();exit;
+    }
+	
     function get_pending_checkpoints(){
         
         $sql = "SELECT c.*, s.supplier_no, s.name as supplier_name

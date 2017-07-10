@@ -50,6 +50,8 @@ class Checkpoints extends Admin_Controller {
     
     public function add_checkpoint($checkpoint_id = '') {
         $data = array();
+		 $this->load->model('Product_model');
+        
 		//echo "<pre>";print_r($_FILES);print_r($_POST);exit;
         $this->load->model('Checkpoint_model');
         $data['existing_checkpoints'] = '';
@@ -88,7 +90,10 @@ class Checkpoints extends Admin_Controller {
                 $data['inspection_config'] = $config;
                 $data['config_range'] = $range;
                 $data['sampling_config'] = $sampling_config;
-                // echo "<pre>";print_r($data);exit;
+				$prod_name = $this->Product_model->get_product($checkpoint['product_id']);
+                $data['prod_img_name'] = $prod_name['name'];
+				$part_name = $this->Product_model->get_part($checkpoint['part_id']);
+                $data['part_img_name'] = $part_name['code'];
             }
         }
         
@@ -100,8 +105,7 @@ class Checkpoints extends Admin_Controller {
         
         //echo "<pre>"; print_r($acceptable_qualities); exit;
         
-        $this->load->model('Product_model');
-        
+       
         if($this->user_type == 'Admin'){
             $data['parts'] = $this->Product_model->get_all_product_parts($this->product_id);
         }else{
@@ -131,6 +135,7 @@ class Checkpoints extends Admin_Controller {
 			$part = $this->Product_model->get_part($_POST['part_id']);
             $product_dir = $product['name'];
             $part_dir = $part['code'];
+			
             $fullpath = 'assets/inspection_guides/';
 			//for Product directory
 			if (!is_dir('assets/inspection_guides/'.$product_dir)) {
@@ -261,7 +266,7 @@ class Checkpoints extends Admin_Controller {
             }
             
         }
-
+//print_r($data);exit;
         $this->template->write_view('content', 'checkpoints/add_checkpoint', $data);
         $this->template->render();
     }

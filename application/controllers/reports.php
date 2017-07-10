@@ -376,7 +376,7 @@ class Reports extends Admin_Controller {
         $data = array();
         $this->load->model('TC_Checkpoint_model');
 
-        $plan_date = date('Y-m-d',time() - 60 * 60 * 24 * 60);
+        $plan_date = date('Y-m-d',time() - 60 * 60 * 24);
 		$data['yesterday'] = date('jS M, Y', strtotime($plan_date));
         $data['plan_date'] = $plan_date;
         $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
@@ -433,8 +433,8 @@ class Reports extends Admin_Controller {
             }
             
             $this->load->model('foolproof_model');
-            $data['foolproofs'] = $this->foolproof_model->get_foolproof_report($filters);
-            //echo $this->db->last_query();exit;
+           $data['foolproofs'] = $this->foolproof_model->get_foolproof_report($filters);
+           // echo $this->db->last_query();exit;
         }
         
         $this->template->write('title', 'SQIM | Fool-Proof Report');
