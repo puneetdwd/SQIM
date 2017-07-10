@@ -455,4 +455,73 @@ class Audit_model extends CI_Model {
         return $lot_start.str_pad($new_lot, 7, '0', STR_PAD_LEFT);
 
     }
+	
+	function get_completed_admin_audits_completed($filters,$count) {
+        $pass_array = array();
+         //print_r($filters);exit;
+        $sql = "SELECT a.*, s.supplier_no, s.name as supplier_name,
+        si.name as inspector_name, pr.name as product_name
+        FROM audits a
+        INNER JOIN suppliers s ON a.supplier_id = s.id
+        INNER JOIN supplier_inspector si ON si.id = a.auditer_id
+        INNER JOIN products pr ON pr.id = a.product_id
+        WHERE state = 'completed'";
+        
+        
+        if(!empty($filters['inspection_date'])) {
+            $sql .= " AND a.audit_date = ?";
+            $pass_array[] = $filters['inspection_date'];
+            
+        }
+        
+       
+        if(!empty($filters['product_id'])){
+			 $sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id'];
+		} 
+		//$sql .= " GROUP BY a.id   ORDER BY a.audit_date DESC, a.id DESC";
+        if($count) {
+            $sql = "SELECT count(id) as c FROM (".$sql.") as sub";
+        } 
+        // echo $sql;exit;
+        
+        //$this->db->query($sql, $pass_array)->result_array();
+		//echo $this->db->last_query();exit;
+        return $this->db->query($sql, $pass_array)->result_array();
+    }
+    
+	function get_completed_admin_audits($filters,$count) {
+        $pass_array = array();
+         //print_r($filters);exit;
+        $sql = "SELECT a.*, s.supplier_no, s.name as supplier_name,
+        si.name as inspector_name, pr.name as product_name
+        FROM audits a
+        INNER JOIN suppliers s ON a.supplier_id = s.id
+        INNER JOIN supplier_inspector si ON si.id = a.auditer_id
+        INNER JOIN products pr ON pr.id = a.product_id
+        ";
+        
+        
+        if(!empty($filters['inspection_date'])) {
+            $sql .= " AND a.audit_date = ?";
+            $pass_array[] = $filters['inspection_date'];
+            
+        }
+        
+       
+        if(!empty($filters['product_id'])){
+			 $sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id'];
+		} 
+		//$sql .= " GROUP BY a.id   ORDER BY a.audit_date DESC, a.id DESC";
+        if($count) {
+            $sql = "SELECT count(id) as c FROM (".$sql.") as sub";
+        } 
+        // echo $sql;exit;
+        
+        //$this->db->query($sql, $pass_array)->result_array();
+		//echo $this->db->last_query();exit;
+        return $this->db->query($sql, $pass_array)->result_array();
+    }
+    
 }

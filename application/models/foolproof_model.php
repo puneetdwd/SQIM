@@ -548,6 +548,21 @@ class foolproof_model extends CI_Model {
         return $this->db->query($sql)->result_array();
     }
     
+	function get_checkpoint_admin_count($date){
+        $sql = "SELECT fc.supplier_id, s.name as supplier_name, 
+                count(fc.id) as total,count(f.id) as completed
+                FROM foolproofs f 
+                inner JOIN foolproof_checkpoints fc 
+                ON (fc.id = f.org_checkpoint_id AND f.created like '".$date."%')
+                inner JOIN suppliers s 
+                ON s.id = fc.supplier_id 
+                WHERE fc.status = 'Approved' and fc.is_deleted = 0 ";
+        
+        $sql.= " GROUP BY fc.supplier_id";
+        
+         return $this->db->query($sql)->result_array();
+	}
+    
     /*Inspection Model Ends*/
     
     function get_foolproof_report($filters) {

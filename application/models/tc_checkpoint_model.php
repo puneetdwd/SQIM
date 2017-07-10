@@ -240,6 +240,44 @@ class TC_Checkpoint_model extends CI_Model {
         return $this->db->query($sql, $pass_array)->result_array();
     }
     
+	function get_all_admin_plans_completed($product_id, $plan_date = '') {
+        $sql = "SELECT pl.*, 
+        p.code as part_no, p.name as part_name
+        FROM timecheck_plans pl
+        INNER JOIN product_parts p
+        ON pl.part_id = p.id
+        WHERE pl.product_id = ? AND plan_status = 'Completed'
+        ";
+        
+        $pass_array = array($product_id);
+        if(!empty($plan_date)) {
+            $sql .= ' AND pl.plan_date = ?';
+            $pass_array[] = $plan_date;
+        }
+
+        return $this->db->query($sql, $pass_array)->result_array();
+		//echo $this->db->last_query();exit;
+    }
+    
+	function get_all_admin_plans($product_id, $plan_date = '') {
+        $sql = "SELECT pl.*, 
+        p.code as part_no, p.name as part_name
+        FROM timecheck_plans pl
+        INNER JOIN product_parts p
+        ON pl.part_id = p.id
+        WHERE pl.product_id = ? 
+        ";
+        
+        $pass_array = array($product_id);
+        if(!empty($plan_date)) {
+            $sql .= ' AND pl.plan_date = ?';
+            $pass_array[] = $plan_date;
+        }
+
+        return $this->db->query($sql, $pass_array)->result_array();
+		//echo $this->db->last_query();exit;
+    }
+    
     function get_plan($plan_id, $supplier_id = '') {
         $sql = "SELECT pl.*, 
         p.code as part_no, p.name as part_name, s.name as supplier_name
