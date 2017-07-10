@@ -188,11 +188,28 @@
                                     </div>
                                 </div>  
 								<div class="col-md-6">
-                                    <div class="form-group">
+								   <div class="form-group">
                                         <label class="control-label" for="images">Upload Checkpoint Guide:</label>
                                         <input type="file" class="form-control" name="images" id="images"
                                         value="<?php echo isset($checkpoint['images']) ? $checkpoint['images'] : ''; ?>">
+										<?php if(!empty($checkpoint['images']))
+										{
+										?>										
+											<a target="_blank" href="<?php echo base_url()."assets/inspection_guides/".$prod_img_name.'/'.$part_img_name.'/'.$checkpoint['images']; ?>">
+												See Uploaded Image
+											</a>
+										<?php
+										}
+										
+										?>
                                     </div>
+									
+									<!--div class="form-group">
+                                        <label class="control-label" for="images">Upload Checkpoint Guide:</label>
+                                        <input type="file" class="form-control" name="images" id="images"
+                                        value="<?php echo isset($checkpoint['images']) ? $checkpoint['images'] : ''; ?>">
+                                    </div-->
+									
                                 </div>								
                             </div>
                             
