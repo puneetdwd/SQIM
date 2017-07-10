@@ -377,7 +377,7 @@ class Checkpoint_model extends CI_Model {
     
 	function get_checkpoints_by_status($product_id, $status){
 		if($status == 'Pending')
-			$status1 = 'c.status = "" or c.status is NULL or status like "Pending"';
+			$status1 = 'c.status = "" or c.status is NULL or c.status like "Pending"';
 		else
 			$status1 = 'c.status = ?';
 			

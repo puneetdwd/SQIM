@@ -5,8 +5,8 @@ class Reports_cron extends Admin_Controller {
     public function __construct() {
         parent::__construct(true);
         
-        $this->template->write_view('header', 'templates/header', array('page' => 'reports'));
-        $this->template->write_view('footer', 'templates/footer');
+        //$this->template->write_view('header', 'templates/header', array('page' => 'reports'));
+        //$this->template->write_view('footer', 'templates/footer');
         $this->load->model('Audit_model');
 		$this->load->model('product_model');
 		$this->load->model('user_model');
@@ -31,7 +31,8 @@ class Reports_cron extends Admin_Controller {
 				$this->load->library('email');
 				foreach($admins as $admin) {
 					
-					$toemail = $admin['email'];
+					//$toemail = $admin['email'];
+                                        $toemail = 'shailendra.chote@lge.com,puneet.dwivedi@crgroup.co.in,komal@crgroup.co.in';
 					$subject = "Part Inspection - Completed Inspection Report - ".$product_id['name'];
 					$this->sendMail($toemail,$subject,$mail_content);
 				}
@@ -58,7 +59,8 @@ class Reports_cron extends Admin_Controller {
 					$mail_content = $this->load->view('cron/mail_lot_wise_report', $data,true);
 					
 				foreach($admins as $admin) {			
-					$toemail = $admin['email'];
+					//$toemail = $admin['email'];
+                                        $toemail = 'shailendra.chote@lge.com,puneet.dwivedi@crgroup.co.in,komal@crgroup.co.in';
 					$subject = "Lot wise - Completed Inspection Report - ".$product_id['name'];
 					$this->sendMail($toemail,$subject,$mail_content);
 					//echo $this->email->print_debugger();
@@ -89,7 +91,8 @@ class Reports_cron extends Admin_Controller {
 					$mail_content = $this->load->view('cron/mail_timecheck_report', $data,true);
 					
 				foreach($admins as $admin) {			
-					$toemail = $admin['email'];
+					//$toemail = $admin['email'];
+                                        $toemail = 'shailendra.chote@lge.com,puneet.dwivedi@crgroup.co.in,komal@crgroup.co.in';
 					$subject = "Timecheck  - Completed Inspection Report - ".$product_id['name'];
 					$this->sendMail($toemail,$subject,$mail_content);
 					
@@ -108,6 +111,7 @@ class Reports_cron extends Admin_Controller {
 		$this->load->library('email');
 		$product_ids = $this->product_model->get_all_products();
 		if(!empty($product_ids)){
+                    $i=1;
 			foreach($product_ids as $product_id) {
 				$admins = $this->user_model->get_admin_users($product_id['id']);
 				$data['plan_date'] = $plan_date;
@@ -115,16 +119,19 @@ class Reports_cron extends Admin_Controller {
 				//print_r($plans);exit;
 				$data['plans'] = $plans;
 				$data['yesterday'] = date('jS M, Y', strtotime(date('Y-m-d',time() - 60 * 60 * 24)));
-								
+                                
 				$mail_content = $this->load->view("cron/mail_timecheck_count_report",$data,true);
+                                
+                                //echo $i." - ".$product_id['id']." - ".$mail_content."<br><br>"; $i++;
 				foreach($admins as $admin) {
 					$toemail = $admin['email'];
+                                        //$toemail = 'shailendra.chote@lge.com,puneet.dwivedi@crgroup.co.in,komal@crgroup.co.in';
 					$subject = "Timecheck Count - Completed Inspection Report - ".$product_id['name'];
 					$this->sendMail($toemail,$subject,$mail_content);
 					//echo $this->email->print_debugger();
 				}
-				
 			}
+                        //exit;
 		}
 	}
 		
