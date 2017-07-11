@@ -496,7 +496,7 @@ class Checkpoints extends Admin_Controller {
 
     private function parse_checkpoints($product_id, $org_name, $file_name) {
         
-        //ini_set('memory_limit', '100M');
+        ini_set('memory_limit', '100M');
         
         $this->load->library('excel');
         //read file from path
@@ -505,7 +505,7 @@ class Checkpoints extends Admin_Controller {
         //get only the Cell Collection
         $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
         $arr = $objPHPExcel->getActiveSheet()->toArray(null, true,true,true);
-        ini_set("memory_limit","256M"); 
+        //ini_set("memory_limit","-1"); 
         //ini_set('max_execution_time', 300);
         //echo "here";
         //echo "<pre>";print_r($arr);exit;
