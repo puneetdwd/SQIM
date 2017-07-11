@@ -75,7 +75,12 @@ class Dashboard extends Admin_Controller {
             
             $data = $this->admin_dashboard();
              $data = array();
-            
+            if($_POST){
+				$dashboard_date = $_POST['date'];
+				$this->session->set_userdata('dashboard_date', $dashboard_date);
+			}else{
+				$dashboard_date = date('Y-m-d');
+			}
 			//Part Inspection Completed Count
 			 $this->load->model('Audit_model');
 			 $filters['product_id'] = $this->product_id;
