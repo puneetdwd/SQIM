@@ -204,7 +204,7 @@ class Suppliers extends Admin_Controller {
         //echo "<pre>"; print_r($data['parts']); exit;
         
         $this->load->model('Supplier_model');
-        $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+        $data['suppliers'] = $this->Supplier_model->get_all_suppliers_new();
         
         $filters = $this->input->post() ? $this->input->post() : array() ;
         if($this->input->post()){

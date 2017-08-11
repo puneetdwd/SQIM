@@ -34,6 +34,12 @@ class Supplier_model extends CI_Model {
         }
         
     }
+    
+    function get_all_suppliers_new(){
+        $sql = "SELECT * FROM suppliers ";
+        
+        return $this->db->query($sql)->result_array();
+    }
         
     function get_all_suppliers(){
         $sql = "SELECT s.* FROM suppliers s
