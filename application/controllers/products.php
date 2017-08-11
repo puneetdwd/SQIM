@@ -339,7 +339,7 @@ class Products extends Admin_Controller {
         
         if($this->input->post('part_name')) {
             $this->load->model('Product_model');
-            $data['part_nums'] = $this->Product_model->get_all_part_numbers_by_part_name($this->input->post('part_name'));
+            $data['part_nums'] = $this->Product_model->get_all_part_numbers_by_part_names($this->input->post('part_name'),$this->product_id);
         }
         
         echo json_encode($data);

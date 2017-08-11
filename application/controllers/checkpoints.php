@@ -737,4 +737,37 @@ class Checkpoints extends Admin_Controller {
 
         return $conn;
     }
+	function tc_fp_check(){
+		$data = array();        
+        $this->load->model('Checkpoint_model');
+        $data['tc_fp_status'] = $this->Checkpoint_model->get_tc_fp_status();
+		$this->template->write_view('content', 'checkpoints/add_tc_fp', $data);
+        $this->template->render();
+	}
+	function tc_pf_update(){
+		$data = array();
+		//$post_data = $this->input->post();
+                
+		if($this->input->post()) {
+        	if(isset($_POST['foolproof']) && $_POST['foolproof'] == 'on')
+			$data['foolproof_chk'] = 1;
+			else
+				$data['foolproof_chk'] = 0;
+			if(isset($_POST['timecheck']) && $_POST['timecheck'] == 'on')
+				$data['timecheck_chk'] = 1;
+			else
+				$data['timecheck_chk'] = 0;
+		}
+		$this->load->model('Checkpoint_model');
+        $success = $this->Checkpoint_model->update_tc_fp_status($data);
+		if($success)
+		{
+			$this->session->set_flashdata('success', 'Foolproof-Timecheck Updated.');                
+		}
+		$data['tc_fp_status'] = $this->Checkpoint_model->get_tc_fp_status();
+		
+		//echo $this->db->last_query();exit;
+        $this->template->write_view('content', 'checkpoints/add_tc_fp', $data);
+        $this->template->render(); 
+	}
 }

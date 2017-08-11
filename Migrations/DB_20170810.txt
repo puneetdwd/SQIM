@@ -1,0 +1,5 @@
+CREATE TABLE `sqim`.`foolproof_timecheck` ( `id` TINYINT(1) NOT NULL , `timecheck_chk` TINYINT(1) NOT NULL , `foolproof_chk` TINYINT(1) NOT NULL ) ENGINE = InnoDB;
+
+
+
+INSERT INTO `foolproof_timecheck` (`id`, `timecheck_chk`, `foolproof_chk`) VALUES ('1', '1', '1');

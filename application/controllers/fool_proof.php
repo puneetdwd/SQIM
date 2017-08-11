@@ -62,6 +62,36 @@ class fool_proof extends Admin_Controller {
         $this->template->render();
     }
     
+	public function pf_mappings() {
+        $data = array();
+        $this->load->model('Product_model');
+        $this->load->model('foolproof_model');
+        $data['products'] = $this->Product_model->get_all_products();
+		$sid = $this->supplier_id;
+        $data['parts'] = $this->Product_model->get_all_product_parts_by_supplier_new($this->product_id,$sid);
+        
+		$data['foolproofs'] = $this->foolproof_model->get_all_foolproofs($sid);
+        //echo $this->db->last_query(); exit;
+        if($this->input->post('part_name')){			
+			$data['part_nums'] = $this->Product_model->get_all_product_parts_by_supplier_new($this->product_id,$sid);
+        }
+		
+		$filters = $this->input->post() ? $this->input->post() : array() ;
+		
+		if($filters){
+            
+            $data['part_nums'] = $this->Product_model->parts_foolproof_map($filters,$this->product_id);
+            $data['pf_mapping'] = array_column($this->foolproof_model->pf_mappings_view($filters,$this->product_id),'part_num');
+		}else{
+            $data['part_nums'] = '';
+            //$data['sp_mappings'] = '';
+        } 
+        
+
+        $this->template->write_view('content', 'fool_proof/pf_mappings', $data);
+        $this->template->render();
+    }
+    
     public function add_checkpoint($checkpoint_id = '') {
         $data = array();
 
@@ -639,5 +669,69 @@ class fool_proof extends Admin_Controller {
         
         redirect(base_url().'fool_proof');
     }
+	
+	function save_pf_mapping(){
+		$data = array('map' => array());
+        if($this->input->post('part_id') && $this->input->post('foolproof_id')) {
+            $this->load->model('foolproof_model');
+            $data['map'] = $this->foolproof_model->save_pf($this->input->post('part_id'), $this->input->post('foolproof_id'),$this->input->post('s'));
+        }
+		//echo $this->db->last_query();
+		echo json_encode($data);
+	}
+	
+	/* function pf_mappings_view(){
+		echo "abc";
+		$this->load->model('foolproof_model');
+        $data['map'] = $this->foolproof_model->pf_mappings_view();
+		echo '<pre>';print_r($data['map']);exit;
+	} */
+	
+	public function pf_mappings_view() {
+        $data = array();
+        $this->load->model('Product_model');
+		$this->load->model('foolproof_model');
+        $data['products'] = $this->Product_model->get_all_products();
+        $data['parts'] = $this->Product_model->get_all_distinct_part_name($this->product_id,$this->supplier_id);
+        $sid = $this->supplier_id;
+		$data['foolproofs'] = $this->foolproof_model->get_all_foolproofs($sid);
+        $filters = $this->input->post() ? $this->input->post() : array() ;
+		// print_r($filters);exit;
+		if($this->input->post()){            
+            $data['part_nums'] = $this->Product_model->get_all_part_numbers_by_part_name($this->input->post('part_name'));
+		    $data['sp_mappings'] =  $this->foolproof_model->pf_mappings_view($filters,$this->product_id);
+		}else{
+            $data['part_nums'] = '';
+            $data['sp_mappings'] = '';
+        }
+        $this->template->write_view('content', 'fool_proof/pf_mappings_view', $data);
+        $this->template->render();
+    }
+	
+	public function get_parts_foolproof_by_foolproof() {
+        $data = array('foolproofs' => array());
+            $this->load->model('foolproof_model');
+            $this->load->model('Product_model');
+       
+		$data['foolproofs'] = $this->foolproof_model->get_all_foolproofs($this->supplier_id);
+        if($this->input->post('part_name')){			
+			$data['part_nums'] = $this->Product_model->get_all_product_parts_by_supplier_new($this->product_id,$this->supplier_id);
+        }
+		
+		$filters = $this->input->post() ? $this->input->post() : array() ;
+		
+		if($filters){            
+            $data['part_nums'] = $this->Product_model->parts_foolproof_map($filters,$this->product_id);
+            $data['pf_mapping1'] = $this->foolproof_model->pf_mappings_view_check($filters,$this->product_id);
+			$data['foolproof_id'] = $this->input->post('foolproof_id');
+		}else{
+            $data['part_nums'] = '';
+        } 
+           
 
+        $str = $this->load->view('fool_proof/pf_mappings_table', $data,true);
+		$str = stripslashes($str);
+		echo json_encode($str);
+    }
+    
 }

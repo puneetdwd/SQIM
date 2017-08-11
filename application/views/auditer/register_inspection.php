@@ -1,3 +1,10 @@
+<?php
+$CI =& get_instance(); 
+$CI->load->model('Checkpoint_model');
+$tc_fp_status = $CI->Checkpoint_model->get_tc_fp_status();		
+?>
+ 
+
 <div class="page-content">
     <!-- BEGIN PAGE HEADER-->
     <div class="breadcrumbs">
@@ -12,9 +19,9 @@
         </ol>
         
     </div>
-
+	
     <div class="row">
-        <?php if($this->session->flashdata('error')) {?>
+        <?php  if($this->session->flashdata('error')) {?>
             <div class="alert alert-danger">
                <i class="fa fa-times"></i>
                <?php echo $this->session->flashdata('error');?>
@@ -24,7 +31,7 @@
                 <i class="fa fa-check"></i>
                <?php echo $this->session->flashdata('success');?>
             </div>
-        <?php } ?>
+        <?php }  ?>
         <div class="col-md-12">
         
             <div class="portlet light bordered register-inspection-form-portlet" id="register-inspection-form-portlet">

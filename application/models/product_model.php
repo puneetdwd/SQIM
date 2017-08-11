@@ -78,6 +78,19 @@ class Product_model extends CI_Model {
         
         return $this->db->query($sql, array($product_id, $supplier_id))->result_array();
     }
+	function get_all_product_parts_by_supplier_new($product_id, $supplier_id) {
+        $sql = "SELECT pp.*, pp.code as part_no
+            FROM product_parts pp
+            INNER JOIN sp_mappings sp 
+            ON sp.part_id = pp.id
+            WHERE pp.is_deleted = 0
+            AND pp.product_id = ?
+            AND sp.supplier_id = ?
+            GROUP BY pp.name
+            ORDER BY pp.name";
+        
+        return $this->db->query($sql, array($product_id, $supplier_id))->result_array();
+    }
     
     function get_all_distinct_product_parts($product_id) {
         $sql = "SELECT pp.*
@@ -98,6 +111,24 @@ class Product_model extends CI_Model {
         ORDER BY pp.code";
         
         return $this->db->query($sql, array($part_name))->result_array();
+    }
+	function get_all_part_numbers_by_part_names($part_name,$product_id) {
+        $sql = "SELECT pp.*
+        FROM product_parts pp
+        WHERE pp.is_deleted = 0
+        AND pp.name = ? AND pp.product_id = ?
+        ORDER BY pp.code";
+        
+        return $this->db->query($sql, array($part_name,$product_id))->result_array();
+    }
+    function all_part_numbers_by_part_names($part_name,$part_id,$product_id) {
+        $sql = "SELECT pp.*
+        FROM product_parts pp
+        WHERE pp.is_deleted = 0
+        AND pp.name = ? AND pp.product_id = ?
+        ORDER BY pp.code";
+        
+        return $this->db->query($sql, array($part_name,$product_id))->result_array();
     }
     
     function get_all_parts() {
@@ -184,5 +215,43 @@ class Product_model extends CI_Model {
         ) AND product_id = ?";
         
         return $this->db->query($sql, array($product_id, $product_id));
+    }
+	
+	 function get_all_parts_product_id($product_id) {
+       $sql = "SELECT pp.*, p.name as product_name, 
+       p.code as product_code
+       FROM product_parts as pp
+       INNER JOIN products as p
+       ON pp.product_id = p.id
+	   where pp.product_id = ? group by pp.name";
+       
+       return $this->db->query($sql,$product_id)->result_array();
+    }
+	function parts_foolproof_map($filters,$product_id) {
+       $sql = "SELECT pp.*, p.name as product_name, 
+       p.code as product_code
+       FROM product_parts as pp
+       INNER JOIN products as p
+       ON pp.product_id = p.id
+	   where pp.is_deleted = 0 AND pp.product_id = ? ";
+       
+        /* $sql .= " WHERE pp.is_deleted = 0
+        AND pp.product_id = ?"; */
+              
+        $pass_array = array($product_id);
+		
+        if(!empty($filters['part_name'])) {
+            $sql .= ' AND pp.name = ?';
+            $pass_array[] = $filters['part_name'];
+        }
+		if(!empty($filters['part_id'])) {
+            $sql .= ' AND pp.id = ?';
+            $pass_array[] = $filters['part_id'];
+        }
+        
+        //$sql .= " GROUP BY pp.name";
+       
+       return $this->db->query($sql, $pass_array)->result_array();
+	   
     }
 }
