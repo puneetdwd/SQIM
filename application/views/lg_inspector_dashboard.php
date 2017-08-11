@@ -24,7 +24,31 @@
            <?php echo $this->session->flashdata('success');?>
         </div>
     <?php } ?>
-    
+    <input type="hidden" id="page-no" name="page_no" value="1"/>
+	<?php $date = $this->input->post('date') ? $this->input->post('date') : date('Y-m-d'); ?>
+	
+	<div class="row">
+		<div class="col-md-9">
+		</div>
+		<div class="col-md-3">
+		<form action="<?php echo base_url().'dashboard/index'; ?>" method='post'>
+			<div class="form-group">
+				<label class="control-label">Select Date</label><br>
+				<div style='float: left;' class="required input-group date date-picker col-md-6" data-date-format="yyyy-mm-dd" data-date-end-date="	<?php echo date('Y-m-d'); ?>">
+					<input name="date" type="text" class="required form-control" readonly
+					value="<?php echo $date; ?>">
+					<span class="input-group-btn">
+						<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+					</span>
+				</div>
+				<div class="form-actions" style='float: left;margin-left: 20px;'>
+					<button class="button" type="submit">Search</button>
+				</div>
+			</div>
+		</form>
+		</div>
+	</div>
+	<br>
 	<div class="row">
         <div class="col-md-12">
             <div class="mt-element-ribbon bg-grey-steel" id="dashboard-on-going-insp">                

@@ -139,10 +139,27 @@ class Auditer extends Admin_Controller {
             $this->load->model('Checklist_model');
             $checklists = $this->Checklist_model->get_all_checklists($this->product_id);
             if(!empty($checklists)) {
-                redirect(base_url().'auditer/part_inspection_check');
+                //redirect(base_url().'auditer/part_inspection_check');
             }
-        }
+        }	
+		$timecheck_check = 0;
+			$foolproof_check = 0;
         if($this->input->post()) {
+			
+			//print_r($this->input->post());exit;
+            $this->load->model('foolproof_model');
+			$foolproof_map = $this->foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
+			//print_r($foolproof_map);exit;
+	
+			if(!empty($foolproof_map)){
+				$timecheck_check = $this->timecheck_checkpoints_check($this->input->post('part_id'));
+				$foolproof_check = $this->foolproof_checkpoints_check($foolproof_map);
+				//exit;
+				if($foolproof_check == 0 && $timecheck_check == 0){
+					redirect(base_url().'auditer/register_inspection');
+				}
+			}		
+			
             $this->load->library('form_validation');
 
             $validate = $this->form_validation;
@@ -189,7 +206,9 @@ class Auditer extends Admin_Controller {
         
         $this->load->model('Product_model');
         $data['parts'] = $this->Product_model->get_all_product_parts_by_supplier($this->product_id, $this->supplier_id);
-
+		$data['foolproof_check']=$foolproof_check;
+		$data['timecheck_check']=$timecheck_check;
+		 
         $this->template->write('title', 'SQIM | Part Inspection | Register Screen');
         $this->template->write_view('content', 'auditer/register_inspection', $data);
         $this->template->render();
@@ -923,4 +942,61 @@ class Auditer extends Admin_Controller {
         redirect($_SERVER['HTTP_REFERER']);
     }
     
+	function foolproof_checkpoints_check($foolproof_map){
+		$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 3);
+		$enddate = date('Y-m-d',time() - 60 * 60 * 24);
+		foreach($foolproof_map as $f){
+			//$f['checkpoint_id'];
+			$lastfoolproofs = $this->foolproof_model->get_last_foolproof_done($f['checkpoint_id'],$startdate,$enddate);
+			//print_r($lastfoolproofs);exit;
+			if(!empty($lastfoolproofs)){
+				
+				if($lastfoolproofs['result'] == 'NG'){
+					$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."fool_proof/start >Foolproof</a>"; 
+			   
+					$e1 = "Last Result was NG.Do ".$e.' Again';
+					$this->session->set_flashdata('error', $e1);
+                    return 0;
+				}
+				else
+					return 1;
+			}
+			else{
+				$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."fool_proof/start >Foolproof</a>"; 
+			   
+				$e1 = "No ".$e.' done';
+				$this->session->set_flashdata('error', $e1);
+                return 0;
+			}
+		}	
+			//exit;
+	}
+	function timecheck_checkpoints_check($partid){
+		$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 3);
+		$enddate = date('Y-m-d',time() - 60 * 60 * 24);
+		$last_tc = $this->foolproof_model->get_last_tc_done($partid,$startdate,$enddate);
+		//echo $partid;
+		//print_r($last_tc);exit;
+			if(!empty($last_tc)){
+				
+				if($last_tc['result'] == 'NG'){
+					$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."timecheck >Timechecks</a>"; 
+			   
+					$e1 = "Last Result was NG.Do ".$e.' Again';
+					$this->session->set_flashdata('error', $e1);
+                    return 0;
+				}
+				else
+					return 1;
+			}
+			else{
+				$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."timecheck >Timechecks</a>"; 
+			   
+				$e1 = "No ".$e.' done';
+				$this->session->set_flashdata('error', $e1);
+                return 0;
+			}
+			
+			//exit;
+	}
 }

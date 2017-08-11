@@ -168,7 +168,7 @@
                                                                 <?php if(empty($saved)) { ?>
                                                                 <label class="cameraButton">Take&nbsp;Photo
                                                                     <input type="file" accept="image/*" id="capture_<?php echo $checkpoint['id']; ?>" capture="camera">  
-                                                                </lable>
+                                                                </label>
                                                                 <?php }else if($all_results == 'NP' || $all_values == 'NP'){ echo 'NP'; }
                                                                 else{ ?>
                                                                 <img src="<?php echo base_url()."assets/foolproof_captured/".$saved['image'];?>"

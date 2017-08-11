@@ -143,6 +143,11 @@
                                             <i class="icon-briefcase"></i> Checklist
                                         </a>
                                     </li>
+									<li>
+                                        <a href="<?php echo base_url(); ?>checkpoints/tc_fp_check">
+                                            <i class="icon-briefcase"></i> Timecheck-Foolproof Check
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         <?php } ?>
@@ -178,6 +183,7 @@
                                             <i class="icon-briefcase"></i> Fool Proof Checkpoints
                                         </a>
                                     </li>
+									
                                 </ul>
                             </li>
                             
@@ -189,6 +195,16 @@
                                     <li>
                                         <a href="<?php echo base_url(); ?>fool_proof/pc_mappings">
                                             <i class="icon-briefcase"></i> Part-Checkpoint Mapping 
+                                        </a>
+                                    </li>
+									<!--li class="<?php if($page == 'inspections') { ?>active selected<?php } ?>">
+										<a href="<?php echo base_url(); ?>fool_proof/pf_mappings" class="text-uppercase">
+											<i class="icon-magnifier"></i> Part-Foolproof Mapping
+										</a>
+									</li-->
+									<li>
+                                        <a href="<?php echo base_url(); ?>fool_proof/pf_mappings_view">
+                                            <i class="icon-briefcase"></i> View Part-Foolproof Mapping
                                         </a>
                                     </li>
                                 </ul>
@@ -220,6 +236,11 @@
                                             <i class="icon-briefcase"></i> Supplier-Part Mapping 
                                         </a>
                                     </li>
+									<li>
+                                        <a href="<?php echo base_url(); ?>fool_proof/pf_mappings_view">
+                                            <i class="icon-briefcase"></i> View Part-Foolproof Mapping
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         <?php } ?>
@@ -248,6 +269,7 @@
                                     <i class="icon-magnifier"></i> Fool Proof
                                 </a>
                             </li>
+							
                         <?php } ?>
                             
                         <?php if($this->user_type == 'Admin') { ?>

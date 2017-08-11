@@ -187,7 +187,6 @@ class Reports extends Admin_Controller {
 			$count = $count[0]['c'];
 			$data['total_records'] = $count;
 			$data['total_page'] = ceil($count/50);
-			echo "123";
 			$data['audits'] = $this->Audit_model->get_consolidated_audit_report($filters, false);
 			
 			$str = $this->load->view("reports/lot_wise_report_download",$data,true);
@@ -315,7 +314,7 @@ class Reports extends Admin_Controller {
             $count = $count[0]['c'];
             $data['total_records'] = $count;
             $data['total_page'] = ceil($count/50);
-            
+            // print_r($filters);exit;
             $data['plans'] = $this->Timecheck_model->get_timecheck_plan_report($filters, false);
             //echo $this->db->last_query();exit;
         }
@@ -376,14 +375,15 @@ class Reports extends Admin_Controller {
         $data = array();
         $this->load->model('TC_Checkpoint_model');
 
-        $plan_date = date('Y-m-d',time() - 60 * 60 * 24);
+        $plan_date = date('Y-m-d',time() - 60 * 60 * 24 );
 		$data['yesterday'] = date('jS M, Y', strtotime($plan_date));
         $data['plan_date'] = $plan_date;
         $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
 
         
         $data['plans'] = $plans;
-
+// print_r($plans);exit;
+								
         $this->template->write('title', 'SQIM | Scheduled Timechecks');
         $this->template->write_view('content', 'reports/timecheck_count', $data);
         $this->template->render();

@@ -51,9 +51,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($plans as $plan) { ?>
+                                <?php 
+								foreach($plans as $plan) { ?>
                                     <tr>
-										<td><?php echo $plan['supplier_id']; ?></td>
+										<td><?php echo $plan['supplier_no']; ?></td>
 										<td><?php echo $plan['name']; ?></td>
 										<td><?php echo $plan['cnt']; ?></td>
                                     </tr>

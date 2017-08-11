@@ -409,5 +409,17 @@ class Checkpoint_model extends CI_Model {
         
         return $this->db->query($sql, array($status));
     }
+	function get_tc_fp_status(){
+        
+        $sql = "SELECT * FROM `foolproof_timecheck`";
+        
+        return $this->db->query($sql)->row_array();;
+    }
     
+	function update_tc_fp_status($data){
+		//print_r($data);
+        //if($data['foolproof_chk'] && $data['timecheck_chk'])
+		$sql = "UPDATE `foolproof_timecheck` SET `timecheck_chk`=".$data['timecheck_chk']." ,`foolproof_chk`=".$data['foolproof_chk']." WHERE id = 1";
+		return $this->db->query($sql);
+    }
 }

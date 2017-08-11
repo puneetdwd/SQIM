@@ -637,11 +637,173 @@ class foolproof_model extends CI_Model {
         return $this->db->query($sql, $pass_array)->row_array();
     }
 	
+	function get_all_foolproofs($sid) {
+        $sql = "SELECT * FROM foolproof_checkpoints";
+		$pass_array = array();
+        
+        if(!empty($sid)) {
+            $sql .= ' WHERE supplier_id = ?';
+            $pass_array[] = $sid ;
+        }
+       return $this->db->query($sql,$pass_array)->result_array();
+    }
+	
+	
 	/* Remove Foolproof Checkpoints */
 	function hide_fp_checkpoints($id) {
         $sql = "UPDATE foolproof_checkpoints
 				SET is_deleted = 1 WHERE id  = ?";        
         return $this->db->query($sql, array($id, $id));
     }
-    
+	
+	function save_pf($part_id,$foolproof_id,$s) {
+		$data['checkpoint_id'] = $foolproof_id;
+		$data['part_id'] = $part_id;
+		$data['is_deleted'] = $s;
+		$data['created'] = date("Y-m-d H:i:s");
+		return (($this->db->insert('foolproof_pc_mapping', $data)) ? $this->db->insert_id() : False);
+        
+		// $sql = "INSERT INTO `foolproof_pc_mapping` (`id`, `checkpoint_id`, `part_id`, `is_deleted`, `modified`, `created`) VALUES (NULL, '284', '541', '0', NULL, NULL)";
+	}
+    /* function pf_map_status() {
+        $sql = "SELECT * FROM foolproof_pc_mapping where";
+        
+       return $this->db->query($sql)->result_array();
+    } */
+	 function get_pf_mapping_by_partid($part_id) {
+        $sql = "SELECT * FROM foolproof_pc_mapping fpm
+		inner join foolproof_checkpoints fc on fc.id = fpm.checkpoint_id
+		where fpm.is_deleted = 0 AND fpm.part_id = ? 
+		group by part_id,checkpoint_id";
+        
+       return $this->db->query($sql,$part_id)->result_array();
+    }
+	
+	
+	function get_last_foolproof_done($id,$startdate,$enddate){
+
+		$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created BETWEEN '".$startdate."%' and '".$enddate."%' ORDER BY `created` DESC";
+		//$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created BETWEEN '2017-03-03%' and '2017-04-03%' ORDER BY `created` DESC";
+		return $this->db->query($sql,$id)->row_array();    
+	}
+	function get_last_tc_done($id,$startdate,$enddate){
+$startdate ='2017-03-18';
+$enddate ='2017-03-22';
+		$sql = "SELECT * FROM `timechecks` where part_id = ? AND created BETWEEN '".$startdate."%' and '".$enddate."%' ORDER BY `created` DESC";
+		
+		
+		//$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created BETWEEN '2017-03-03%' and '2017-04-03%' ORDER BY `created` DESC";
+		return $this->db->query($sql,$id)->row_array();    
+	}
+
+	function pf_mappings_view($filters,$product_id) {
+		//print_r($filters);exit;
+        $sql = "SELECT  pp.id,fpm.id,fpm.checkpoint_id,p.name as product_name,pp.name as part_name,pp.code as part_num,fc.stage as fc_stage,fc.major_control_parameters as major_control_parameters 
+		FROM foolproof_pc_mapping fpm
+		inner join foolproof_checkpoints fc on fc.id = fpm.checkpoint_id
+		inner join product_parts pp on pp.id = fpm.part_id
+		inner join products p on p.id = pp.product_id
+		where fpm.is_deleted = 0 AND pp.product_id = ? "; 
+		
+		$pass_array = array();
+		$pass_array[] = $product_id;
+		// part_name
+        
+        if(!empty($filters['part_id']) && !empty($filters['foolproofs'])) {
+			if(!empty($filters['part_id'])) {
+				$sql .= " AND fpm.part_id = ?";
+				$pass_array[] = $filters['part_id'];
+			}
+			if(!empty($filters['foolproofs'])) {
+				$sql .= " AND fpm.checkpoint_id = ? ";
+				$pass_array[] = $filters['foolproofs'];
+			}
+		}
+		else if(!empty($filters['part_id'])  && empty($filters['foolproofs'])) {
+			if(!empty($filters['part_id'])) {
+				$sql .= " AND fpm.part_id = ?";
+				$pass_array[] = $filters['part_id'];
+			}			
+		}
+        else if(empty($filters['part_id']) && !empty($filters['foolproofs'])) {
+			if(!empty($filters['foolproofs'])) {
+				$sql .= " AND fpm.checkpoint_id = ? ";
+				$pass_array[] = $filters['foolproofs'];
+			}			
+		}
+		else if(!empty($filters['part_name']) && empty($filters['foolproofs']) && empty($filters['part_id'])) {
+			if(!empty($filters['part_name'])) {
+				$sql .= " AND pp.name = ? ";
+				$pass_array[] = $filters['part_name'];
+			}			
+		}
+        
+       
+		$sql .= "group by part_id,checkpoint_id";
+        
+       return $this->db->query($sql,$pass_array)->result_array();
+    }
+
+	function pf_mappings_view_check($filters,$product_id) {
+		//print_r($filters);exit;
+        $sql = "SELECT  pp.id,fpm.id,fpm.checkpoint_id,p.name as product_name,pp.name as part_name,pp.code as part_num,fc.stage as fc_stage,fc.major_control_parameters as major_control_parameters 
+		FROM foolproof_pc_mapping fpm
+		inner join foolproof_checkpoints fc on fc.id = fpm.checkpoint_id
+		inner join product_parts pp on pp.id = fpm.part_id
+		inner join products p on p.id = pp.product_id
+		where fpm.is_deleted = 0 AND pp.product_id = ? "; 
+		
+		$pass_array = array();
+		$pass_array[] = $product_id;
+		// part_name
+        
+        if(!empty($filters['part_id']) && !empty($filters['foolproofs'])) {
+			if(!empty($filters['part_id'])) {
+				$sql .= " AND fpm.part_id = ?";
+				$pass_array[] = $filters['part_id'];
+			}
+			if(!empty($filters['foolproofs'])) {
+				$sql .= " AND fpm.checkpoint_id = ? ";
+				$pass_array[] = $filters['foolproofs'];
+			}
+		}
+		else if(!empty($filters['part_id'])  && empty($filters['foolproofs'])) {
+			if(!empty($filters['part_id'])) {
+				$sql .= " AND fpm.part_id = ?";
+				$pass_array[] = $filters['part_id'];
+			}			
+		}
+        else if(empty($filters['part_id']) && !empty($filters['foolproofs'])) {
+			if(!empty($filters['foolproofs'])) {
+				$sql .= " AND fpm.checkpoint_id = ? ";
+				$pass_array[] = $filters['foolproofs'];
+			}			
+		}
+		else if(!empty($filters['part_name']) && empty($filters['foolproofs']) && empty($filters['part_id'])) {
+			if(!empty($filters['part_name'])) {
+				$sql .= " AND pp.name = ? ";
+				$pass_array[] = $filters['part_name'];
+			}			
+		}
+        else if(!empty($filters['foolproof_id'])) {
+			if(!empty($filters['foolproof_id'])) {
+				$sql .= " AND fpm.checkpoint_id = ? ";
+				$pass_array[] = $filters['foolproof_id'];
+			}			
+		}
+        
+       
+		$sql .= "group by part_id,checkpoint_id";
+        
+       return $this->db->query($sql,$pass_array)->result_array();
+    }
+
+	function get_parts_foolproof_by_foolproof($id) {
+        $sql = "SELECT * FROM foolproof_pc_mapping WHERE is_deleted = 0 AND checkpoint_id = ? 
+		group by checkpoint_id,part_id 
+		order by foolproof_pc_mapping.created DESC";
+        
+        //$pass_array = array($id);
+        return $this->db->query($sql,$id)->result_array();
+    } 	
 }

@@ -67,7 +67,9 @@ table, td, th {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach($audits as $audit) { 
+                                            <?php 
+											$bg = '';
+											foreach($audits as $audit) { 
 											//echo "<pre>";print_r($audits);
 											if(!empty($audit['ng_lots']))
 												$bg = 'background-color:red';
@@ -81,11 +83,13 @@ table, td, th {
                                                     <td><?php echo $audit['part_no'].' - '.$audit['part_name']; ?></td>
                                                     <td class="text-center"><?php echo $audit['no_of_lots']; ?></td>
                                                     <td class="text-center"><?php echo $audit['ok_lots']; ?></td>
-                                                    <td class="text-center" style="<? echo $bg; ?>">
+                                                    <td class="text-center" style="<?php echo $bg; ?>">
 														<?php echo $audit['ng_lots']; ?>
 													</td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php 
+											$bg = '';
+											} ?>
                                         </tbody>
                                     </table>
                                 <!--</div>-->
