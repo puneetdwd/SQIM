@@ -126,7 +126,7 @@
                                 <input type="hidden" name="date" value="<?php $this->input->post('date'); ?>" >
                                 <input type="hidden" name="supplier_id" value="<?php echo $supplier_id; ?>" >
                                 <!--<div class="table-scrollable">-->
-                                    <table class="table table-hover table-light" border="1">
+                                    <table class="table table-hover table-light" border="1" id="make-data-table">
                                         <thead>
                                             <tr>
                                                 <th style="vertical-align:middle;">Sr.No.</th>

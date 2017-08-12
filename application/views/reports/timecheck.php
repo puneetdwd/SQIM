@@ -141,7 +141,7 @@
                                 <div style="clear:both;"></div>
                                 
                                 <!--<div class="table-scrollable">-->
-                                    <table class="table table-hover table-light">
+                                    <table class="table table-hover table-light" id="make-data-table">
                                         <thead>
                                             <tr>
                                                 <th>Part</th>

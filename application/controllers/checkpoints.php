@@ -747,23 +747,33 @@ class Checkpoints extends Admin_Controller {
 	}
 	function tc_pf_update(){
 		$data = array();
-		//$post_data = $this->input->post();
-                
-		if($this->input->post()) {
-        	if(isset($_POST['foolproof']) && $_POST['foolproof'] == 'on')
-			$data['foolproof_chk'] = 1;
-			else
-				$data['foolproof_chk'] = 0;
-			if(isset($_POST['timecheck']) && $_POST['timecheck'] == 'on')
-				$data['timecheck_chk'] = 1;
-			else
-				$data['timecheck_chk'] = 0;
-		}
+		$post_data = $this->input->post();
 		$this->load->model('Checkpoint_model');
-        $success = $this->Checkpoint_model->update_tc_fp_status($data);
-		if($success)
-		{
-			$this->session->set_flashdata('success', 'Foolproof-Timecheck Updated.');                
+		$success = '';
+		$f=0;
+		$t=0;
+		if($this->input->post()) {
+        //print_r($post_data);   exit;  
+        	if($_POST['foolproof'] == 'on')
+				$f = 1;
+			else
+				$f = 0;
+			
+			if($_POST['timecheck'] == 'on')
+				$t = 1;
+			else
+				$t = 0;;
+		
+		}
+		
+		if(isset($data)){
+			$data['foolproof_chk'] = $f;
+			$data['timecheck_chk'] = $t;
+			$success = $this->Checkpoint_model->update_tc_fp_status($data);
+			if($success)
+			{
+				$this->session->set_flashdata('success', 'Foolproof-Timecheck Updated.');                
+			}
 		}
 		$data['tc_fp_status'] = $this->Checkpoint_model->get_tc_fp_status();
 		

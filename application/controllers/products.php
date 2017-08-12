@@ -291,6 +291,14 @@ class Products extends Admin_Controller {
             $temp['code']           = trim($row['A']);
             $temp['name']           = trim($row['B']);
             $temp['created']        = date("Y-m-d H:i:s");
+			
+			if(trim($row['C']) == 'Y'){
+					$temp['is_deleted'] = 1;			
+			}
+			if(trim($row['C']) == 'N'){
+					$temp['is_deleted'] = 0;			
+			}
+           
             
             $parts[]        = $temp;
         }

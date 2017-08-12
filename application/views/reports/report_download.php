@@ -66,6 +66,7 @@ table, td, th {
                                                 <th>Part No</th>
                                                 <th>Insp Qty.</th>
                                                 <th>Judgment</th>
+                                                <th>Remark</th>
                                                 <th>Inspector Name</th>
                                             </tr>
                                         </thead>
@@ -92,6 +93,7 @@ table, td, th {
 																echo 'OK';
 														?>
                                                     </td>
+                                                    <td><?php echo $audit['remark']; ?></td>
                                                     <td><?php echo $audit['inspector_name']; ?></td>
                                                    
                                                 </tr>

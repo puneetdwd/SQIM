@@ -72,7 +72,7 @@
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['usl']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['unit']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['measuring_equipment']; ?></td>
-												<td style='border: 1px solid black;height:70px;width:100px'>
+												<td style='border: 1px solid black;height:72px;width:100px'>
                                                     <?php if($foolproof['image'] == NULL){ echo 'NA'; }else{ ?>
                                                     <img src="<?php echo base_url().'assets/foolproof_captured/'.$foolproof['image']; ?>" 
                                                          height="70" width="100" alt="<?php $foolproof['image']; ?>" />

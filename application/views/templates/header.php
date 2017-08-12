@@ -318,11 +318,14 @@
                                         <i class="icon-layers"></i> Timecheck Report
                                     </a>
                                 </li>
+								<?php if($this->user_type == 'Admin' || $this->user_type == 'LG Inspector'){ ?>
+                                     
 								<li>
                                     <a href="<?php echo base_url(); ?>reports/timecheck_count_by_supplier" target="_blank" class="text-uppercase">
                                         <i class="icon-layers"></i> Timecheck Count Report
                                     </a>
                                 </li>
+								<?php } ?>
 								<li>
                                     <a href="<?php echo base_url(); ?>reports/foolproof" target="_blank" class="text-uppercase">
                                         <i class="icon-layers"></i> Fool Proof Report

@@ -31,6 +31,20 @@ class Phone_model extends CI_Model {
         
         return $this->db->query($sql, $pass_array)->result_array();
     }
+	/* function get_all_phone_numbers_by_product($pid) {
+        $sql = 'SELECT pn.*, s.supplier_no, s.name as supplier_name 
+        FROM phone_numbers as pn
+        INNER JOIN suppliers s
+        ON pn. = s.id';
+        
+        $pass_array = array();
+        if($supplier_id) {
+            $sql .= ' WHERE pn.supplier_id = ?';
+            $pass_array = array($supplier_id);
+        }
+        
+        return $this->db->query($sql, $pass_array)->result_array();
+    } */
     
     function get_phone_number($id, $supplier_id = '') {
         $this->db->where('id', $id);

@@ -805,5 +805,7 @@ $enddate ='2017-03-22';
         
         //$pass_array = array($id);
         return $this->db->query($sql,$id)->result_array();
-    } 	
+    } 
+	
+		
 }

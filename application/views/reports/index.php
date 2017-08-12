@@ -137,11 +137,11 @@
                             <?php if(empty($audits)) { ?>
                                 <p class="text-center">No inspection done yet.</p>
                             <?php } else { ?>
-                                <div class="pagination-sec pull-right"></div>
-                                <div style="clear:both;"></div>
+                                <!--div class="pagination-sec pull-right"></div>
+                                <div style="clear:both;"></div>-->
                                 
                                 <!--<div class="table-scrollable">-->
-                                    <table class="table table-hover table-light">
+                                    <table class="table table-hover " id="make-data-table">
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
@@ -153,12 +153,15 @@
                                                 <th>Part No</th>
                                                 <th>Insp Qty.</th>
                                                 <th>Judgment</th>
+                                                <th>Remark</th>
                                                 <th>Inspector Name</th>
                                                 <th class="no_sort">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach($audits as $audit) { ?>
+                                            <?php 
+											//print_r($audits);exit;
+											foreach($audits as $audit) { ?>
                                                 <tr>
                                                     <td nowrap><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
                                                     <?php if($this->user_type == 'Admin' || $this->user_type == 'LG Inspector') { ?>
@@ -171,6 +174,7 @@
                                                     <td class="judgement-col">
                                                         <img src="<?php echo base_url(); ?>assets/global/img/loading-spinner-grey.gif" alt="" class="loading" style="display:none;">
                                                     </td>
+                                                    <td><?php echo $audit['remark']; ?></td>
                                                     <td><?php echo $audit['inspector_name']; ?></td>
                                                     <td nowrap>
                                                         <a class="check-judgement-button button small gray" href="<?php echo base_url().'reports/check_judgement/'.$audit['id']; ?>" data-id="<?php echo $audit['id']; ?>" style="display:none;"> 
@@ -207,7 +211,7 @@
                                     </table>
                                 <!--</div>-->
                                 
-                                <div class="pagination-sec pull-right"></div>
+                                <!--<div class="pagination-sec pull-right"></div>-->
                                 <div style="clear:both;"></div>
                             <?php } ?>
                             

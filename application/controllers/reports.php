@@ -51,13 +51,13 @@ class Reports extends Admin_Controller {
             
             $data['page_no'] = $page_no;
             
-            $count = $this->Audit_model->get_completed_audits($filters, true);
+            $count = $this->Audit_model->get_completed_audits_new($filters, true);
             $count = $count[0]['c'];
             $data['total_records'] = $count;
             $data['total_page'] = ceil($count/50);
             
-            $data['audits'] = $this->Audit_model->get_completed_audits($filters, false);
-            //echo $this->db->last_query();exit;
+            $data['audits'] = $this->Audit_model->get_completed_audits_new($filters, false);
+           // echo $this->db->last_query();exit;
         }
         
         $this->template->write('title', 'SQIM | Edit Inspections');
@@ -89,12 +89,12 @@ class Reports extends Admin_Controller {
             
             $data['page_no'] = $page_no;
             
-            $count = $this->Audit_model->get_completed_audits($filters, true);
+            $count = $this->Audit_model->get_completed_audits_new($filters, true);
             $count = $count[0]['c'];
             $data['total_records'] = $count;
             $data['total_page'] = ceil($count/50);
             
-            $data['audits'] = $this->Audit_model->get_completed_audits($filters, false);
+            $data['audits'] = $this->Audit_model->get_completed_audits_new($filters, false);
 			//echo "<pre>";print_r($data['audits']);
             //echo $this->db->last_query();exit;
 			
@@ -375,8 +375,10 @@ class Reports extends Admin_Controller {
         $data = array();
         $this->load->model('TC_Checkpoint_model');
 
-        $plan_date = date('Y-m-d',time() - 60 * 60 * 24 );
-		$data['yesterday'] = date('jS M, Y', strtotime($plan_date));
+        $plan_date =$this->input->post('date');
+        // $plan_date = date('Y-m-d',time() - 60 * 60 * 24 );
+		//$data['yesterday'] = date('jS M, Y', strtotime($plan_date));
+		//$data['yesterday'] = date('jS M, Y', strtotime($plan_date));
         $data['plan_date'] = $plan_date;
         $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
 
@@ -389,11 +391,11 @@ class Reports extends Admin_Controller {
         $this->template->render();
     }
 	
-	public function timecheck_count_by_supplier_download() {
+	public function timecheck_count_by_supplier_download($date) {
         $data = array();
         $this->load->model('TC_Checkpoint_model');
 
-        $plan_date = date('Y-m-d',time() - (60 * 60 * 24));
+         $plan_date = $date;
         $data['plan_date'] = $plan_date;
         $plans = $this->TC_Checkpoint_model->get_timecheck_counts($this->product_id, $plan_date);
 		//print_r($plans);
@@ -455,8 +457,9 @@ class Reports extends Admin_Controller {
         
         $this->load->model('foolproof_model');
         $data['foolproofs'] = $this->foolproof_model->get_foolproof_report($filter);
-        
-        $str = $this->load->view('fool_proof/view', $data, true);
+        /* print_r($filter);
+        print_r($data['foolproofs']);exit;
+         */$str = $this->load->view('fool_proof/view', $data, true);
         
         header('Content-Type: application/force-download');
         header('Content-disposition: attachment; filename=FoolProof_Report.xls');

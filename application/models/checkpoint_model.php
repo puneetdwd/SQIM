@@ -417,7 +417,7 @@ class Checkpoint_model extends CI_Model {
     }
     
 	function update_tc_fp_status($data){
-		//print_r($data);
+		// print_r($data);exit;
         //if($data['foolproof_chk'] && $data['timecheck_chk'])
 		$sql = "UPDATE `foolproof_timecheck` SET `timecheck_chk`=".$data['timecheck_chk']." ,`foolproof_chk`=".$data['foolproof_chk']." WHERE id = 1";
 		return $this->db->query($sql);

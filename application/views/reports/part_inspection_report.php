@@ -197,7 +197,7 @@
                                     </tr>
                                 <?php } ?>
                                     <tr>
-                                        <td colspan="<?php echo $cols; ?>">
+                                        <td colspan='20'>
                                         Remarks : <?php echo implode(', ',array_filter(array_column($checkpoints, 'remark'))); ?>
                                         </td>
                                     </tr>

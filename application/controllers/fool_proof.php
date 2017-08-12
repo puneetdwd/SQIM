@@ -528,12 +528,11 @@ class fool_proof extends Admin_Controller {
     }
     
     function save_result() {
-        
+        //print_r($this->input->post());
         if($this->input->post()){
 
             $this->load->model('foolproof_model');
             $checkpoint = $this->foolproof_model->get_checkpoint($this->input->post('checkpoint_id'));
-            
             if($this->input->post('all_results') == 'NP'){
                 //echo "here 1";
                 $data['all_results'] = $this->input->post('all_results');
@@ -575,9 +574,59 @@ class fool_proof extends Admin_Controller {
             }else{
                 $data['image'] = '';
             }
-            
-            //print_r($data);
-            
+			if($data['result'] == 'NG'){
+				$this->load->model('Phone_model');
+				$this->load->model('foolproof_model');
+				
+				//$pf_mapping = $this->foolproof_model->get_parts_foolproof_by_foolproof(102);//$checkpoint['id']
+				//$phone_numbers = $this->Phone_model->get_all_phone_numbers_by_product($this->product_id);//supplierid
+				//send_sms
+				//print_r($phone_numbers);exit;
+				
+				$phone_numbers = $this->Phone_model->get_all_phone_numbers(102);//supplierid
+				if(!empty($phone_numbers)) {
+					$to = array();
+					
+					foreach($phone_numbers as $phone_number) {
+						$to[] = $phone_number['phone_number'];
+						$name = $phone_number['supplier_name'];
+					}
+					
+					$to = implode(',', $to);
+					$sms = $name." - SQIM - Foolproof Result NG. Stage - (".$checkpoint['stage'].")";
+					
+					$ip_address = $this->get_server_ip();
+					if($ip_address == '202.154.175.50'){
+						
+						if(isset($to) && isset($sms)){
+							$sms1= urlencode($sms);
+							$to1 = urlencode($to);
+							$data = array('to' => $to1, 'sms' => $sms1);
+							$url = "http://10.101.0.80:90/SQIM/fool_proof/send_sms_redirect";    	
+							//$url = "http://localhost/PRTMS_NEW/apps/send_sms_redirect";    	
+
+							$ch = curl_init();
+									curl_setopt_array($ch, array(
+									CURLOPT_URL => $url,
+									CURLOPT_RETURNTRANSFER => true,
+									CURLOPT_POSTFIELDS => $data,
+							));
+							//get response
+							$output = curl_exec($ch);
+							$flag = true;
+							//Print error if any
+							if(curl_errno($ch))
+							{
+									$flag = false;
+							}
+							curl_close($ch);
+						}
+					}else{
+						$this->send_sms($to, $sms);
+					}
+				}
+				
+			}
             $data = array_merge($checkpoint,$data);
             
             $this->foolproof_model->insert_result($data);
