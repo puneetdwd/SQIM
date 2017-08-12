@@ -609,5 +609,6 @@ class TC_Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($plan_date))->result_array();
 		
     }
+	
     
 }

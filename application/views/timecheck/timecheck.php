@@ -233,12 +233,13 @@
                                             
                                             <?php for($i = 0; $i < $frequency; $i++) {
 												?>
-                                                <?php //if($allowed[$i] == 'Yes' && !isset($remark[$i+1]) && $last_allowed_freq == $i) { ?>
-                                                <?php if($allowed[$i] == 'Yes') { ?>
+                                                <?php if($allowed[$i] == 'Yes' && !isset($remark[$i+1]) && $last_allowed_freq == $i) { ?>
                                                     <td colspan="<?php echo $sample_qty; ?>" class="text-center timecheck-required">
                                                         <input type="text" class="form-control input-sm timecheck-result-input" name="remark">
                                                     </td>
-                                                <?php } else { ?>
+												<?php  $last_allowed_freq = $i; 
+                                                 }
+												else { ?>
                                                     <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($remark[$i+1]) ? $remark[$i+1] : ''; ?></td>
                                                 <?php } ?>
                                             <?php } ?>
@@ -255,6 +256,7 @@
                                                             Save Result
                                                         </button>
                                                     </td>
+													 <?php $last_allowed_freq = $i; ?>
                                                 <?php } else { ?>
                                                     <td colspan="<?php echo $sample_qty; ?>">&nbsp;</td>
                                                 <?php } ?>

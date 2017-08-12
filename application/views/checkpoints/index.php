@@ -156,7 +156,7 @@
 														See Image
 													</a>
 												<?php }else{ ?>
-													<a target="_blank" href="<?php echo base_url()."assets/inspection_guides/".$product['name'].'/'.$checkpoint['part_no'].'/'.$checkpoint['images']; ?>">
+													<a target="_blank" href="<?php echo base_url()."assets/inspection_guides/".$product['name'].'/'.$checkpoint['part_no'].'/'.$checkpoint['images'].'.jpg'; ?>">
 														See Image
 													</a>
                                                     

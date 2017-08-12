@@ -151,7 +151,7 @@ class Checkpoints extends Admin_Controller {
 			if($_FILES['images']['name'] != '') {			
 				$config['upload_path'] = $fullpath;
 				//echo $config['upload_path'] = 'uploads/';
-                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $config['allowed_types'] = 'jpg|jpeg';
                 $config['file_name'] = uniqid() .$_FILES['images']['name'];
                 
                 //Load upload library and initialize configuration
@@ -173,6 +173,7 @@ class Checkpoints extends Admin_Controller {
 				//Image To Array
                 if($images){
 					$post_data['images'] = $images;
+					$post_data['images'] = current(explode(".", $post_data['images']));
 				}
 				else{
 					$post_data['images'] = '';

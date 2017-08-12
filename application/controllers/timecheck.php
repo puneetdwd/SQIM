@@ -210,6 +210,7 @@ class Timecheck extends Admin_Controller {
         
         $data['freq_results'] = $freq_results;
         $data['remark'] = $remark;
+		
         //echo "<pre>";print_r($production_qties);exit;
         
         /* $allowed[0] = 'No';
@@ -277,7 +278,7 @@ class Timecheck extends Admin_Controller {
         
         $data['allowed'] = $allowed;
         $data['frequency_headers'] = $frequency_headers;
-        //echo "<pre>";print_r($data);exit;
+       // echo "<pre>";print_r($data);exit;
         $this->template->write('title', 'SQIM | Timechecks');
         $this->template->write_view('content', 'timecheck/timecheck', $data);
         $this->template->render();
@@ -427,7 +428,7 @@ class Timecheck extends Admin_Controller {
         $plan_freq['org_result'] = $freq_result;
         $plan_freq['production_qty'] = $this->input->post('production_qty');
         $plan_freq['remark'] = $this->input->post('remark');
-        
+        $plan_id;
         $plan_freq_exists = $this->Timecheck_model->get_plan_freq_result($plan_id, $current_frequency+1);
         $plan_freq_id = !empty($plan_freq_exists) ? $plan_freq_exists['id'] : '';
         

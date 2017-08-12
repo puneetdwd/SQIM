@@ -1,4 +1,11 @@
  $(document).ready(function() {
+	 
+	/* $('input[name^="img_file"]'){
+		$(this).rules('add', {
+			required: true,
+			accept: "image/jpeg, image/jpeg, image/png, file/pdf, file/ppt"
+		})
+	} */
 
     var base_url = $('#base_url').val();
     
@@ -1806,4 +1813,73 @@ function int_n_float_only(event){
 
         return true;
   }
+  
+ /*  function map_part_foolproof(part_id){
+	   var foolproof_id = $(this).attr('foolproof_selecter').value;
+	  $.ajax({
+            type: 'POST',
+            url: 'save_pf_mapping',
+            data: { part_id: part_id , foolproof_id:foolproof_id},
+            dataType: 'json',
+            success: function(resp) {
+                            
+                alert('ok');
+            }
+        });
+  } */
 
+ function map_part_foolproof(part_id){
+	   var foolproof_id = $(this).attr('foolproof_selecter').value;
+	   /*  alert(part_id);
+       alert(foolproof_id); */
+			var c = document.getElementById('map_pf');
+			if(c.checked){
+			var s = 0;
+			$.ajax({
+				type: 'POST',
+				url: 'save_pf_mapping',
+				data: { s:s,part_id: part_id , foolproof_id:foolproof_id},
+				dataType: 'json',
+				success: function() {
+					//alert('no insp');
+				},
+			});
+		}else{
+			var s = 1;
+			$.ajax({
+				type: 'POST',
+				url: 'save_pf_mapping',
+				data: { s:s,part_id: part_id , foolproof_id:foolproof_id},
+				dataType: 'json',
+				success: function() {
+					//alert('no insp');
+				},
+			});
+		}
+  }
+  
+  
+
+	function get_pf(){	
+	    var portlet_id = $('#product-part-selector').closest('.portlet-body').attr('id');        
+        App.blockUI({
+            target: '#'+portlet_id,
+            boxed: true
+        });
+        
+        var foolproof_id = $(this).attr('foolproof_selecter').value;
+		var part_id =  $('#part-number-selector').val();
+		var part_name =  $('#part-selector').val();
+		$.ajax({
+            type: 'POST',
+            url: 'get_parts_foolproof_by_foolproof',
+            data: { foolproof_id : foolproof_id , part_id : part_id , part_name : part_name},
+            dataType: 'json',
+            success: function(resp) {
+				//alert('success');
+				$('#mapping').html(resp);
+                
+                App.unblockUI('#'+portlet_id);
+            }
+        });
+	}

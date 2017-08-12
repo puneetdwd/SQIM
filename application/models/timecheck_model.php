@@ -133,7 +133,7 @@ class Timecheck_model extends CI_Model {
     }
     
     function update_plan_freq_result($data, $id){
-        $needed_array = array('plan_id', 'freq_index', 'from_time', 'to_time', 'result', 'org_result', 'production_qty', 'remark');
+		$needed_array = array('plan_id', 'freq_index', 'from_time', 'to_time', 'result', 'org_result', 'production_qty', 'remark');
         $data = array_intersect_key($data, array_flip($needed_array));
 
         if(empty($id)) {
