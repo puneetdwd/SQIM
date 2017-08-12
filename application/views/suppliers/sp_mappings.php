@@ -113,7 +113,7 @@
                                             <option></option>
                                             <?php foreach($suppliers as $supplier) { ?>
                                                 <option value="<?php echo $supplier['id']; ?>" <?php if($supplier['id'] == $this->input->post('supplier_id')) { ?> selected="selected" <?php } ?>>
-                                                    <?php echo $supplier['name']; ?>
+                                                    <?php echo strtoupper($supplier['name']); ?>
                                                 </option>
                                             <?php } ?>        
                                         </select>

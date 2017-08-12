@@ -282,7 +282,7 @@ body {display:none;}
                                             if($checkpoint_images[$i] != ''){
                                                 // $img_path = base_url().'assets/inspection_guides/'.$audit['product_name'].'/'.$audit['part_no'].'/'.$checkpoint_images[$i];//.'.JPG'
                                                 // $img_path = base_url().'assets/inspection_guides/'.str_replace(' ', '_',$audit['product_name']).'/'.$audit['part_no'].'/'.$checkpoint_images[$i];//.'.JPG'
-                                                $img_path = base_url().'assets/inspection_guides/'.$audit['product_name'].'/'.$audit['part_no'].'/'.$checkpoint_images[$i];//.'.JPG'
+                                                $img_path = base_url().'assets/inspection_guides/'.$audit['product_name'].'/'.$audit['part_no'].'/'.$checkpoint_images[$i].'.JPG';
                                             }else{
                                                 $img_path = base_url().'assets/inspection_guides/default_guide.jpg';
                                             }

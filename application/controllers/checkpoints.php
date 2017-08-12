@@ -497,7 +497,7 @@ class Checkpoints extends Admin_Controller {
 
     private function parse_checkpoints($product_id, $org_name, $file_name) {
         
-        ini_set('memory_limit', '100M');
+        ini_set('memory_limit', '-1');
         
         $this->load->library('excel');
         //read file from path

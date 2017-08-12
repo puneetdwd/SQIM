@@ -160,7 +160,7 @@
 											?>
                                                 <tr>
                                                     <td><?php echo $plan['part_name'].' ('.$plan['part_no'].')'; ?></td>
-                                                    <td><?php echo date('jS M, Y', strtotime($plan['plan_date'])); ?></td>
+                                                    <td><?php echo date('d M Y', strtotime($plan['plan_date'])); ?></td>
                                                     <td><?php echo $plan['from_time']; ?></td>
                                                     <td><?php echo $plan['to_time']; ?></td>
                                                     <td><?php echo $plan['ng_count'] > 0 ? 'NG' : 'OK'; ?></td>

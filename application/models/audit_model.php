@@ -192,7 +192,7 @@ class Audit_model extends CI_Model {
             $sql .= " WHERE ".implode(' AND ', $wheres);
         }
         
-        $sql .= " GROUP BY a.supplier_id, a.part_id";
+        $sql .= " GROUP BY a.audit_date, a.supplier_id, a.part_id";
         
         if($count) {
             $sql = "SELECT count(*) as c FROM (".$sql.") as sub";
@@ -384,9 +384,11 @@ class Audit_model extends CI_Model {
             //$pass_array[] = $exclude;
         }
 
-        $sql .= " ORDER BY c.checkpoint_type DESC, c.checkpoint_no ASC";
+        $sql .= " GROUP BY c.id ORDER BY c.checkpoint_type DESC, c.checkpoint_no ASC";
         
         $this->db->query($sql, $pass_array);
+        
+        //echo $this->db->last_query(); exit;
         
         return TRUE;
     }

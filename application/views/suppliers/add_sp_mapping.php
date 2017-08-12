@@ -99,7 +99,7 @@
                                             <?php foreach($suppliers as $supplier) { ?>
                                                 <option value="<?php echo $supplier['id']; ?>" 
                                                 <?php if($sel_supplier == $supplier['id']) { ?> selected="selected" <?php } ?>>
-                                                    <?php echo $supplier['name']; ?>
+                                                    <?php echo strtoupper($supplier['name']); ?>
                                                 </option>
                                             <?php } ?>
                                             
