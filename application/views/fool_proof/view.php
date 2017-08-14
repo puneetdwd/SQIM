@@ -63,7 +63,7 @@
                                             <tr>
                                                 <td style='border: 1px solid black;'><?php echo $i; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['supplier_name']; ?></td>
-                                                <td style='border: 1px solid black;'><?php if(!empty($foolproof['created'])){ echo date('jS M, Y', strtotime($foolproof['created'])); } else { echo 'NA'; } ?></td>
+                                                <td style='border: 1px solid black;'><?php if(!empty($foolproof['created'])){ echo date('d M Y', strtotime($foolproof['created'])); } else { echo 'NA'; } ?></td>
                                                 <td  style='border: 1px solid black;'><?php echo $foolproof['stage']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['sub_stage']; ?></td>
                                                 <td style='border: 1px solid black;'><?php echo $foolproof['major_control_parameters']; ?></td>

@@ -75,7 +75,7 @@ table, td, th {
 											//echo "<pre>";print_r($audit);
 											?>
                                                 <tr>
-                                                    <td nowrap><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
+                                                    <td nowrap><?php echo date('d M y', strtotime($audit['audit_date'])); ?></td>
                                                     <?php if($this->user_type == 'Admin' || $this->user_type == 'LG Inspector') { ?>
                                                         <td><?php echo $audit['supplier_name']; ?></td>
                                                     <?php } ?>

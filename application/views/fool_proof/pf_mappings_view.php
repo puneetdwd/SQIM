@@ -143,11 +143,13 @@
                     <div class="caption">
                         <i class="fa fa-reorder"></i>Part-Foolproofs Mappings(<?php echo "Total Records - ".$row_count; ?>)
                     </div>
+					<?php if($this->user_type == 'Supplier') { ?>
                     <div class="actions">
                         <a class="button normals btn-circle" href="<?php echo base_url()."fool_proof/pf_mappings"; ?>">
                             <i class="fa fa-plus"></i> Add New Part-Foolproof Mapping
                         </a>
                     </div>
+					<?php } ?>
                 </div>
                 <div class="portlet-body">
                     <?php if(empty($sp_mappings)) { ?>

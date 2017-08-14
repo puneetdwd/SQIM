@@ -146,21 +146,29 @@ class Auditer extends Admin_Controller {
 			$foolproof_check = 0;
         if($this->input->post()) {
 			
-			//print_r($this->input->post());exit;
-            $this->load->model('foolproof_model');
-			$foolproof_map = $this->foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
-			//print_r($foolproof_map);exit;
-	
-			if(!empty($foolproof_map)){
-				$timecheck_check = $this->timecheck_checkpoints_check($this->input->post('part_id'));
-				$foolproof_check = $this->foolproof_checkpoints_check($foolproof_map);
-				//exit;
-				if($foolproof_check == 0 && $timecheck_check == 0){
-					redirect(base_url().'auditer/register_inspection');
-				}
-			}		
 			
-            $this->load->library('form_validation');
+			$this->load->model('Checkpoint_model');
+			$tc_fp_status = $this->Checkpoint_model->get_tc_fp_status();		
+			//print_r($tc_fp_status);exit;
+
+			if($tc_fp_status['timecheck_chk'] != 0 || $tc_fp_status['foolproof_chk'] != 0)
+			{
+				$this->load->model('foolproof_model');
+				$foolproof_map = $this->foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
+				//print_r($foolproof_map);exit;
+		
+		
+				
+				if(!empty($foolproof_map)){
+					$timecheck_check = $this->timecheck_checkpoints_check($this->input->post('part_id'));
+					$foolproof_check = $this->foolproof_checkpoints_check($foolproof_map);
+					//exit;
+					if($foolproof_check == 0 && $timecheck_check == 0){
+						redirect(base_url().'auditer/register_inspection');
+					}
+				}		
+			}	
+			$this->load->library('form_validation');
 
             $validate = $this->form_validation;
             $validate->set_rules('audit_date', 'Production Plan Date', 'trim|required|xss_clean');

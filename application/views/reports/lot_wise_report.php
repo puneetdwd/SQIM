@@ -2,13 +2,13 @@
     <!-- BEGIN PAGE HEADER-->
     <div class="breadcrumbs">
         <h1>
-            View Report
+            Lot wise Report
         </h1>
         <ol class="breadcrumb">
             <li>
                 <a href="<?php echo base_url(); ?>">Home</a>
             </li>
-            <li class="active">View Report</li>
+            <li class="active"> Lotwise Report</li>
         </ol>
         
     </div>
@@ -145,11 +145,11 @@
                             <?php if(empty($audits)) { ?>
                                 <p class="text-center">No inspection done yet.</p>
                             <?php } else { ?>
-                                <div class="pagination-sec pull-right"></div>
-                                <div style="clear:both;"></div>
+                                <!--div class="pagination-sec pull-right"></div>
+                                <div style="clear:both;"></div-->
                                 
                                 <!--<div class="table-scrollable">-->
-                                    <table class="table table-hover table-light">
+                                    <table class="table table-hover table-light" id="make-data-table">
                                         <thead>
                                             <tr>
                                                 <th rowspan="2" class="merged-cell text-center">Last Inspect Date</th>
@@ -174,7 +174,7 @@
 												$bg = 'background-color:red;';
 											?>
                                                 <tr>
-                                                    <td nowrap><?php echo date('jS M, y', strtotime($audit['audit_date'])); ?></td>
+                                                    <td nowrap><?php echo date('d M y', strtotime($audit['audit_date'])); ?></td>
                                                     <td><?php echo $audit['product_name']; ?></td>
                                                     <?php if($this->user_type == 'Admin' || $this->user_type == 'LG Inspector'){ ?>
                                                         <td><?php echo $audit['supplier_no'].' - '.$audit['supplier_name']; ?></td>
@@ -191,8 +191,8 @@
                                     </table>
                                 <!--</div>-->
                                 
-                                <div class="pagination-sec pull-right"></div>
-                                <div style="clear:both;"></div>
+                                <!--div class="pagination-sec pull-right"></div>
+                                <div style="clear:both;"></div-->
                             <?php } ?>
                             
                         </div>

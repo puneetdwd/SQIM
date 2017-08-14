@@ -152,7 +152,7 @@
                                                 <tr>
                                                     <td><?php echo $i; ?></td>
                                                     <td><?php echo $foolproof['supplier_name']; ?></td>
-                                                    <td><?php if(!empty($foolproof['created'])){ echo date('jS M, Y', strtotime($foolproof['created'])); }else { echo 'NA'; }?></td>
+                                                    <td><?php if(!empty($foolproof['created'])){ echo date('d M Y', strtotime($foolproof['created'])); }else { echo 'NA'; }?></td>
                                                     <td><?php echo $foolproof['stage']; ?></td>
                                                     <td><?php echo $foolproof['sub_stage']; ?></td>
                                                     <td><?php echo $foolproof['major_control_parameters']; ?></td>
