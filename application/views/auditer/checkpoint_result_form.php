@@ -1,10 +1,17 @@
 <script type="text/javascript">
-	function lookup(arg){
-		
+	function lookup(arg){		
+		 
+		  /* var charCode = (arg.which) ? arg.which : arg.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true; */
+		 
 		 var id = arg.getAttribute('id');
 		 var value = id.value;
 		 var val = document.getElementById(id);
-		 val = val.value;
+		 val = val.value;		 
 		 val = parseFloat(val);
 		 var lsl = document.getElementById("register-inspection-checkpoint-lsl");
 		 lsl = lsl.value;
@@ -87,6 +94,38 @@
 		}		
 	}
 	
+	function check_space(id) {
+			//alert($(this).html());
+			var val = document.getElementById('register-inspection-remark');
+			val = val.value;
+			val = val.trim();
+			vl= val.length;
+			//alert(val.length);
+			if(val.length > 0)
+			{
+				
+			}else{
+				bootbox.alert({ 
+				  title: "Alert Box",
+				  message: "Please enter valid Remark! Only Space has been entered which is considered as invalid input.", 
+				  callback: function(){ /* your callback code */ }
+				});
+				$('#register-inspection-remark').html('');                
+			}
+			//exit;		
+	}
+	
+	function isNumberKey(evt)
+    {
+	  var charCode = (evt.which) ? evt.which : evt.keyCode;
+	  //alert(charCode);
+	  if ( charCode != 46 && charCode > 31 && charCode != 190
+		&& (charCode < 48 || charCode > 57))
+		 return false;
+
+	  return true;
+    }
+
 </script>
     
     <?php if(!empty($checkpoint['lsl']) || !empty($checkpoint['usl'])) { ?>
@@ -118,7 +157,7 @@
                             <div class="row">
                                 <div class="col-md-8 col-md-offset-2" style="padding-right:0px;">
                                     <div class="form-group">
-                                        <input type="text" class="required form-control input-sm audit_values" id="audit_value_<?php echo $i; ?>" onkeydown="return int_n_float_only();" name="audit_value_<?php echo $i; ?>" value="<?php echo isset($all_values[$i-1]) ? $all_values[$i-1] : ''; ?>" onblur="lookup(this);">
+                                        <input type="text" class="required form-control input-sm audit_values" id="audit_value_<?php echo $i; ?>" onkeydown="return isNumberKey(event);" name="audit_value_<?php echo $i; ?>" value="<?php echo isset($all_values[$i-1]) ? $all_values[$i-1] : ''; ?>" onblur="lookup(this);">
                                     </div>
                                 </div>
                             </div>
@@ -146,13 +185,13 @@
                 </tr>
             <?php }
 				if(empty($checkpoint['lsl']) || empty($checkpoint['usl'])) { ?>
-            			<tr>
+            			<!--tr>
 							<td>&nbsp;</td>
 							<td>
 								<input type="checkbox" name="ok_all" id="ok_all" onclick="handleClick(this,<?php echo $checkpoint['sampling_qty']; ?>);" value="ok_all"><span style="font-size:10px" >ALL OK</span>
 								<input type="checkbox" name="ng_all" id="ng_all" onclick="handleClick(this,<?php echo $checkpoint['sampling_qty']; ?>);" value="ng_all" ><span style="font-size:10px" >ALL NG</span>
 							</td>
-						</tr>
+						</tr-->
 			<?php } ?>
         </tbody>
     </table>
@@ -164,7 +203,7 @@
         <div class="col-md-12" style="padding-right: 0;">
             <div class="form-group">
                 <label for="remark" class="control-label">Remarks: </label>
-                <textarea class="form-control" id="register-inspection-remark" name="remark" placeholder="Remarks" rows="2"><?php echo $checkpoint['remark']; ?></textarea>
+                <textarea class="form-control" onblur="return check_space(this);" id="register-inspection-remark" name="remark" placeholder="Remarks" rows="2"><?php echo $checkpoint['remark']; ?></textarea>
                 <span class="help-block"></span>                
             </div>
         </div>
