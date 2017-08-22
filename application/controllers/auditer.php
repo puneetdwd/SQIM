@@ -153,21 +153,69 @@ class Auditer extends Admin_Controller {
 
 			if($tc_fp_status['timecheck_chk'] != 0 || $tc_fp_status['foolproof_chk'] != 0)
 			{
-				$this->load->model('foolproof_model');
-				$foolproof_map = $this->foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
-				//print_r($foolproof_map);exit;
-		
-		
-				
-				if(!empty($foolproof_map)){
-					$timecheck_check = $this->timecheck_checkpoints_check($this->input->post('part_id'));
-					$foolproof_check = $this->foolproof_checkpoints_check($foolproof_map);
+				$fp = '';
+				$tc = '';
+					$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 3);
+					$enddate = date('Y-m-d',time() - 60 * 60 * 24);
+					if($tc_fp_status['foolproof_chk'] != 0){
+						$this->load->model('foolproof_model');
+						$foolproof_map = $this->foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
+						//echo '<pre>';print_r($foolproof_map);exit;				
+					
+						if(!empty($foolproof_map)){
+							//$foolproof_check = $this->foolproof_checkpoints_check($foolproof_map);
+							
+							foreach($foolproof_map as $f){
+								//$f['checkpoint_id'];
+								$lastfoolproofs = $this->foolproof_model->get_last_foolproof_done($f['checkpoint_id'],$startdate,$enddate);
+								//print_r($lastfoolproofs);exit;
+								if(!empty($lastfoolproofs) ){
+									if($lastfoolproofs['result'] == 'NG'){
+										$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."fool_proof/start >Foolproof</a>";				   
+										$e1 = "Last Result was NG.Do ".$e.' Again';
+										//$this->session->set_flashdata('error', $e1);
+									}				
+									else{
+										$fc = 'OK';
+									}
+								}
+								else{
+									$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."fool_proof/start >Foolproof</a>";		   
+									$e1 = "No ".$e.' done. Do it First.';							
+								}
+							}	
+						}		//exit;
+					
+					//$timecheck_check = $this->timecheck_checkpoints_check($this->input->post('part_id'));
+					if($tc_fp_status['timecheck_chk'] != 0){
+						$last_tc = $this->foolproof_model->get_last_tc_done($this->input->post('part_id'),$startdate,$enddate);
+						//echo $this->input->post('part_id');
+						//print_r($last_tc);exit;
+						if(!empty($last_tc)){							
+							if($last_tc['result'] == 'NG'){
+								$et =  "<a style=color:#c80541;font-weight:700 href=".base_url()."timecheck >Timechecks</a>"; 
+								$et1 = "Last Result was NG.Do ".$et.' Again';
+							}
+							else{
+								$tc = 'OK';
+							}
+						}
+						else{
+							$et = "<a style=color:#c80541;font-weight:700 href=".base_url()."timecheck >Timechecks</a>"; 	   
+							$et1 = "No ".$et.' done';							
+						}
+					}		
 					//exit;
-					if($foolproof_check == 0 && $timecheck_check == 0){
+					if($fp != 'OK' || $tc != 'OK'){
+						$error = $e1 . ' ' . $et1;
+						$this->session->set_flashdata('error', $error);						
 						redirect(base_url().'auditer/register_inspection');
 					}
 				}		
-			}	
+			}
+
+
+			
 			$this->load->library('form_validation');
 
             $validate = $this->form_validation;
@@ -949,14 +997,14 @@ class Auditer extends Admin_Controller {
         curl_close($ch);
         redirect($_SERVER['HTTP_REFERER']);
     }
-    
+    /* 
 	function foolproof_checkpoints_check($foolproof_map){
 		$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 3);
 		$enddate = date('Y-m-d',time() - 60 * 60 * 24);
 		foreach($foolproof_map as $f){
 			//$f['checkpoint_id'];
 			$lastfoolproofs = $this->foolproof_model->get_last_foolproof_done($f['checkpoint_id'],$startdate,$enddate);
-			//print_r($lastfoolproofs);exit;
+			print_r($lastfoolproofs);exit;
 			if(!empty($lastfoolproofs)){
 				
 				if($lastfoolproofs['result'] == 'NG'){
@@ -978,7 +1026,7 @@ class Auditer extends Admin_Controller {
 			}
 		}	
 			//exit;
-	}
+	} *//* 
 	function timecheck_checkpoints_check($partid){
 		$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 3);
 		$enddate = date('Y-m-d',time() - 60 * 60 * 24);
@@ -1006,5 +1054,5 @@ class Auditer extends Admin_Controller {
 			}
 			
 			//exit;
-	}
+	} */
 }

@@ -740,10 +740,13 @@ class fool_proof extends Admin_Controller {
         $data = array();
         $this->load->model('Product_model');
 		$this->load->model('foolproof_model');
+		$this->load->model('Supplier_model');
+       
         $data['products'] = $this->Product_model->get_all_products();
         $data['parts'] = $this->Product_model->get_all_distinct_part_name($this->product_id,$this->supplier_id);
         $sid = $this->supplier_id;
 		$data['foolproofs'] = $this->foolproof_model->get_all_foolproofs($sid);
+		$data['suppliers'] = $this->Supplier_model->get_all_suppliers();
         $filters = $this->input->post() ? $this->input->post() : array() ;
 		// print_r($filters);exit;
 		if($this->input->post()){            

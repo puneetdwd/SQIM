@@ -120,7 +120,30 @@
                                     </div>
                                 </div>
                             </div>
-                            
+							<?php if($this->user_type == 'Admin' || $this->user_type == 'LG Inspector'){ ?>
+                                    
+							<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" id="sp-mappings-chamber-search-error">
+                                        <label class="control-label">Select Supplier:</label>
+                                                
+                                        <select name="supplier_id" class="form-control select2me"
+                                                data-placeholder="Select Supplier" data-error-container="#report-sel-supplier-error">
+											<option value=""></option>
+											
+											<?php $sel_supplier = $this->input->post('supplier_id'); ?>
+											<?php foreach($suppliers as $supplier) { ?>
+												<option value="<?php echo $supplier['id']; ?>" 
+												<?php if($sel_supplier == $supplier['id']) { ?> selected="selected" <?php } ?>>
+													<?php echo $supplier['supplier_no'].' - '.$supplier['name']; ?>
+												</option>
+											<?php } ?>
+											
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
                         </div>
                         
                         <div class="form-actions">

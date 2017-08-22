@@ -124,8 +124,7 @@ class Dashboard extends Admin_Controller {
             
             $this->load->model('TC_Checkpoint_model');
             $plans = $this->TC_Checkpoint_model->get_all_plans($this->product_id, $this->supplier_id, date('Y-m-d'));
-
-            $allowed = array();
+			$allowed = array();
             foreach($plans as $k => $plan) {
                 $from = strtotime($plan['plan_date'].' '.$plan['from_time']);
                 $to = strtotime($plan['plan_date'].' '.$plan['to_time']);

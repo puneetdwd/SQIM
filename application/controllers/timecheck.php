@@ -69,11 +69,22 @@ class Timecheck extends Admin_Controller {
             $freq_org_results[$result['freq_index']] = $result['org_result'];
             $production_qties[$result['freq_index']] = $result['production_qty'];
         }
+		
+		
+		//
+		$remark = array();
+        foreach($results as $result) {
+            $freq_results[$result['freq_index']] = $result['result'];
+            $remark[$result['freq_index']] = $result['remark'];
+        }
+		//
+		
         
         $data['freq_results'] = $freq_results;
         $data['freq_org_results'] = $freq_org_results;
         $data['production_qties'] = $production_qties;
-        
+        $data['remark'] = $remark;
+		
         $data['freq_results'] = $freq_results;
 
         $checkpoints = $this->Timecheck_model->get_checkpoints($plan['id']);
@@ -278,7 +289,7 @@ class Timecheck extends Admin_Controller {
         
         $data['allowed'] = $allowed;
         $data['frequency_headers'] = $frequency_headers;
-       // echo "<pre>";print_r($data);exit;
+       //echo "<pre>";print_r($data);exit;
         $this->template->write('title', 'SQIM | Timechecks');
         $this->template->write_view('content', 'timecheck/timecheck', $data);
         $this->template->render();
@@ -433,7 +444,9 @@ class Timecheck extends Admin_Controller {
         $plan_freq_id = !empty($plan_freq_exists) ? $plan_freq_exists['id'] : '';
         
         $this->Timecheck_model->update_plan_freq_result($plan_freq, $plan_freq_id);
-        
+        //echo $current_frequency;
+        /* echo $plan['total_frequencies'];
+		exit; */
         if(($current_frequency+1) == $plan['total_frequencies']) {
             $this->TC_Checkpoint_model->change_plan_status($plan['id'], 'Completed');
         }

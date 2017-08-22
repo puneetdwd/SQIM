@@ -687,8 +687,9 @@ class foolproof_model extends CI_Model {
 		return $this->db->query($sql,$id)->row_array();    
 	}
 	function get_last_tc_done($id,$startdate,$enddate){
-$startdate ='2017-03-18';
-$enddate ='2017-03-22';
+		/* $startdate ='2017-03-18';
+		$enddate ='2017-03-22';
+		 */
 		$sql = "SELECT * FROM `timechecks` where part_id = ? AND created BETWEEN '".$startdate."%' and '".$enddate."%' ORDER BY `created` DESC";
 		
 		

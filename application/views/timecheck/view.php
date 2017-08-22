@@ -265,6 +265,13 @@
                                                 <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($production_qties[$i+1]) ? $production_qties[$i+1] : ''; ?></td>
                                             <?php } ?>
                                         </tr>
+										 <tr>
+                                            <td colspan="11" class="text-right">Remark</td>
+                                            
+                                            <?php for($i = 0; $i < $frequency; $i++) { ?>
+                                                <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($remark[$i+1]) ? $remark[$i+1] : ''; ?></td>
+                                            <?php } ?>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
