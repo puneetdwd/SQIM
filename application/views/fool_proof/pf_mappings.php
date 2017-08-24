@@ -154,9 +154,9 @@
 								<label class="control-label">Select Foolproof:<span class='required'>*</span></label>		
 								<select name="foolproof" class="required form-control select2me" id="foolproof_selecter" onchange='get_pf()' 
 									data-placeholder="Select Foolproof" data-error-container="#pf-mappings-part-search-error">
-									
+									<option></option>
 									<?php $cnt=1; foreach($foolproofs as $foolproof) { ?>
-										<option value="<?php echo $foolproof['id']; ?>" <?php if($foolproof['id'] == $this->input->post('foolproof') || $cnt == 1) { ?> selected="selected" <?php $cnt++; } ?>>
+										<option value="<?php echo $foolproof['id']; ?>" <?php if($foolproof['id'] == $this->input->post('foolproof')) { ?> selected="selected" <?php $cnt++; } ?>>
 											<?php echo $foolproof['stage'].' - '.$foolproof['major_control_parameters']; ?>
 										</option>
 									<?php } ?>        
