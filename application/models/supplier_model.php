@@ -40,6 +40,12 @@ class Supplier_model extends CI_Model {
         
         return $this->db->query($sql)->result_array();
     }
+    
+    function get_duplicate_entries($data){
+        $sql = "SELECT * FROM suppliers WHERE name = '".$data['name']."' or supplier_no = '".$data['supplier_no']."' or email = '".$data['email']."' ";
+        
+        return $this->db->query($sql)->result_array();
+    }
         
     function get_all_suppliers(){
         $sql = "SELECT s.* FROM suppliers s

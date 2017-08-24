@@ -17,7 +17,7 @@ class Suppliers extends Admin_Controller {
         
         $data = array();
         $this->load->model('Supplier_model');
-        $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+        $data['suppliers'] = $this->Supplier_model->get_all_suppliers_new();
 
         $this->template->write_view('content', 'suppliers/index', $data);
         $this->template->render();
@@ -40,12 +40,22 @@ class Suppliers extends Admin_Controller {
         if($this->input->post()) {
             $post_data = $this->input->post();
             $post_data['password'] = 'lge@123';
-            $response = $this->Supplier_model->add_supplier($post_data, $supplier_id); 
-            if($response) {
-                $this->session->set_flashdata('success', 'Supplier successfully '.(($supplier_id) ? 'updated' : 'added').'.');
-                redirect(base_url().'suppliers');
-            } else {
-                $data['error'] = 'Something went wrong, Please try again';
+            
+            if(empty($supplier_id)){
+                
+                $check_duplicate = $this->Supplier_model->get_duplicate_entries($post_data);
+            }
+            if($check_duplicate){
+                $data['error'] = 'Duplicate Entry !!';
+            }else{
+            
+                $response = $this->Supplier_model->add_supplier($post_data, $supplier_id); 
+                if($response) {
+                    $this->session->set_flashdata('success', 'Supplier successfully '.(($supplier_id) ? 'updated' : 'added').'.');
+                    redirect(base_url().'suppliers');
+                } else {
+                    $data['error'] = 'Something went wrong, Please try again';
+                }
             }
         }
         
