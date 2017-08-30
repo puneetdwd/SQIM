@@ -614,15 +614,20 @@ class Checkpoints extends Admin_Controller {
             } else {
                 continue;
             }
-            
+            //echo "<pre>"; print_r($sample); exit;
             $exists_chk = $this->Checkpoint_model->check_duplicate_checkpoint($temp);
             $this->load->model('Sampling_model');
             if($exists_chk) {
                 //echo "update";
+                
+                $sample['checkpoint_id'] = $exists_chk['id'];
+                
                 $i++;
                 $this->Checkpoint_model->update_checkpoint($temp, $exists_chk['id']);
                 $sam_id = $this->Sampling_model->check_config_by_checkpoint($temp['product_id'], $temp['part_id'], $temp['insp_item2'], $exists_chk['id']);
                 $this->Sampling_model->update_inspection_config($sample, $sam_id['id']);
+                
+                //echo $this->db->last_query(); exit;
             } else {
                 $j++;
                 //echo "insert";

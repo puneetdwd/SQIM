@@ -181,7 +181,7 @@
                                                 <?php if($checkpoint['status'] == NULL && $this->user_type === 'Supplier'){ echo "Pending";}else{ echo $checkpoint['status'];} ?>
                                             </td>
                                             <td nowrap class="text-center">
-                                                <?php if(($checkpoint['checkpoint_type'] == 'LG' || $this->user_type === 'Supplier') && $checkpoint['status'] == NULL) { ?>
+                                                <?php if(($checkpoint['checkpoint_type'] == 'LG' && $this->user_type === 'Admin') || ($this->user_type === 'Supplier' && $checkpoint['supplier_id'] == $this->session->userdata('id'))) { ?>
                                                     <a class="button small gray" href="<?php echo base_url()."checkpoints/add_checkpoint/".$checkpoint['id']; ?>">
                                                         <i class="fa fa-edit"></i> Edit
                                                     </a>

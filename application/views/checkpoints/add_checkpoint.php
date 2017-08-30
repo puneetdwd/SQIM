@@ -269,9 +269,18 @@
                                             data-placeholder="Select acceptable_quality" data-error-container="#inspection-config-sel-acceptable-quality-error">
                                             <option></option>
                                             <?php $sel_acceptable_quality = (!empty($inspection_config['acceptable_quality']) ? $inspection_config['acceptable_quality'] : ''); ?>
+                                            <option value="0.065" <?php if($sel_acceptable_quality == '0.065') { ?> selected="selected" <?php } ?> >0.065</option>
+                                            <option value="0.1" <?php if($sel_acceptable_quality == '0.1') { ?> selected="selected" <?php } ?> >0.1</option>
+                                            <option value="0.15" <?php if($sel_acceptable_quality == '0.15') { ?> selected="selected" <?php } ?> >0.15</option>
+                                            <option value="0.25" <?php if($sel_acceptable_quality == '0.25') { ?> selected="selected" <?php } ?> >0.25</option>
+                                            <option value="0.40" <?php if($sel_acceptable_quality == '0.4') { ?> selected="selected" <?php } ?> >0.4</option>
                                             <option value="0.65" <?php if($sel_acceptable_quality == '0.65') { ?> selected="selected" <?php } ?> >0.65</option>
+                                            <option value="1" <?php if($sel_acceptable_quality == '1') { ?> selected="selected" <?php } ?> >1.0</option>
                                             <option value="1.5" <?php if($sel_acceptable_quality == '1.5') { ?> selected="selected" <?php } ?> >1.5</option>
-                                            <option value="2.5" <?php if($sel_acceptable_quality == '2.5') { ?> selected="selected" <?php } ?> >2.5</option>       
+                                            <option value="2.5" <?php if($sel_acceptable_quality == '2.5') { ?> selected="selected" <?php } ?> >2.5</option>
+                                            <option value="4" <?php if($sel_acceptable_quality == '4') { ?> selected="selected" <?php } ?> >4.0</option>
+                                            <option value="6.5" <?php if($sel_acceptable_quality == '6.5') { ?> selected="selected" <?php } ?> >6.5</option>
+                                            <option value="10" <?php if($sel_acceptable_quality == '10') { ?> selected="selected" <?php } ?> >10</option>
                                         </select>
                                     </div>
                                 </div>

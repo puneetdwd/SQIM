@@ -235,7 +235,7 @@ class Suppliers extends Admin_Controller {
     public function add_sp_mapping($sp_mapping_id = '') {
         $data = array();
         $this->load->model('Supplier_model');
-        $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+        $data['suppliers'] = $this->Supplier_model->get_all_suppliers_new();
         
         $this->load->model('Product_model');
         $data['products'] = $this->Product_model->get_all_products();

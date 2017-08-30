@@ -148,6 +148,8 @@ class Sampling_model extends CI_Model {
         $needed_array = array('product_id', 'checkpoint_id', 'chk_item', 'part_id', 'sampling_type', 
             'inspection_level', 'acceptable_quality', 'sample_qty');
         $data = array_intersect_key($data, array_flip($needed_array));
+        
+        //echo "<pre>"; print_r($data); exit;
 
         if(empty($config_id)) {
             $data['created'] = date("Y-m-d H:i:s");
