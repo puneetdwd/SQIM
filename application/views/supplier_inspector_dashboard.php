@@ -134,15 +134,15 @@
                                     <td class="text-center">
                                         <?php if($plan['plan_status'] == 'Completed') { ?>
                                             <span class="label label-success label-sm"> 
-                                                <i class="fa fa-play"></i> Started
+                                                <i class="fa fa-play"></i> Completed
                                             </span>
                                         <?php }
 										else if($plan['plan_status'] == 'Started') { ?>
                                             <span class="label label-success label-sm"> 
-                                                <i class="fa fa-play"></i> Completed
+                                                <i class="fa fa-play"></i> Started
                                             </span>
                                         <?php }
-										if($plan['plan_status'] != 'Completed' && $plan['plan_status'] != 'Started') {  ?>
+										else {  ?>
                                             <span class="label label-danger label-sm"> 
                                                 <i class="fa fa-ban"></i> Not Started
                                             </span>
