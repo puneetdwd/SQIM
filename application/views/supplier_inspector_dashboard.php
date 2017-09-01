@@ -142,7 +142,7 @@
                                                 <i class="fa fa-play"></i> Completed
                                             </span>
                                         <?php }
-										else {  ?>
+										if($plan['plan_status'] != 'Completed' && $plan['plan_status'] != 'Started') {  ?>
                                             <span class="label label-danger label-sm"> 
                                                 <i class="fa fa-ban"></i> Not Started
                                             </span>
