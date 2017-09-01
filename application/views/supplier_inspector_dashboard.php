@@ -136,7 +136,13 @@
                                             <span class="label label-success label-sm"> 
                                                 <i class="fa fa-play"></i> Started
                                             </span>
-                                        <?php } else {  ?>
+                                        <?php }
+										if($plan['plan_status'] == 'Completed') { ?>
+                                            <span class="label label-success label-sm"> 
+                                                <i class="fa fa-play"></i> Completed
+                                            </span>
+                                        <?php }
+										else {  ?>
                                             <span class="label label-danger label-sm"> 
                                                 <i class="fa fa-ban"></i> Not Started
                                             </span>
