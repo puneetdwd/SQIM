@@ -392,6 +392,47 @@ class Audit_model extends CI_Model {
         
         return TRUE;
     }
+    function create_audit_checkpoints_admin_supplier($product_id, $part_id, $audit_id, $case, $exclude = '',$supplier_id) {
+        $this->db->where('audit_id', $audit_id);
+        $this->db->delete('audit_checkpoints');
+        
+        $pass_array = array($product_id, $part_id,$supplier_id);
+        
+        $sql = "INSERT INTO audit_checkpoints(`org_checkpoint_id`, `audit_id`, `checkpoint_no`, `insp_item`, `insp_item2`, `spec`, `lsl`, `usl`, `tgt`, `unit`, `checkpoint_type`, `sampling_type`, `inspection_level`, `acceptable_quality`, `sampling_qty`, `created`)
+        SELECT c.id, ".$audit_id." as audit_id, c.checkpoint_no, 
+        c.insp_item, c.insp_item2, c.spec,
+        if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
+        if(c.usl IS NULL, c.usl, c.usl) as usl,
+        if(c.tgt IS NULL, c.tgt, c.tgt) as tgt,
+        if(c.unit IS NULL, c.unit, c.unit) as unit, 
+        c.checkpoint_type, ic.sampling_type, ic.inspection_level, ic.acceptable_quality, ";
+        
+        $sql .= $case.', ';
+        
+        $sql .= "'".date("Y-m-d H:i:s")."' as created
+        FROM checkpoints c 
+        LEFT JOIN inspection_config ic
+        ON ic.checkpoint_id = c.id
+        WHERE c.product_id = ?
+        AND c.part_id = ?
+        AND c.is_deleted = 0
+        AND ((c.checkpoint_type = 'LG' OR c.approved_by IS NOT NULL) 
+		OR (c.checkpoint_type = 'Supplier' AND c.supplier_id = ?  AND c.status = 'Approved')) ";
+        
+		
+        if($exclude) {
+            $sql .= " AND c.id NOT IN (".$exclude.")";
+            //$pass_array[] = $exclude;
+        }
+
+        $sql .= " GROUP BY c.id ORDER BY c.checkpoint_type DESC, c.checkpoint_no ASC";
+        
+        $this->db->query($sql, $pass_array);
+        
+        // echo $this->db->last_query(); exit;
+        
+        return TRUE;
+    }
     
     function get_required_checkpoint_nos($audit_id) {
         $sql = "SELECT GROUP_CONCAT(`org_checkpoint_id` ORDER BY id) as nos,

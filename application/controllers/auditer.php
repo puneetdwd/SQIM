@@ -101,7 +101,7 @@ class Auditer extends Admin_Controller {
         $this->load->model('Foolproof_model');
         //echo $this->id;exit;
         $audit = $this->Audit_model->get_audit($this->id, array('registered','started', 'finished'));
-		//print_r($audit);exit;
+		print_r($audit);
         if(!empty($audit)) {
             $this->check_inspection($audit);
         }
@@ -274,7 +274,7 @@ class Auditer extends Admin_Controller {
         $data = array();
         $this->load->model('Audit_model');
         $audit = $this->Audit_model->get_audit($this->id, 'registered');
-        if(empty($audit)) {
+		if(empty($audit)) {
             $this->check_inspection();
         }
 
@@ -307,6 +307,7 @@ class Auditer extends Admin_Controller {
     
     public function start_inspection() {
         $sampling = $this->session->userdata('sampling');
+		//print_r($sampling);exit;
         if(empty($sampling)) {
             $this->check_inspection();
         }
@@ -325,7 +326,8 @@ class Auditer extends Admin_Controller {
         
 		$this->load->model('Checkpoint_model');
         
-        $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
+        
+		$supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
         
         $exclude = [];
         $checkpoints = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
@@ -339,10 +341,16 @@ class Auditer extends Admin_Controller {
                 }
             }
         }
-        
+        if($this->user_type == 'Supplier Inspector'){
+			$this->load->model('supplier_model');
+			$supplier = $this->supplier_model->get_inspector($this->id);
+			$supplier_id = $supplier['supplier_id'];
+		}
         $exclude = implode(',', $exclude);
-        $this->Audit_model->create_audit_checkpoints($audit['product_id'], $audit['part_id'], $audit['id'], $case, $exclude);
-        //echo $this->db->last_query();exit;
+        $this->Audit_model->create_audit_checkpoints_admin_supplier($audit['product_id'], $audit['part_id'], $audit['id'], $case, $exclude, $supplier_id );
+        //echo $case;exit;
+		//echo $exclude;exit;
+		//echo $this->db->last_query();exit;
         $this->Audit_model->change_state($audit['id'], $this->id, 'started');
         
         $this->set_checkpoint_session($audit['id']);
@@ -353,7 +361,9 @@ class Auditer extends Admin_Controller {
     public function checkpoint_screen() {
         $data = array();
         $this->load->model('Audit_model');
+		//echo $this->id;exit;
         $audit = $this->Audit_model->get_audit($this->id, 'started');
+		//echo $this->db->last_query();exit;
         if(empty($audit)) {
             $this->check_inspection();
         }
@@ -364,10 +374,20 @@ class Auditer extends Admin_Controller {
             $this->set_checkpoint_session($audit['id'], 'find');
         }
         
+        $this->load->model('Checkpoint_model');
+        $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
+
+        //$checkpoints = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
+				
+        //$checkpoint = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
         $checkpoint = $this->Audit_model->get_checkpoint($audit['id'], $this->session->userdata('current_checkpoint'));
+		//echo $this->db->last_query();exit;
+		
+		
+		
+		
         $data['checkpoint'] = $checkpoint;
         
-        $this->load->model('Checkpoint_model');
         $checkpoint_images = $this->Checkpoint_model->get_checkpoint_images($this->session->userdata('current_checkpoint'));
         $data['checkpoint_images'] = explode(',',$checkpoint_images['images']);
         
@@ -829,7 +849,6 @@ class Auditer extends Admin_Controller {
             $sampling = $this->session->userdata('sampling');
             $sampling[$checkpoint_id] = $res;
             $this->session->set_userdata('sampling', $sampling);
-            
             $response = array('status' => 'success', 'judgement' => $res);
         }
         
@@ -865,6 +884,7 @@ class Auditer extends Admin_Controller {
     
     private function check_inspection($audit = '') {
         $audit = ($audit) ? $audit : $this->Audit_model->get_audit($this->id, array('registered','started', 'finished'));
+        //echo $this->db->last_query();exit;
         
         if(empty($audit)) {
             $this->session->set_flashdata('info', 'Please register an inspection, before moving ahead');

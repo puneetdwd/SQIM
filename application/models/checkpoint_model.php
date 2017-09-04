@@ -44,7 +44,7 @@ class Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($data['product_id'],$data['part_id'],$data['insp_item'],$data['insp_item2']))->row_array();
     }
     
-    function get_checkpoints_for_audit($product_id, $part_id, $supplier_id='') {
+    function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
         $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
             c.insp_item3, c.spec, c.has_multiple_specs, c.checkpoint_type, c.period, c.cycle,
             if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
