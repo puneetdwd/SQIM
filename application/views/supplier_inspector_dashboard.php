@@ -132,17 +132,17 @@
                                     <td><?php echo $plan['mold_no']; ?></td>
                                     <td><?php echo $plan['from_time'].' <small>to</small> '.$plan['to_time']; ?></td>
                                     <td class="text-center">
-                                        <?php if($plan['plan_status'] == 'Started') { ?>
-                                            <span class="label label-success label-sm"> 
-                                                <i class="fa fa-play"></i> Started
-                                            </span>
-                                        <?php }
-										if($plan['plan_status'] == 'Completed') { ?>
+                                        <?php if($plan['plan_status'] == 'Completed') { ?>
                                             <span class="label label-success label-sm"> 
                                                 <i class="fa fa-play"></i> Completed
                                             </span>
                                         <?php }
-										if($plan['plan_status'] != 'Completed' && $plan['plan_status'] != 'Started') {  ?>
+										else if($plan['plan_status'] == 'Started') { ?>
+                                            <span class="label label-success label-sm"> 
+                                                <i class="fa fa-play"></i> Started
+                                            </span>
+                                        <?php }
+										else {  ?>
                                             <span class="label label-danger label-sm"> 
                                                 <i class="fa fa-ban"></i> Not Started
                                             </span>
