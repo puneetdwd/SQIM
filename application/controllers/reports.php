@@ -415,10 +415,10 @@ class Reports extends Admin_Controller {
         if($this->user_type == 'Supplier Inspector') {
             //redirect($_SERVER['HTTP_REFERER']);
         }
-        
+        //echo $this->supplier_id; exit;
         $data = array();
 
-        if($this->user_type == 'Supplier') {
+        if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
             $sup_id = $this->supplier_id;
         }else{
             $sup_id = '';
@@ -430,13 +430,13 @@ class Reports extends Admin_Controller {
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
         if(count($filters) > 1) {
-            if($this->user_type == 'Supplier') {
+            if($this->user_type == 'Supplier' || $this->user_type == 'Supplier Inspector') {
                 $filters['supplier_id'] = $this->supplier_id;
             }
             
             $this->load->model('foolproof_model');
            $data['foolproofs'] = $this->foolproof_model->get_foolproof_report($filters);
-           // echo $this->db->last_query();exit;
+            //echo $this->db->last_query();exit;
         }
         
         $this->template->write('title', 'SQIM | Fool-Proof Report');
