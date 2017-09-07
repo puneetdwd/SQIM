@@ -45,7 +45,7 @@ class Checkpoint_model extends CI_Model {
     }
     
     function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
-        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.status,
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
             c.insp_item3, c.spec, c.has_multiple_specs, c.checkpoint_type, c.period, c.cycle,
             if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
             if(c.usl IS NULL, c.usl, c.usl) as usl,
@@ -54,18 +54,14 @@ class Checkpoint_model extends CI_Model {
             FROM checkpoints c
             WHERE c.product_id = ?
             AND c.part_id = ?
-            AND c.is_deleted = 0 ";
+            AND c.is_deleted = 0
+            AND (c.checkpoint_type = 'LG' OR (c.status IS NOT NULL AND c.status = 'Approved' )) ";
             
-        if(empty($supplier_id)){
-			$sql .= " AND (c.checkpoint_type = 'LG')";
-		}
         if(!empty($supplier_id)){
-            $sql .= " AND ((c.checkpoint_type = 'LG') OR (c.supplier_id = ?  AND c.status = 'Approved' ))";
+            $sql .= " AND c.supplier_id = ".$supplier_id." ";
         }
-		$pass_array = array($product_id, $part_id);
-        if(!empty($supplier_id)){
-			$pass_array = array($product_id, $part_id,$supplier_id);
-        }
+        $pass_array = array($product_id, $part_id);
+        
         $sql .= " ORDER BY checkpoint_type DESC, checkpoint_no ASC";
         
         return $this->db->query($sql, $pass_array)->result_array();
@@ -379,24 +375,26 @@ class Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($product_id))->result_array();
     }
     
-	function get_checkpoints_by_status($product_id, $status){
-		if($status == 'Pending')
-			$status1 = "(c.status = 'Pending' OR c.status is NULL OR c.status = '')";
-		else
-			$status1 = '(c.status = ?)';
-			
-		
-		$sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
-                p.name as product_name, pp.code as part_number, pp.name as part_name,c.images,
-                s.supplier_no, s.name as supplier_name
-                FROM checkpoints c
-                LEFT JOIN products p ON p.id = c.product_id
-                LEFT JOIN product_parts pp ON pp.id = c.part_id
-                LEFT JOIN suppliers s ON s.id = c.supplier_id
-                where c.product_id = ? and c.checkpoint_type = 'Supplier' and ".$status1;
+    function get_checkpoints_by_status($product_id, $status){
         
+        if($status == 'Pending')
+            $status1 = "c.status IN ('','Pending') or c.status is NULL ";
+        else
+            $status1 = "c.status = ?";
+
+        $sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
+        p.name as product_name, pp.code as part_number, pp.name as part_name,
+        s.supplier_no, s.name as supplier_name
+        FROM checkpoints c
+        LEFT JOIN products p ON p.id = c.product_id
+        LEFT JOIN product_parts pp ON pp.id = c.part_id
+        LEFT JOIN suppliers s ON s.id = c.supplier_id
+        where c.product_id = ? and ".$status1." and c.checkpoint_type = 'Supplier' ";
+
+        //echo $sql;exit;
+
         return $this->db->query($sql, array($product_id,$status))->result_array();
-		 //echo $this->db->last_query();
+        //echo $this->db->last_query();
 		 
     }
     
