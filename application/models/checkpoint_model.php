@@ -44,7 +44,7 @@ class Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($data['product_id'],$data['part_id'],$data['insp_item'],$data['insp_item2']))->row_array();
     }
     
-    function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
+    /* function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
         $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
             c.insp_item3, c.spec, c.has_multiple_specs, c.checkpoint_type, c.period, c.cycle,
             if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
@@ -62,6 +62,33 @@ class Checkpoint_model extends CI_Model {
         }
         $pass_array = array($product_id, $part_id);
         
+        $sql .= " ORDER BY checkpoint_type DESC, checkpoint_no ASC";
+        
+        return $this->db->query($sql, $pass_array)->result_array();
+    } */
+	
+	function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.status,
+            c.insp_item3, c.spec, c.has_multiple_specs, c.checkpoint_type, c.period, c.cycle,
+            if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
+            if(c.usl IS NULL, c.usl, c.usl) as usl,
+            if(c.tgt IS NULL, c.tgt, c.tgt) as tgt,
+            if(c.unit IS NULL, c.unit, c.unit) as unit
+            FROM checkpoints c
+            WHERE c.product_id = ?
+            AND c.part_id = ?
+            AND c.is_deleted = 0 ";
+            
+        if(empty($supplier_id)){
+			$sql .= " AND (c.checkpoint_type = 'LG')";
+		}
+        if(!empty($supplier_id)){
+            $sql .= " AND ((c.checkpoint_type = 'LG') OR (c.supplier_id = ?  AND c.status = 'Approved' ))";
+        }
+		$pass_array = array($product_id, $part_id);
+        if(!empty($supplier_id)){
+			$pass_array = array($product_id, $part_id,$supplier_id);
+        }
         $sql .= " ORDER BY checkpoint_type DESC, checkpoint_no ASC";
         
         return $this->db->query($sql, $pass_array)->result_array();
@@ -375,7 +402,9 @@ class Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($product_id))->result_array();
     }
     
-    function get_checkpoints_by_status($product_id, $status){
+    
+	
+	function get_checkpoints_by_status($product_id, $status){
         
         if($status == 'Pending')
             $status1 = "c.status IN ('','Pending') or c.status is NULL ";
