@@ -375,24 +375,26 @@ class Checkpoint_model extends CI_Model {
         return $this->db->query($sql, array($product_id))->result_array();
     }
     
-	function get_checkpoints_by_status($product_id, $status){
-		if($status == 'Pending')
-			$status1 = 'c.status = "" or c.status is NULL or c.status like "Pending"';
-		else
-			$status1 = 'c.status = ?';
-			
-		
-		$sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
-                p.name as product_name, pp.code as part_number, pp.name as part_name,
-                s.supplier_no, s.name as supplier_name
-                FROM checkpoints c
-                LEFT JOIN products p ON p.id = c.product_id
-                LEFT JOIN product_parts pp ON pp.id = c.part_id
-                LEFT JOIN suppliers s ON s.id = c.supplier_id
-                where c.product_id = ? and ".$status1." and c.checkpoint_type = 'Supplier' ";
+    function get_checkpoints_by_status($product_id, $status){
         
-         return $this->db->query($sql, array($product_id,$status))->result_array();
-		 //echo $this->db->last_query();
+        if($status == 'Pending')
+            $status1 = "c.status IN ('','Pending') or c.status is NULL ";
+        else
+            $status1 = "c.status = ?";
+
+        $sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
+        p.name as product_name, pp.code as part_number, pp.name as part_name,
+        s.supplier_no, s.name as supplier_name
+        FROM checkpoints c
+        LEFT JOIN products p ON p.id = c.product_id
+        LEFT JOIN product_parts pp ON pp.id = c.part_id
+        LEFT JOIN suppliers s ON s.id = c.supplier_id
+        where c.product_id = ? and ".$status1." and c.checkpoint_type = 'Supplier' ";
+
+        //echo $sql;exit;
+
+        return $this->db->query($sql, array($product_id))->result_array();
+        //echo $this->db->last_query();
 		 
     }
     

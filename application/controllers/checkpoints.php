@@ -666,14 +666,15 @@ class Checkpoints extends Admin_Controller {
         $this->template->render();
     }
     
-	public function search_checkpoints_by_status(){
+    public function search_checkpoints_by_status(){
+        
         $sel_checkpoint = $this->input->post('checkpoint_status');		
-		$data = array();       
+	$data = array();       
         $this->load->model('Checkpoint_model');
-		if($sel_checkpoint != 'All')
-			$data['approval_items'] = $this->Checkpoint_model->get_checkpoints_by_status($this->product_id,$sel_checkpoint);
-		elseif($sel_checkpoint == 'All')
-			$data['approval_items'] = $this->Checkpoint_model->get_supplier_checkpoints_by_product($this->product_id);
+        if($sel_checkpoint != 'All')
+            $data['approval_items'] = $this->Checkpoint_model->get_checkpoints_by_status($this->product_id,$sel_checkpoint);
+        elseif($sel_checkpoint == 'All')
+            $data['approval_items'] = $this->Checkpoint_model->get_supplier_checkpoints_by_product($this->product_id);
         
         $data['selected_status'] = $sel_checkpoint;
         //echo "<pre>";print_r($data);exit;
