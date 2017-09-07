@@ -60,7 +60,7 @@ class Reports extends Admin_Controller {
            // echo $this->db->last_query();exit;
         }
         
-        $this->template->write('title', 'SQIM | Edit Inspections');
+        $this->template->write('title', 'SQIM | View Report');
         $this->template->write_view('content', 'reports/index', $data);
         $this->template->render();
     }

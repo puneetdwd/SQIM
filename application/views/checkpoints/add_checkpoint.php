@@ -1,3 +1,28 @@
+<script>
+	function isNumberKey(evt)
+    {
+	  var charCode = (evt.which) ? evt.which : evt.keyCode;
+	  //alert(charCode);
+	  if ( charCode != 46 && charCode > 31
+		&& (charCode < 48 || charCode > 57))
+		{ 
+		bootbox.dialog({
+                        message: 'This should be number.',
+                        title: 'Alert',
+                        buttons: {
+                            confirm: {
+                                label: "OK",
+                                className: "button"
+                            }
+                        }
+                    });
+		return false;
+		}
+	  return true;
+    }
+</script>
+
+
 <div class="page-content">
     <!-- BEGIN PAGE HEADER-->
     <div class="breadcrumbs">
@@ -49,8 +74,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="checkpoint_no">Checkpoint No:
-                                        <span class="required">*</span></label>
-                                        <input type="text" class="required form-control" id="add-checkpoint-no" name="checkpoint_no"
+											<span class="required">*</span>
+										</label>
+                                        <input type="text" class="required form-control" onkeydown="return isNumberKey(event);" id="add-checkpoint-no" name="checkpoint_no"
                                         value="<?php echo isset($checkpoint['checkpoint_no']) ? $checkpoint['checkpoint_no'] : ''; ?>">
                                         <span class="help-block">
                                         </span>

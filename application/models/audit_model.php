@@ -117,8 +117,8 @@ class Audit_model extends CI_Model {
             $pass_array[] = $this->product_id;
         }
         elseif($filters['product_id'] == 'all'){
-			 $sql .= ' AND a.product_id = ?';
-            $pass_array[] = $filters['product_id'];
+			/*  $sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id']; */
 		} 
 		/* elseif($filters['product_id'] == 'all'){
 			  $sql .= ' AND a.product_id = ?';
@@ -183,10 +183,10 @@ class Audit_model extends CI_Model {
             $wheres[] = " a.product_id = ?";
             $pass_array[] = $this->product_id;
         }
-        /* elseif($filters['product_id'] ){
-			$sql .= ' AND a.product_id = ?';
-            $pass_array[] = $filters['product_id'];
-		} */
+        elseif($filters['product_id'] ){
+			/* $sql .= ' AND a.product_id = ?';
+            $pass_array[] = $filters['product_id']; */
+		} 
         
         if(!empty($wheres)) {
             $sql .= " WHERE ".implode(' AND ', $wheres);

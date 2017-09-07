@@ -145,7 +145,7 @@ class Auditer extends Admin_Controller {
             }
         }	
 		$timecheck_check = 0;
-			$foolproof_check = 0;
+		$foolproof_check = 0;
         if($this->input->post()) {
 			
 			
@@ -158,10 +158,11 @@ class Auditer extends Admin_Controller {
 				$fp = '';
 				$tc = '';
 					$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 7);
-					$enddate = date('Y-m-d',time() - 60 * 60 * 24);
+					// $enddate = date('Y-m-d',time() - 60 * 60 * 24);
+					$enddate = date('Y-m-d');
 					if($tc_fp_status['foolproof_chk'] != 0){
-						$this->load->model('foolproof_model');
-						$foolproof_map = $this->foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
+						$this->load->model('Foolproof_model');
+						$foolproof_map = $this->Foolproof_model->get_pf_mapping_by_partid($this->input->post('part_id'));
 						//echo '<pre>';print_r($foolproof_map);exit;				
 					
 						if(!empty($foolproof_map)){
@@ -169,7 +170,7 @@ class Auditer extends Admin_Controller {
 							
 							foreach($foolproof_map as $f){
 								//$f['checkpoint_id'];
-								$lastfoolproofs = $this->foolproof_model->get_last_foolproof_done($f['checkpoint_id'],$startdate,$enddate);
+								$lastfoolproofs = $this->Foolproof_model->get_last_foolproof_done($f['checkpoint_id'],$startdate,$enddate);
 								//print_r($lastfoolproofs);exit;
 								if(!empty($lastfoolproofs) ){
 									if($lastfoolproofs['result'] == 'NG'){
@@ -183,16 +184,17 @@ class Auditer extends Admin_Controller {
 								}
 								else{
 									$e = "<a style=color:#c80541;font-weight:700 href=".base_url()."fool_proof/start >Foolproof</a>";		   
-									$e1 = "No ".$e.' done. Do it First.';							
+									$e1 = "No ".$e.' done within these seven days.';							
 								}
 							}	
 						}		//exit;
-					
+					}
 					//$timecheck_check = $this->timecheck_checkpoints_check($this->input->post('part_id'));
 					if($tc_fp_status['timecheck_chk'] != 0){
-						$last_tc = $this->foolproof_model->get_last_tc_done($this->input->post('part_id'),$startdate,$enddate);
-						//echo $this->input->post('part_id');
-						//print_r($last_tc);exit;
+						$last_tc = $this->Foolproof_model->get_last_tc_done($this->input->post('part_id'),$startdate,$enddate);
+						/*  echo $this->db->last_query();
+						 echo $this->input->post('part_id');
+						print_r($last_tc);exit;  */
 						if(!empty($last_tc)){							
 							if($last_tc['result'] == 'NG'){
 								$et =  "<a style=color:#c80541;font-weight:700 href=".base_url()."timecheck >Timechecks</a>"; 
@@ -204,16 +206,20 @@ class Auditer extends Admin_Controller {
 						}
 						else{
 							$et = "<a style=color:#c80541;font-weight:700 href=".base_url()."timecheck >Timechecks</a>"; 	   
-							$et1 = "No ".$et.' done';							
+							$et1 = " No ".$et.' done within these seven days.';							
 						}
 					}		
 					//exit;
 					if($fp != 'OK' || $tc != 'OK'){
 						$error = $e1 . ' ' . $et1;
-						$this->session->set_flashdata('error', $error);						
-						redirect(base_url().'auditer/register_inspection');
+						$error = trim($error);
+						if(!empty($error)){
+							//echo 'ab';exit;
+							$this->session->set_flashdata('error', $error);						
+							redirect(base_url().'auditer/register_inspection');
+						}
 					}
-				}		
+						
 			}
 
 

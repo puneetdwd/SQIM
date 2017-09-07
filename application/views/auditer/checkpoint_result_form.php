@@ -95,6 +95,8 @@
 	}
 	
 	function check_space(id) {
+		var colClass = id.className
+		if(colClass != 'form-control'){
 			//alert($(this).html());
 			var val = document.getElementById('register-inspection-remark');
 			val = val.value;
@@ -104,7 +106,8 @@
 			if(val.length > 0)
 			{
 				
-			}else{
+			}
+			else{
 				bootbox.alert({ 
 				  title: "Alert Box",
 				  message: "Please enter valid Remark! Only Space has been entered which is considered as invalid input.", 
@@ -112,7 +115,7 @@
 				});
 				$('#register-inspection-remark').html('');                
 			}
-			//exit;		
+		}	//exit;		
 	}
 	
 	function isNumberKey(evt)

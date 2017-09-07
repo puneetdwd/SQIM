@@ -183,6 +183,7 @@ class Checkpoints extends Admin_Controller {
 					
                 $id = !empty($checkpoint['id']) ? $checkpoint['id'] : '';
                 $checkpoint_no = $this->input->post('checkpoint_no');
+                $checkpoint_no = $this->input->post('insp_item2');
             
                 if($this->user_type !== 'Supplier') {
                     $exists = $this->Checkpoint_model->is_checkpoint_no_exists($this->product_id, $post_data['part_id'], $checkpoint_no, $id);

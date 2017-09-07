@@ -603,7 +603,7 @@ class foolproof_model extends CI_Model {
         
         $sql .= " ORDER BY fc.supplier_id";
         $this->db->query($sql, $filters)->result_array();
-        echo $this->db->last_query();exit;
+        // echo $this->db->last_query();exit;
     }
 	
     function get_pending_checkpoints(){
@@ -682,7 +682,7 @@ class foolproof_model extends CI_Model {
 	
 	function get_last_foolproof_done($id,$startdate,$enddate){
 
-		$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created BETWEEN '".$startdate."%' and '".$enddate."%' ORDER BY `created` DESC";
+		$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created >= '".$startdate." 00:00:00' and '".$enddate."  23:59:59'  ORDER BY `created` DESC";
 		//$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created BETWEEN '2017-03-03%' and '2017-04-03%' ORDER BY `created` DESC";
 		return $this->db->query($sql,$id)->row_array();    
 	}
@@ -690,7 +690,7 @@ class foolproof_model extends CI_Model {
 		/* $startdate ='2017-03-18';
 		$enddate ='2017-03-22';
 		 */
-		$sql = "SELECT * FROM `timechecks` where part_id = ? AND created BETWEEN '".$startdate."%' and '".$enddate."%' ORDER BY `created` DESC";
+		$sql = "SELECT * FROM `timechecks` where part_id = ? AND created >= '".$startdate." 00:00:00' and '".$enddate."  23:59:59' ORDER BY `created` DESC";
 		
 		
 		//$sql = "SELECT * FROM `foolproofs` WHERE `org_checkpoint_id` = ? AND created BETWEEN '2017-03-03%' and '2017-04-03%' ORDER BY `created` DESC";
