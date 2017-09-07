@@ -393,7 +393,7 @@ class Checkpoint_model extends CI_Model {
 
         //echo $sql;exit;
 
-        return $this->db->query($sql, array($product_id))->result_array();
+        return $this->db->query($sql, array($product_id,$status))->result_array();
         //echo $this->db->last_query();
 		 
     }
