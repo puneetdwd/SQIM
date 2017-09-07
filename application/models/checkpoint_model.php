@@ -45,7 +45,7 @@ class Checkpoint_model extends CI_Model {
     }
     
     function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
-        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.status,
             c.insp_item3, c.spec, c.has_multiple_specs, c.checkpoint_type, c.period, c.cycle,
             if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
             if(c.usl IS NULL, c.usl, c.usl) as usl,
@@ -54,14 +54,18 @@ class Checkpoint_model extends CI_Model {
             FROM checkpoints c
             WHERE c.product_id = ?
             AND c.part_id = ?
-            AND c.is_deleted = 0
-            AND (c.checkpoint_type = 'LG' OR (c.status IS NOT NULL AND c.status = 'Approved' )) ";
+            AND c.is_deleted = 0 ";
             
+        if(empty($supplier_id)){
+			$sql .= " AND (c.checkpoint_type = 'LG')";
+		}
         if(!empty($supplier_id)){
-            $sql .= " AND c.supplier_id = ".$supplier_id." ";
+            $sql .= " AND ((c.checkpoint_type = 'LG') OR (c.supplier_id = ?  AND c.status = 'Approved' ))";
         }
-        $pass_array = array($product_id, $part_id);
-        
+		$pass_array = array($product_id, $part_id);
+        if(!empty($supplier_id)){
+			$pass_array = array($product_id, $part_id,$supplier_id);
+        }
         $sql .= " ORDER BY checkpoint_type DESC, checkpoint_no ASC";
         
         return $this->db->query($sql, $pass_array)->result_array();
@@ -391,7 +395,7 @@ class Checkpoint_model extends CI_Model {
                 LEFT JOIN suppliers s ON s.id = c.supplier_id
                 where c.product_id = ? and c.checkpoint_type = 'Supplier' and ".$status1;
         
-         return $this->db->query($sql, array($product_id,$status))->result_array();
+        return $this->db->query($sql, array($product_id,$status))->result_array();
 		 //echo $this->db->last_query();
 		 
     }

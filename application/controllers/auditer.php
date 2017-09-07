@@ -99,9 +99,11 @@ class Auditer extends Admin_Controller {
         $this->load->model('Audit_model');
         $this->load->model('Timecheck_model');
         $this->load->model('Foolproof_model');
-        //echo $this->id;exit;
         $audit = $this->Audit_model->get_audit($this->id, array('registered','started', 'finished'));
-		print_r($audit);
+       /*  echo $this->db->last_query();
+		print_r($audit);exit; */
+		
+		//print_r($audit);
         if(!empty($audit)) {
             $this->check_inspection($audit);
         }
@@ -273,7 +275,9 @@ class Auditer extends Admin_Controller {
     public function inspection_start_screen() {
         $data = array();
         $this->load->model('Audit_model');
+        $this->load->model('User_model');
         $audit = $this->Audit_model->get_audit($this->id, 'registered');
+		
 		if(empty($audit)) {
             $this->check_inspection();
         }
@@ -281,8 +285,13 @@ class Auditer extends Admin_Controller {
         $this->load->model('Checkpoint_model');
         
         $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
+		 if($this->user_type == 'Supplier Inspector') {
+            $user = $this->User_model->get_supplier_inspector_user($this->id);
+			$supplier_id = $user['supplier_id'];
+        } 
 
         $checkpoints = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
+		//echo $this->db->last_query();exit;
         foreach($checkpoints as $key => $checkpoint) {
             if(!empty($checkpoint['period']) && !empty($checkpoint['cycle'])) {
                 $date = date('Y-m-d', strtotime('-'.$checkpoint['cycle'].' days'));
@@ -319,6 +328,7 @@ class Auditer extends Admin_Controller {
         $case .= ' END as sampling_qty';
         
         $this->load->model('Audit_model');
+        $this->load->model('User_model');
         $audit = $this->Audit_model->get_audit($this->id, 'registered');
         if(empty($audit)) {
             $this->check_inspection();
@@ -328,7 +338,10 @@ class Auditer extends Admin_Controller {
         
         
 		$supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
-        
+        if($this->user_type == 'Supplier Inspector') {
+            $user = $this->User_model->get_supplier_inspector_user($this->id);
+			$supplier_id = $user['supplier_id'];
+        } 
         $exclude = [];
         $checkpoints = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
         foreach($checkpoints as $key => $checkpoint) {
@@ -723,14 +736,14 @@ class Auditer extends Admin_Controller {
     public function finish_screen($audit_id = '') {
         $data = array();
         $this->load->model('Audit_model');
-        
+        // echo $audit_id;exit;
         if(!$audit_id) {
             $audit = $this->Audit_model->get_audit($this->id, 'finished');
         } else {
             $data['admin_edit_audit'] = $audit_id;
             $audit = $this->Audit_model->get_audit('', 'completed', '', $audit_id);
         }
-
+// print_r($audit);exit;
         if(empty($audit)) {
             $this->check_inspection();
         }
