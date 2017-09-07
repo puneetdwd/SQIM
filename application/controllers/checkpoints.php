@@ -9,7 +9,6 @@ class Checkpoints extends Admin_Controller {
         $this->template->write('title', 'SQIM | Checkpoint Module');
         $this->template->write_view('header', 'templates/header', array('page' => 'masters'));
         $this->template->write_view('footer', 'templates/footer');
-
     }
 
     public function index() {
@@ -131,37 +130,39 @@ class Checkpoints extends Admin_Controller {
             }
 			
 			//Checkpoint Image Upload --> Komal
-            $product = $this->Product_model->get_product($this->product_id);
-			$part = $this->Product_model->get_part($_POST['part_id']);
-            $product_dir = $product['name'];
-            $part_dir = $part['code'];
-			
-            $fullpath = 'assets/inspection_guides/';
-			//for Product directory
-			if (!is_dir('assets/inspection_guides/'.$product_dir)) {
-				mkdir('./assets/inspection_guides/' . $product_dir, 0777, TRUE);
-			}			
-            $fullpath = $fullpath . $product_dir.'/';			
-			//for Part directory
-			if (!is_dir('assets/inspection_guides/'.$product_dir. '/' .$part_dir )) {
-				mkdir('./assets/inspection_guides/'.$product_dir. '/' .$part_dir, 0777, TRUE);
-			}			
-			$fullpath = $fullpath . $part_dir.'/';
-			
-			if($_FILES['images']['name'] != '') {			
-				$config['upload_path'] = $fullpath;
-				//echo $config['upload_path'] = 'uploads/';
-                $config['allowed_types'] = 'jpg|jpeg';
-                $config['file_name'] = uniqid() .$_FILES['images']['name'];
-                
-                //Load upload library and initialize configuration
-                $this->load->library('upload',$config);
-                $this->upload->initialize($config);
-                
-                if($this->upload->do_upload('images')){
-                    $uploadData = $this->upload->data();
-                    $images = $uploadData['file_name'];
-                }
+			if($_FILES['images']['name'] != ''){
+				$product = $this->Product_model->get_product($this->product_id);
+				$part = $this->Product_model->get_part($_POST['part_id']);
+				$product_dir = $product['name'];
+				$part_dir = $part['code'];
+				
+				$fullpath = 'assets/inspection_guides/';
+				//for Product directory
+				if (!is_dir('assets/inspection_guides/'.$product_dir)) {
+					mkdir('./assets/inspection_guides/' . $product_dir, 0777, TRUE);
+				}			
+				$fullpath = $fullpath . $product_dir.'/';			
+				//for Part directory
+				if (!is_dir('assets/inspection_guides/'.$product_dir. '/' .$part_dir )) {
+					mkdir('./assets/inspection_guides/'.$product_dir. '/' .$part_dir, 0777, TRUE);
+				}			
+				$fullpath = $fullpath . $part_dir.'/';
+				
+				if($_FILES['images']['name'] != '') {			
+					$config['upload_path'] = $fullpath;
+					//echo $config['upload_path'] = 'uploads/';
+					$config['allowed_types'] = 'jpg|jpeg';
+					$config['file_name'] = uniqid() .$_FILES['images']['name'];
+					
+					//Load upload library and initialize configuration
+					$this->load->library('upload',$config);
+					$this->upload->initialize($config);
+					
+					if($this->upload->do_upload('images')){
+						$uploadData = $this->upload->data();
+						$images = $uploadData['file_name'];
+					}
+				}
 			}
 			//End Image Upload
 			
@@ -175,9 +176,10 @@ class Checkpoints extends Admin_Controller {
 					$post_data['images'] = $images;
 					$post_data['images'] = current(explode(".", $post_data['images']));
 				}
-				else{
+				/* else{
 					$post_data['images'] = '';
-				}//end of if-else
+				} */
+				//end of if-else
 					
                 $id = !empty($checkpoint['id']) ? $checkpoint['id'] : '';
                 $checkpoint_no = $this->input->post('checkpoint_no');

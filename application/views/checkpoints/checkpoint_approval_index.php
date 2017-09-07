@@ -212,7 +212,7 @@
                                                                 <div class="col-md-7">
 																	<p>
 																	<?php if(!empty($approval_item["images"])){ ?>
-																		<a target='_blank' href='<?php echo base_url()."assets/inspection_guides/".$approval_item["product_name"].'/'.$approval_item["part_number"].'/'.$approval_item["images"]; ?>' >See Image</a>
+																		<a target='_blank' href='<?php echo base_url()."assets/inspection_guides/".$approval_item["product_name"].'/'.$approval_item["part_number"].'/'.$approval_item["images"].'.jpg'; ?>' >See Image</a>
 																	<?php } else{ ?>
 																		<a target='_blank' href='<?php echo base_url()."assets/inspection_guides/default_guide.jpg" ?>' >See Image</a>
 																	<?php } ?>

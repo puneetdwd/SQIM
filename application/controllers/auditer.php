@@ -155,7 +155,7 @@ class Auditer extends Admin_Controller {
 			{
 				$fp = '';
 				$tc = '';
-					$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 3);
+					$startdate = date('Y-m-d',time() - 60 * 60 * 24 * 7);
 					$enddate = date('Y-m-d',time() - 60 * 60 * 24);
 					if($tc_fp_status['foolproof_chk'] != 0){
 						$this->load->model('foolproof_model');
