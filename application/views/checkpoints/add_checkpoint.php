@@ -1,13 +1,14 @@
 <script>
+
+
 	function isNumberKey(evt)
     {
 	  var charCode = (evt.which) ? evt.which : evt.keyCode;
 	  //alert(charCode);
-	  if ( charCode != 46 && charCode > 31
-		&& (charCode < 48 || charCode > 57))
+	  if ( charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105))
 		{ 
 		bootbox.dialog({
-                        message: 'This should be number.',
+                        message: 'Checkpoint No. should be number only.',
                         title: 'Alert',
                         buttons: {
                             confirm: {
@@ -16,6 +17,7 @@
                             }
                         }
                     });
+					
 		return false;
 		}
 	  return true;
