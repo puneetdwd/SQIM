@@ -44,6 +44,8 @@
                                 <thead>
                                     <tr>
                                         <th>Part</th>
+                                        <th>Child Part</th>
+                                        <th>Mold</th>
                                         <th>Scheduled</th>
                                         <th class="no_sort" style="width:150px;"></th>
                                     </tr>
@@ -52,6 +54,8 @@
                                     <?php foreach($plans as $plan) { ?>
                                         <tr>
                                             <td><?php echo $plan['part_name'].' ('.$plan['part_no'].')'; ?></td>
+                                            <td><?php echo $plan['child_part_no']; ?></td>
+                                            <td><?php echo $plan['mold_no']; ?></td>
                                             <td><?php echo $plan['from_time'].' <small>to</small> '.$plan['to_time']; ?></td>
                                             <td nowrap class="text-center">
                                                 <a class="button small gray" href="<?php echo base_url()."timecheck/start/".$plan['id']; ?>">
