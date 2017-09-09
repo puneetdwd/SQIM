@@ -412,7 +412,7 @@ class Checkpoint_model extends CI_Model {
             $status1 = "c.status = ?";
 
         $sql = "SELECT c.id, c.insp_item, c.insp_item2, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,c.created,c.modified,
-        p.name as product_name, pp.code as part_number, pp.name as part_name,
+        p.name as product_name, pp.code as part_number, pp.name as part_name,c.images,
         s.supplier_no, s.name as supplier_name
         FROM checkpoints c
         LEFT JOIN products p ON p.id = c.product_id

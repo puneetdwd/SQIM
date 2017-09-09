@@ -20,26 +20,43 @@
 		 usl = usl.value;
 		 usl = parseFloat(usl)
 		document.getElementById(id).style.background   = '#fff';
+		var as = 'NG';
+			
 		if(val){
 			if(lsl != '' && parseFloat(val) < parseFloat(lsl)) {
 				document.getElementById(id).style.background   = 'red';
+				as = 'NG';
+			}
+			else{
+				as = 'OK';
 			}
 			if(usl != '' && parseFloat(val) > parseFloat(usl)) {
 				document.getElementById(id).style.background   = 'red';
-			}				
+				as = 'NG';
+			}
+			else{
+				as = 'OK';
+			}
+			
 		}
+		if(as == 'OK'){
+				$('#register-inspection-remark').removeClass('required');
+		}		
 	}	
 	
 	function lookup_rad(arg){
 		var id = arg.getAttribute('name');
 		var cls = arg.getAttribute('class');
+		//alert(cls);
 		rad_cls1 = cls.indexOf(" ");
 		rad_cls = cls.substring(rad_cls1,19);
 		var id_val = arg.getAttribute('value');
 		var cssa = '.'+rad_cls;
 		cssa = cssa.replace(/\s+/g, '');
 		s = cssa.substring(0, cssa.length - 1);
-		
+		if(id_val == 'OK'){
+			$('#register-inspection-remark').removeClass('required');
+		}
 				
 		var ok_all_status;
 		if(id_val == 'NG'){
@@ -111,7 +128,7 @@
 	}
 	
 	function check_space(id) {
-		var colClass = id.className
+		var colClass = id.className;
 		if(colClass != 'form-control'){
 			//alert($(this).html());
 			var val = document.getElementById('register-inspection-remark');
@@ -131,19 +148,22 @@
 				});
 				$('#register-inspection-remark').html('');                
 			}
-		}	//exit;		
+		}
+				//exit;		
 	}
 	
 	function isNumberKey(evt)
     {
 	  var charCode = (evt.which) ? evt.which : evt.keyCode;
 	  //alert(charCode);
-	  if ( charCode != 46 && charCode > 31 && charCode != 190
-		&& (charCode < 48 || charCode > 57))
+	  if ( charCode != 46 && charCode > 31 && charCode != 190 && charCode != 110
+		&& (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105))
 		 return false;
 
 	  return true;
-    }
+    } 
+	
+	
 
 </script>
     
