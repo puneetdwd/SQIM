@@ -237,7 +237,7 @@ body {display:none;}
                                             <label class="control-label"><b>Drawing:</b></label>
                                             <p class="form-control-static">
                                                 <!--<a href="#modal-agreement" data-toggle="modal" onclick="return view_drawing('<?php echo $audit['part_no']; ?>');" >Click Here</a>-->
-                                                <?php if($doc == ''){ echo "Drawing is too large in size. Please contact quality team for the same.";}else{ ?>
+                                                <?php if(!file_exists(FCPATH.$doc)){ echo "Drawing is not available. Please contact quality team for the same.";}else{ ?>
                                                 <a href="#modal-agreement" data-toggle="modal">Click Here</a>
                                                 <?php } ?>
                                             </p>
@@ -259,11 +259,16 @@ body {display:none;}
                                                 
                                                 <!--<canvas id="the-canvas"></canvas>-->
                                                 
-                                                <iframe src="data:application/pdf;base64,<?php echo base64_encode($doc); ?>" title="PDF in an i-Frame" 
-                                                        frameborder="1" scrolling="auto" height="700" width="100%" frameborder="0"></iframe>
+                                                <!--<iframe src="data:application/pdf;base64,<?php echo base64_encode($doc); ?>" title="PDF in an i-Frame" 
+                                                        frameborder="1" scrolling="auto" height="700" width="100%" frameborder="0"></iframe>-->
+                                                
+                                                <!--<iframe src="<?php echo $doc; ?>" title="PDF in an i-Frame" 
+                                                        frameborder="1" scrolling="auto" height="700" width="100%" frameborder="0"></iframe>-->
                                                 
                                                 <!--<embed src="data:application/pdf;base64,<?php echo base64_encode($doc); ?>#toolbar=0&navpanes=0&scrollbar=0" 
 						width="100%" height="500" id="blob_file" />-->
+                                                <embed src="<?php echo "../".$doc; ?>#toolbar=0&navpanes=0&scrollbar=0" 
+						width="100%" height="500" id="blob_file" />
                                             </div>
                                           </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->

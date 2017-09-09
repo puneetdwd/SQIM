@@ -61,35 +61,51 @@
 			//remove checks from NG ALL//
 			$('#ng_all').parent('span').removeClass('checked');
 			$('#ok_all').parent('span').addClass('checked');
+                        //$('#ok_all').attr('readonly','readonly');
+                        //$('#ng_all').removeAttr('readonly');
 			for(var i=1;i<=rad;i++){
 				rad_id = '.ng_radios'+i;
+                                id = '#ng_result_'+i;
 				// $(rad_id).attr('checked',true);	
 				$(rad_id).parent('span').removeClass('checked');
+                                $(id).removeAttr("checked");
 			}			
 			//ADD checks from OK ALL//
 			for(var i=1;i<=rad;i++){
 				rad_id = '.ok_radios'+i;
+                                id = '#ok_result_'+i;
+                                $(id).click();
 				// $(rad_id).attr('checked',true);				//alert(rad_id);
 				$(rad_id).parent('span').addClass('checked');
 				$(rad_id).parent('span').parent('div').addClass('radio');
 				$(rad_id).parent().parent().parent().siblings().find( "div" ).siblings().removeClass("rad_change");
+                                //$(id).attr('checked', 'checked');
+                                
 			}				 
 		}
 		if(id == 'ng_all'){
 			//remove checks from OK ALL//
 			$('#ok_all').parent('span').removeClass('checked');
 			$('#ng_all').parent('span').addClass('checked');
+                        //$('#ng_all').attr('readonly','readonly');
+                        //$('#ok_all').removeAttr('readonly');
 			for(var i=1;i<=rad;i++){
 				rad_id = '.ok_radios'+i;
+                                id = '#ok_result_'+i;
 				$(rad_id).parent('span').removeClass('checked');
+                                $(id).removeAttr("checked");
 				
 			}			
 			//Apply checks to NG ALL.
 			for(var i=1;i<=rad;i++){
 				rad_id = '.ng_radios'+i;
+                                id = '#ng_result_'+i;
+                                $(id).click();
 				$(rad_id).parent('span').addClass('checked');
 				$(rad_id).parent('span').parent('div').addClass('radio');
 				$(rad_id).parent().parent().siblings().addClass("rad_change");
+                                //$(id).attr('checked', 'checked');
+                                
 			}				
 		}		
 	}
@@ -172,10 +188,10 @@
                                         <div class="radio-list">
                                             <?php $res = isset($all_results[$i-1]) ? $all_results[$i-1] : ''; ?>
                                             <label class="radio-inline" style="padding-left:0;">
-                                                <input class="required ok_radios<?php echo $i; ?> audit_result_<?php echo $i; ?>" type="radio" name="audit_result_<?php echo $i; ?>" id="audit_result_<?php echo $i; ?>" value="OK" <?php if($res == 'OK') { ?> checked="checked" <?php } ?> onclick="lookup_rad(this)" onChange="get_status(this,<?php echo $checkpoint['sampling_qty']; ?>);" ><span class="radOK_<?php echo $i; ?>">OK</span>
+                                                <input class="required ok_radios<?php echo $i; ?> audit_result_<?php echo $i; ?>" type="radio" name="audit_result_<?php echo $i; ?>" id="ok_result_<?php echo $i; ?>" value="OK" <?php if($res == 'OK') { ?> checked="checked" <?php } ?> onclick="lookup_rad(this)" onChange="get_status(this,<?php echo $checkpoint['sampling_qty']; ?>);" ><span class="radOK_<?php echo $i; ?>">OK</span>
                                             </label>
                                             <label class="radio-inline" style="padding-left:0;">
-                                                <input class="required ng_radios<?php echo $i; ?> audit_result_<?php echo $i; ?>" type="radio" name="audit_result_<?php echo $i; ?>" id="audit_result_<?php echo $i; ?>" value="NG" <?php if($res == 'NG') { ?> checked="checked" <?php } ?> onclick="lookup_rad(this)" onChange="get_status(this,<?php echo $checkpoint['sampling_qty']; ?>);"><span class="radNG_<?php echo $i; ?>">NG</span>
+                                                <input class="required ng_radios<?php echo $i; ?> audit_result_<?php echo $i; ?>" type="radio" name="audit_result_<?php echo $i; ?>" id="ng_result_<?php echo $i; ?>" value="NG" <?php if($res == 'NG') { ?> checked="checked" <?php } ?> onclick="lookup_rad(this)" onChange="get_status(this,<?php echo $checkpoint['sampling_qty']; ?>);"><span class="radNG_<?php echo $i; ?>">NG</span>
                                             </label>
                                         </div>
                                     </div>
@@ -188,13 +204,13 @@
                 </tr>
             <?php }
 				if(empty($checkpoint['lsl']) || empty($checkpoint['usl'])) { ?>
-            			<!--tr>
+            			<tr>
 							<td>&nbsp;</td>
 							<td>
 								<input type="checkbox" name="ok_all" id="ok_all" onclick="handleClick(this,<?php echo $checkpoint['sampling_qty']; ?>);" value="ok_all"><span style="font-size:10px" >ALL OK</span>
 								<input type="checkbox" name="ng_all" id="ng_all" onclick="handleClick(this,<?php echo $checkpoint['sampling_qty']; ?>);" value="ng_all" ><span style="font-size:10px" >ALL NG</span>
 							</td>
-						</tr-->
+						</tr>
 			<?php } ?>
         </tbody>
     </table>

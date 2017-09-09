@@ -402,9 +402,6 @@ class Auditer extends Admin_Controller {
         $checkpoint = $this->Audit_model->get_checkpoint($audit['id'], $this->session->userdata('current_checkpoint'));
 		//echo $this->db->last_query();exit;
 		
-		
-		
-		
         $data['checkpoint'] = $checkpoint;
         
         $checkpoint_images = $this->Checkpoint_model->get_checkpoint_images($this->session->userdata('current_checkpoint'));
@@ -431,8 +428,8 @@ class Auditer extends Admin_Controller {
             $doc = '';
         }*/
 		
-		$doc = '';
-        
+        $doc = "assets/drawings/".$this->session->userdata('product_code')."/".$audit['part_no'].".pdf";
+        //echo $doc; exit;
 	$data['doc'] = $doc;
         
         $this->template->write('title', 'SQIM | Product Inspection | Checkpoint Screen');

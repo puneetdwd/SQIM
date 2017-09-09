@@ -374,7 +374,7 @@ class User_model extends CI_Model {
             $data['supplier_id'] = $user['id'];
         }
         
-        $query = "SELECT DISTINCT p.id, p.name, p.org_id , p.org_name
+        $query = "SELECT DISTINCT p.id, p.name, p.org_id , p.org_name, p.code
         FROM `sp_mappings` sp 
         INNER JOIN products p 
         ON sp.product_id = p.id 
@@ -391,15 +391,17 @@ class User_model extends CI_Model {
                 $data['product_name']   = $pid['name'];
                 $data['org_id']         = $pid['org_id'];
                 $data['org_name']       = $pid['org_name'];
+                $data['product_code']   = $pid['code'];
             }
             
-            $temp               = array();
-            $temp['id']         = $pid['id'];
-            $temp['name']       = $pid['name'];
-            $temp['org_id']     = $pid['org_id'];
-            $temp['org_name']   = $pid['org_name'];
-            $product_ids[]      = $pid['id'];
-            $products[]         = $temp;
+            $temp                = array();
+            $temp['id']          = $pid['id'];
+            $temp['name']        = $pid['name'];
+            $temp['org_id']      = $pid['org_id'];
+            $temp['org_name']    = $pid['org_name'];
+            $temp['product_code']= $pid['code'];
+            $product_ids[]       = $pid['id'];
+            $products[]          = $temp;
         }
         
         $data['product_ids']    = implode(',', $product_ids);
