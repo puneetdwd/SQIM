@@ -172,7 +172,7 @@ class Timecheck_model extends CI_Model {
     }
 	
 	function get_last_timecheck($id) {
-        $sql = "SELECT * FROM timechecks WHERE supplier_id = ? order by timechecks.created DESC";
+        $sql = "SELECT * FROM timechecks WHERE supplier_id = ? order by created DESC limit 0,1";
         
         $pass_array = array($id);
         return $this->db->query($sql, $pass_array)->row_array();

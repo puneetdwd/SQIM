@@ -195,7 +195,8 @@ class User_model extends CI_Model {
             GROUP_CONCAT(p.id ORDER BY p.name) as product_ids,
             GROUP_CONCAT(p.org_id ORDER BY p.name) as org_ids,
             GROUP_CONCAT(p.org_name ORDER BY p.name) as org_names,
-            GROUP_CONCAT(p.name ORDER BY p.name) as product_names
+            GROUP_CONCAT(p.name ORDER BY p.name) as product_names,
+            GROUP_CONCAT(p.code ORDER BY p.code) as product_codes
             FROM users u 
             LEFT JOIN products p 
             ON FIND_IN_SET(p.id, u.product_id)
@@ -302,6 +303,7 @@ class User_model extends CI_Model {
                     $data['product_name']       = $pid['name'];
                     $data['org_id']             = $pid['org_id'];
                     $data['org_name']           = $pid['org_name'];
+                    $data['product_code']       = $pid['code'];
                 }
                 
                 $temp = array();
@@ -309,6 +311,7 @@ class User_model extends CI_Model {
                 $temp['name']           = $pid['name'];
                 $temp['org_id']         = $pid['org_id'];
                 $temp['org_name']       = $pid['org_name'];
+                $temp['product_code']   = $pid['code'];
                 $product_ids[]          = $pid['id'];
                 $products[]             = $temp;
             }
@@ -321,6 +324,7 @@ class User_model extends CI_Model {
             $org_ids = explode(',', $user['org_ids']);
             $org_names = explode(',', $user['org_names']);
             $product_names = explode(',', $user['product_names']);
+            $product_codes = explode(',', $user['product_codes']);
             $products = array();
             
             if(count($product_ids)) {
@@ -330,6 +334,7 @@ class User_model extends CI_Model {
                         $data['product_name']   = $product_names[$k];
                         $data['org_id']   = $org_ids[$k];
                         $data['org_name']   = $org_names[$k];
+                        $data['product_code'] = $product_codes[$k];
                     }
                     
                     $temp = array();
@@ -337,6 +342,7 @@ class User_model extends CI_Model {
                     $temp['name'] = $product_names[$k];
                     $temp['org_id'] = $org_ids[$k];
                     $temp['org_name'] = $org_names[$k];
+                    $temp['product_code'] = $product_codes[$k];
                     
                     $products[] = $temp;
                 }
@@ -374,7 +380,7 @@ class User_model extends CI_Model {
             $data['supplier_id'] = $user['id'];
         }
         
-        $query = "SELECT DISTINCT p.id, p.name, p.org_id , p.org_name
+        $query = "SELECT DISTINCT p.id, p.name, p.org_id , p.org_name, p.code
         FROM `sp_mappings` sp 
         INNER JOIN products p 
         ON sp.product_id = p.id 
@@ -391,15 +397,17 @@ class User_model extends CI_Model {
                 $data['product_name']   = $pid['name'];
                 $data['org_id']         = $pid['org_id'];
                 $data['org_name']       = $pid['org_name'];
+                $data['product_code']   = $pid['code'];
             }
             
-            $temp               = array();
-            $temp['id']         = $pid['id'];
-            $temp['name']       = $pid['name'];
-            $temp['org_id']     = $pid['org_id'];
-            $temp['org_name']   = $pid['org_name'];
-            $product_ids[]      = $pid['id'];
-            $products[]         = $temp;
+            $temp                = array();
+            $temp['id']          = $pid['id'];
+            $temp['name']        = $pid['name'];
+            $temp['org_id']      = $pid['org_id'];
+            $temp['org_name']    = $pid['org_name'];
+            $temp['product_code']= $pid['code'];
+            $product_ids[]       = $pid['id'];
+            $products[]          = $temp;
         }
         
         $data['product_ids']    = implode(',', $product_ids);
@@ -413,7 +421,8 @@ class User_model extends CI_Model {
     function login_by_email($email) {
         $sql = "SELECT u.*, 
             GROUP_CONCAT(p.id ORDER BY p.name) as product_ids,
-            GROUP_CONCAT(p.name ORDER BY p.name) as product_names
+            GROUP_CONCAT(p.name ORDER BY p.name) as product_names,
+            GROUP_CONCAT(p.code ORDER BY p.code) as product_codes
             FROM users u 
             LEFT JOIN products p 
             ON FIND_IN_SET(p.id, u.product_id)

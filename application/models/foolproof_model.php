@@ -631,7 +631,7 @@ class foolproof_model extends CI_Model {
     }
 	
 	function get_last_foolproofs($id) {
-        $sql = "SELECT * FROM foolproofs WHERE supplier_id = ? order by foolproofs.created DESC";
+        $sql = "SELECT * FROM foolproofs WHERE supplier_id = ? order by foolproofs.created DESC limit 0,1";
         
         $pass_array = array($id);
         return $this->db->query($sql, $pass_array)->row_array();

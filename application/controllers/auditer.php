@@ -107,7 +107,7 @@ class Auditer extends Admin_Controller {
         if(!empty($audit)) {
             $this->check_inspection($audit);
         }
-        
+        //echo "here ";
         $this->destroy_checkpoint_session();
         
         $this->load->model('User_model');
@@ -119,7 +119,7 @@ class Auditer extends Admin_Controller {
             $user = $this->User_model->get_supplier_inspector_user($this->id);
         }
         
-
+        //echo "<pre>"; print_r($user); exit;
         /* if(@$user['checklist_checked'] != date('Y-m-d')) {
             $this->load->model('Checklist_model');
             $checklists = $this->Checklist_model->get_all_checklists($this->product_id);
@@ -127,15 +127,18 @@ class Auditer extends Admin_Controller {
                 redirect(base_url().'auditer/checklist');
             }
         } */
+        //echo "here1 ";
 		
 		//Timecheck & Foolproof --> Komal
 		
 		$supplier_id = $user['supplier_id'];
 		$timecheck_last_date = $this->Timecheck_model->get_last_timecheck($supplier_id);
+                //echo "here11 ";
 		$foolproof_last_date = $this->Foolproof_model->get_last_foolproofs($supplier_id);
+                //echo "here12 ";
 		$timecheck_date =  date("Y-m-d",strtotime( $timecheck_last_date['created']));
 		$foolproof_date =  date("Y-m-d",strtotime( $foolproof_last_date['created']));
-		
+		echo "here2 ";
 		if($timecheck_date != date('Y-m-d') && $foolproof_date != date('Y-m-d')) {
 			//echo "not done today";exit;
             $this->load->model('Checklist_model');
@@ -143,6 +146,7 @@ class Auditer extends Admin_Controller {
             if(!empty($checklists)) {
                 //redirect(base_url().'auditer/part_inspection_check');
             }
+            
         }	
 		$timecheck_check = 0;
 		$foolproof_check = 0;
@@ -267,12 +271,12 @@ class Auditer extends Admin_Controller {
             }
 
         }
-        
+        //echo "here2 ";
         $this->load->model('Product_model');
         $data['parts'] = $this->Product_model->get_all_product_parts_by_supplier($this->product_id, $this->supplier_id);
 		$data['foolproof_check']=$foolproof_check;
 		$data['timecheck_check']=$timecheck_check;
-		 
+		 //echo "here4 "; exit;
         $this->template->write('title', 'SQIM | Part Inspection | Register Screen');
         $this->template->write_view('content', 'auditer/register_inspection', $data);
         $this->template->render();
@@ -402,9 +406,6 @@ class Auditer extends Admin_Controller {
         $checkpoint = $this->Audit_model->get_checkpoint($audit['id'], $this->session->userdata('current_checkpoint'));
 		//echo $this->db->last_query();exit;
 		
-		
-		
-		
         $data['checkpoint'] = $checkpoint;
         
         $checkpoint_images = $this->Checkpoint_model->get_checkpoint_images($this->session->userdata('current_checkpoint'));
@@ -431,8 +432,8 @@ class Auditer extends Admin_Controller {
             $doc = '';
         }*/
 		
-		$doc = '';
-        
+        $doc = "assets/drawings/".$this->session->userdata('product_code')."/".$audit['part_no'].".pdf";
+        //echo $doc; exit;
 	$data['doc'] = $doc;
         
         $this->template->write('title', 'SQIM | Product Inspection | Checkpoint Screen');
