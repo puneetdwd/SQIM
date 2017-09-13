@@ -204,7 +204,10 @@ textarea.form-control {
                                         <div class="form-group">
                                             <label class="control-label"><b>Drawing:</b></label>
                                             <p class="form-control-static">
-                                                <a href="#" data-toggle="modal" data-target="#modal-agreement" id="pdf_link" >Click Here</a>
+                                                <!--<a href="#modal-agreement" data-toggle="modal" onclick="return view_drawing('<?php echo $audit['part_no']; ?>');" >Click Here</a>-->
+                                                <?php if(!file_exists(FCPATH.$doc)){ echo "Drawing is not available. Please contact quality team for the same.";}else{ ?>
+                                                <a href="#modal-agreement" data-toggle="modal">Click Here</a>
+                                                <?php } ?>
                                             </p>
                                         </div>
                                     </div>
@@ -218,8 +221,10 @@ textarea.form-control {
                                               </button>
 					      
                                                 <!-- Bootstrap PDF Viewer -->
-                                                <object type="application/pdf" data="data:application/pdf;base64,<?php echo base64_encode($doc); ?>" 
-						width="100%" height="500" id="blob_file" >No Object </object>
+                                                <!--<object type="application/pdf" data="data:application/pdf;base64,<?php echo base64_encode($doc); ?>" 
+						width="100%" height="500" id="blob_file" >No Object </object>-->
+												<embed src="<?php echo base_url().$doc; ?>#toolbar=0&navpanes=0&scrollbar=0" 
+												width="100%" height="500" id="blob_file" />
                                                 
                                             </div>
                                           </div><!-- /.modal-content -->

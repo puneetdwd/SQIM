@@ -267,7 +267,7 @@ body {display:none;}
                                                 
                                                 <!--<embed src="data:application/pdf;base64,<?php echo base64_encode($doc); ?>#toolbar=0&navpanes=0&scrollbar=0" 
 						width="100%" height="500" id="blob_file" />-->
-                                                <embed src="<?php echo "../".$doc; ?>#toolbar=0&navpanes=0&scrollbar=0" 
+                                                <embed src="<?php echo base_url().$doc; ?>#toolbar=0&navpanes=0&scrollbar=0" 
 						width="100%" height="500" id="blob_file" />
                                             </div>
                                           </div><!-- /.modal-content -->
