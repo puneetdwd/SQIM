@@ -237,6 +237,7 @@ class Products extends Admin_Controller {
             $mapping['supplier_id'] = $supplier_id;
             $mapping['product_id'] = $product_id;
             $mapping['part_id'] = $part_id;
+            $mapping['created'] =  date("Y-m-d H:i:s");
             
             $mappings[] = $mapping;
         }
