@@ -186,7 +186,7 @@ class Supplier_model extends CI_Model {
     }
     
     function add_sp_mapping($data, $sp_mapping_id){
-        $needed_array = array('supplier_id', 'part_id');
+        $needed_array = array('product_id','supplier_id', 'part_id');
         $data = array_intersect_key($data, array_flip($needed_array));
 
         if(empty($sp_mapping_id)) {
@@ -259,7 +259,7 @@ class Supplier_model extends CI_Model {
     function remove_dups() {
         $sql = "DELETE FROM sp_mappings WHERE id NOT IN (
             SELECT * FROM (
-                SELECT min(id) FROM sp_mappings GROUP BY supplier_id, part_id
+                SELECT min(id) FROM sp_mappings GROUP BY supplier_id, part_id, product_id 
             ) as sub
         )";
 
