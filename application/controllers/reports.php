@@ -292,7 +292,7 @@ class Reports extends Admin_Controller {
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
 		
-		print_r($filters);exit;
+		//print_r($filters);exit;
 		$data['page_no'] = 1;
         
         $data['total_records'] = 0;
