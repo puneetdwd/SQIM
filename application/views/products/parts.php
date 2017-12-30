@@ -47,6 +47,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."products/upload_product_parts"; ?>">
                             <i class="fa fa-plus"></i> Upload Parts
                         </a>
+						<?php if(!empty($parts)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."products/parts_export"; ?>">
+								<i class="fa fa-download"></i> Excel Export
+							</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body">

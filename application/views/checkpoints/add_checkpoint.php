@@ -22,6 +22,37 @@
 		}
 	  return true;
     }
+	
+	//This function is to check duplicate checkpoints on part select -->>onchange="return check_dups();"
+	function check_dups(){
+		//alert("came");
+		var check_num=$("#add-checkpoint-no").val();
+		var part_id = $('#part_id :selected').val();
+        $.ajax({
+			type:'post',
+				url:'check_duplicate',
+				data:{check_num: check_num, part_id : part_id},
+				success:function(resp){
+						//alert(resp); 
+						if(resp == '{"exist":1}'){
+											
+							bootbox.dialog({
+											message: 'Duplicate Checkpoint no. for selected part number not allowed. ',
+											title: 'Alert',
+											buttons: {
+												confirm: {
+													label: "OK",
+													className: "button"
+												}
+											}
+										});
+										
+							return false;
+						}
+				}
+		 });
+	}
+
 </script>
 
 
@@ -78,7 +109,7 @@
                                         <label class="control-label" for="checkpoint_no">Checkpoint No:
 											<span class="required">*</span>
 										</label>
-                                        <input type="text" class="required form-control" onkeydown="return isNumberKey(event);" id="add-checkpoint-no" name="checkpoint_no"
+                                        <input type="text" class="required form-control" onkeydown="return isNumberKey(event);"  id="add-checkpoint-no" name="checkpoint_no"
                                         value="<?php echo isset($checkpoint['checkpoint_no']) ? $checkpoint['checkpoint_no'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
@@ -91,7 +122,7 @@
                                     <div class="form-group" id="report-sel-part-error">
                                         <label class="control-label">Select Part:</label>
                                                 
-                                        <select name="part_id" class="form-control select2me"
+                                        <select name="part_id" id="part_id" class="form-control select2me" 
                                             data-placeholder="Select Part" data-error-container="#report-sel-part-error">
                                             <option></option>
                                             <?php $sel_part = isset($checkpoint['part_id']) ? $checkpoint['part_id'] : ''; ?>

@@ -510,6 +510,26 @@ class Audit_model extends CI_Model {
         
         return $this->db->query($sql, $pass_array)->result_array();
     }
+    function get_all_audit_child_parts($part_nu = '', $supplier_id = '') {
+		//echo $supplier_id.'-'.$part_nu;exit;
+        $sql = 'SELECT a.part_id,a.part_no,tc.child_part_no FROM `timecheck_plans` tc inner join audits a on tc.part_id = a.part_id where a.product_id =  ?';
+		
+		 
+        $pass_array = array($this->product_id);
+        
+         if(!empty($part_nu)) {
+            $sql .= ' AND a.part_no = ?';
+            $pass_array[] = $part_nu;
+        }
+        
+        if(!empty($supplier_id)) {
+            $sql .= " AND a.supplier_id = ".$supplier_id;
+            //$pass_array[] = $supplier_id;
+        }
+        $sql .= "  GROUP by a.part_id,a.part_no,tc.child_part_no";
+        
+        return $this->db->query($sql, $pass_array)->result_array();
+    }
     
     function add_to_completed_audits($audit_id) {
         $sql = "INSERT INTO `audits_completed`(`lot_no`, `audit_id`, `audit_date`, `auditer_id`, `supplier_id`, `product_id`, `part_id`, `part_no`, `part_name`, `prod_lot_qty`, `checkpoint_count`, `ok_count`, `ng_count`, `created`)

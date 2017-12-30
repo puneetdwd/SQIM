@@ -77,6 +77,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."tc_checkpoints/upload_checkpoints"; ?>">
                             <i class="fa fa-plus"></i> Upload Checkpoints
                         </a>
+						<?php if(!empty($checkpoints)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."tc_checkpoints/download_checkpoints"; ?>">
+								<i class="fa fa-download"></i> Download Checkpoints
+							</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -115,10 +120,10 @@
                                             <td><?php echo $checkpoint['child_part_name']; ?></td>
                                             <td><?php echo $checkpoint['mold_no']; ?></td>
                                             <td><?php echo $checkpoint['stage']; ?></td>
-                                            <td><?php echo $checkpoint['instrument']; ?></td>
                                             <td><?php echo $checkpoint['insp_item']; ?></td>
-
                                             <td><?php echo $checkpoint['spec']; ?></td>
+                                            <td><?php echo $checkpoint['instrument']; ?></td>
+
                                             <td nowrap>
                                                 <?php echo ($checkpoint['lsl']) ? $checkpoint['lsl'].' '.$checkpoint['unit'] : ''; ?>
                                             </td>

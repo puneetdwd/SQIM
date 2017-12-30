@@ -129,13 +129,14 @@
 	
 	function check_space(id) {
 		var colClass = id.className;
-		if(colClass != 'form-control'){
+		//alert(colClass);exit;
+		if(colClass == 'form-control'){
 			//alert($(this).html());
 			var val = document.getElementById('register-inspection-remark');
 			val = val.value;
 			val = val.trim();
 			vl= val.length;
-			//alert(val.length);
+			alert(val.length);
 			if(val.length > 0)
 			{
 				
@@ -167,7 +168,8 @@
 
 </script>
     
-    <?php if(!empty($checkpoint['lsl']) || !empty($checkpoint['usl'])) { ?>
+    <?php 
+	if(!empty($checkpoint['lsl']) || !empty($checkpoint['usl'])) { ?>
         <input type="hidden" value="<?php echo $checkpoint['lsl']; ?>"  id="register-inspection-checkpoint-lsl" />
         <input type="hidden" value="<?php echo $checkpoint['usl']; ?>"  id="register-inspection-checkpoint-usl" />
         
@@ -223,7 +225,8 @@
 					
                 </tr>
             <?php }
-				if(empty($checkpoint['lsl']) || empty($checkpoint['usl'])) { ?>
+			//print_r($checkpoint);exit;
+				if(empty($checkpoint['lsl']) && empty($checkpoint['usl'])) { ?>
             			<tr>
 							<td>&nbsp;</td>
 							<td>

@@ -77,6 +77,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/upload_checkpoints"; ?>">
                             <i class="fa fa-plus"></i> Upload Checkpoints
                         </a>
+							<?php if(!empty($checkpoints)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/checkpoint_export"; ?>">
+								<i class="fa fa-download"></i> Download Checkpoints
+							</a>
+							<?php } ?>
                         <?php } ?>
                         <?php if($this->user_type !== 'Supplier' && false) { ?>
                             <a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/view_revision_history/"; ?>">
@@ -108,13 +113,14 @@
                                         <th>Approved By</th>
                                         <th>Created Date</th>
                                         <th>Status</th>
+                                        <th>Is Active</th>
                                         <th class="no_sort" style="width:150px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if($this->user_type !== 'Supplier') { ?>
                                         <tr class="warning">
-                                            <td colspan="15">LG Checkpoints</td>
+                                            <td colspan="16">LG Checkpoints</td>
                                         </tr>
                                     <?php } ?>
                                     <?php $first = true; ?>
@@ -180,6 +186,16 @@
                                             <td nowrap>
                                                 <?php if($checkpoint['status'] == NULL && $this->user_type === 'Supplier'){ echo "Pending";}else{ echo $checkpoint['status'];} ?>
                                             </td>
+											
+											<td>
+												<?php 
+													if($checkpoint['is_deleted'] == 0)
+														echo '<i class="fa fa-check"></i>';
+													else
+														echo '<i class="fa fa-times"></i>'; 
+												?>
+											</td>
+											 
                                             <td nowrap class="text-center">
                                                 <?php if(($checkpoint['checkpoint_type'] == 'LG' && $this->user_type === 'Admin') || ($this->user_type === 'Supplier' && $checkpoint['supplier_id'] == $this->session->userdata('id'))) { ?>
                                                     <a class="button small gray" href="<?php echo base_url()."checkpoints/add_checkpoint/".$checkpoint['id']; ?>">

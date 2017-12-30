@@ -20,6 +20,22 @@ class Users extends Admin_Controller {
         $this->template->write_view('content', 'users/index', $data);
         $this->template->render();
     }
+	public function user_export() {
+        $this->is_admin_user();
+        $this->load->model('User_model');
+        $data['users'] = $this->User_model->get_all_users();
+        
+        
+			$str = $this->load->view("users/user_list",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=user_list.xls");
+        
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+    }
 
     public function add($id = '') {
         $this->is_admin_user();

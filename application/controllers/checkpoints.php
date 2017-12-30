@@ -35,6 +35,9 @@ class Checkpoints extends Admin_Controller {
         
         $checkpoints = array();
         if($this->input->get('part_no')) {
+			
+			$_SESSION['part_filter'] = $this->input->get('part_no');
+			
             $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
             
             $checkpoints = $this->Checkpoint_model->get_checkpoints($this->product_id, $supplier_id, $this->input->get('part_no'));
@@ -45,6 +48,28 @@ class Checkpoints extends Admin_Controller {
         //echo $this->db->last_query();exit;
         $this->template->write_view('content', 'checkpoints/index', $data);
         $this->template->render();
+    }
+	
+    public function checkpoint_export() {
+		$filters = $_SESSION['part_filter'];
+		
+		$this->load->model('Product_model');
+        $this->load->model('Checkpoint_model');
+        
+        $checkpoints = array();
+        if($filters) {
+            $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
+            $checkpoints = $this->Checkpoint_model->get_checkpoints($this->product_id, $supplier_id, $filters );
+        }
+        //echo "<pre>";print_r($checkpoints);exit;
+        $data['checkpoints'] =  $checkpoints;
+
+		$str = $this->load->view("checkpoints/checkpoint_list",$data,true);
+		header("Content-Type: application/force-download");
+		header("Content-Disposition: attachment; filename=checkpoint_list.xls");
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
     }
     
     public function add_checkpoint($checkpoint_id = '') {
@@ -528,7 +553,7 @@ class Checkpoints extends Admin_Controller {
         $tmp_insp_item = '';
         $i=0; $j=0;
         foreach($arr as $no => $row) {
-            if($no == 1)
+			if($no == 1)
                 continue;
             
             /*if(trim($row['AZ']) != 'Y')
@@ -537,9 +562,6 @@ class Checkpoints extends Admin_Controller {
             if(!trim($row['G']))
                 continue;
             
-            /* if($org_name != trim($row['E']))
-                continue; */
-            //echo "here3";
             $part_no = trim($row['G']);
             if(!array_key_exists($part_no, $parts)) {
                 
@@ -645,7 +667,6 @@ class Checkpoints extends Admin_Controller {
         if(!empty($checkpoints)) {
             $this->Checkpoint_model->insert_checkpoints($checkpoints, $product_id);
         }
-
         if(!empty($samplings)) {
             
             $this->Sampling_model->insert_samplings($samplings, $product_id);
@@ -789,5 +810,20 @@ class Checkpoints extends Admin_Controller {
 		//echo $this->db->last_query();exit;
         $this->template->write_view('content', 'checkpoints/add_tc_fp', $data);
         $this->template->render(); 
+	}
+	
+	public function check_duplicate(){
+		$data = array('checkpt' => array());
+		$data1 = array('exist' => array());
+        //echo $this->input->post('check_num');exit;
+        if($this->input->post('check_num')) {
+            $this->load->model('checkpoint_model');
+            $data['checkpt'] = $this->checkpoint_model->check_checkpoint_num($this->input->post('check_num'), $this->input->post('part_id'));
+        }
+		if(count($data['checkpt']) > 0)
+			$data1['exist']	= 1;
+		
+		echo json_encode($data1);
+		
 	}
 }

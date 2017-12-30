@@ -147,6 +147,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."suppliers/add_sp_mapping"; ?>">
                             <i class="fa fa-plus"></i> Add New Supplier-Part Mapping
                         </a>
+						<?php if(!empty($sp_mappings)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."suppliers/sp_mappings_export"; ?>">
+								<i class="fa fa-download"></i> Downlaod Supplier-Part Mapping
+							</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body">

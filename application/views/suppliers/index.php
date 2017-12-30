@@ -42,6 +42,12 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."suppliers/upload_suppliers"; ?>">
                             <i class="fa fa-plus"></i> Upload Suppliers
                         </a>
+						
+						<?php if(!empty($suppliers)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."suppliers/supplier_export"; ?>">
+								<i class="fa fa-download"></i> Excel Export
+							</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body">

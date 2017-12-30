@@ -38,6 +38,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."users/add"; ?>">
                             <i class="fa fa-plus"></i> Add New User
                         </a>
+						<?php if(!empty($users)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."users/user_export"; ?>">
+								<i class="fa fa-download"></i> Excel Export
+							</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body">
