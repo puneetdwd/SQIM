@@ -59,7 +59,7 @@ class Checkpoints extends Admin_Controller {
         $checkpoints = array();
         if($filters) {
             $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
-            $checkpoints = $this->Checkpoint_model->get_checkpoints($this->product_id, $supplier_id, $filters );
+            $checkpoints = $this->Checkpoint_model->get_product_wise_checkpoints($this->product_id );
         }
         //echo "<pre>";print_r($checkpoints);exit;
         $data['checkpoints'] =  $checkpoints;

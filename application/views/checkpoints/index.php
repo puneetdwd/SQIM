@@ -77,11 +77,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/upload_checkpoints"; ?>">
                             <i class="fa fa-plus"></i> Upload Checkpoints
                         </a>
-							<?php if(!empty($checkpoints)) { ?>
+							<?php //if(!empty($checkpoints)) { ?>
 							<a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/checkpoint_export"; ?>">
 								<i class="fa fa-download"></i> Download Checkpoints
 							</a>
-							<?php } ?>
+							<?php //} ?>
                         <?php } ?>
                         <?php if($this->user_type !== 'Supplier' && false) { ?>
                             <a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/view_revision_history/"; ?>">

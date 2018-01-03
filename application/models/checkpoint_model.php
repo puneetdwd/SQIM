@@ -36,6 +36,33 @@ class Checkpoint_model extends CI_Model {
         
         return $this->db->query($sql, $pass_array)->result_array();
     }
+
+    function get_product_wise_checkpoints($product_id) {
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
+        c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,
+        c.supplier_id, c.checkpoint_type, c.approved_by, c.has_multiple_specs,
+        c.images, c.created,c.is_deleted,
+        c.part_id, p.code as part_no, p.name as part_name,
+        s.name as supplier_name
+        FROM checkpoints c
+        INNER JOIN product_parts p
+        ON c.part_id = p.id
+        LEFT JOIN suppliers s
+        ON c.supplier_id = s.id
+        WHERE c.product_id = ? ";
+          
+        if($this->user_type != 'Admin' && $this->user_type != 'LG Inspector'){ 
+            $sql .= ' AND c.is_deleted = 0';
+        }
+        
+        $pass_array = array($product_id);
+
+        $sql .= " AND (c.checkpoint_type = 'LG' OR c.status IS NOT NULL)";
+        
+        $sql .= " ORDER BY p.code, checkpoint_type DESC, checkpoint_no ASC";
+        
+        return $this->db->query($sql, $pass_array)->result_array();
+    }
     
     function check_duplicate_checkpoint($data){
         $sql = "SELECT id FROM checkpoints 
