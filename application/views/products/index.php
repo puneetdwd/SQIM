@@ -38,6 +38,11 @@
                         <a class="button normals btn-circle" href="<?php echo base_url()."products/add_product"; ?>">
                             <i class="fa fa-plus"></i> Add New Products
                         </a>
+						<?php if(!empty($products)) { ?>
+							<a class="button normals btn-circle" href="<?php echo base_url()."products/product_export"; ?>">
+								<i class="fa fa-download"></i> Products Export
+							</a>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="portlet-body">

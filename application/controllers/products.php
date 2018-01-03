@@ -22,6 +22,23 @@ class Products extends Admin_Controller {
         $this->template->write_view('content', 'products/index', $data);
         $this->template->render();
     }
+	public function product_export() {
+        $this->is_super_admin();
+        
+        $data = array();
+        $this->load->model('Product_model');
+        $data['products'] = $this->Product_model->get_all_products();
+
+			$str = $this->load->view("products/product_list",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=product_list.xls");
+        
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+    }
     
     public function add_product($product_id = '') {
         $this->is_super_admin();
@@ -65,6 +82,23 @@ class Products extends Admin_Controller {
 
         $this->template->write_view('content', 'products/parts', $data);
         $this->template->render();
+    }
+	public function parts_export() {
+        $data = array();
+        $this->load->model('Product_model');
+        $product = $this->Product_model->get_product($this->product_id);
+        if(empty($product))
+            redirect(base_url().'products');
+
+        $data['product'] = $product;
+        $data['parts'] = $this->Product_model->get_all_product_parts($this->product_id);
+			$str = $this->load->view("products/parts_list",$data,true);
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=parts_list.xls");        
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
     }
     
     public function add_product_part($part_id = '') {
@@ -318,6 +352,16 @@ class Products extends Admin_Controller {
             $data['parts'] = $this->Product_model->get_all_product_parts($this->input->post('product'));
         }
         
+        echo json_encode($data);
+    }
+	public function get_parts_id_by_part() {
+        $data = array('child_parts' => array());
+        //echo $this->input->post('part_no');exit;
+        if($this->input->post('part_no')) {
+            $this->load->model('Product_model');
+            $data['child_parts'] = $this->Product_model->get_parts_id_by_part1($this->input->post('part_no'));
+        }
+       //echo $this->db->last_query();exit;
         echo json_encode($data);
     }
     

@@ -2,7 +2,14 @@
     .form-inline .select2-container--bootstrap{
         width: 300px !important;
     }
-    
+	table {
+		border-collapse: collapse;
+	}
+
+	table, td, th {
+		border: 1px solid black;
+	}
+
 </style>
 
 <style type="text/css" media="print">
@@ -253,6 +260,13 @@
                                             
                                             <?php for($i = 0; $i < $frequency; $i++) { ?>
                                                 <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($production_qties[$i+1]) ? $production_qties[$i+1] : ''; ?></td>
+                                            <?php } ?>
+                                        </tr>
+										 <tr>
+                                            <td colspan="11" class="text-right">Remark</td>
+                                            
+                                            <?php for($i = 0; $i < $frequency; $i++) { ?>
+                                                <td colspan="<?php echo $sample_qty; ?>"><?php echo isset($remark[$i+1]) ? $remark[$i+1] : ''; ?></td>
                                             <?php } ?>
                                         </tr>
                                     </tbody>

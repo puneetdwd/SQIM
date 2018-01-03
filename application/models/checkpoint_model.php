@@ -5,7 +5,7 @@ class Checkpoint_model extends CI_Model {
         $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
         c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,
         c.supplier_id, c.checkpoint_type, c.approved_by, c.has_multiple_specs,
-		c.images, c.created,
+		c.images, c.created,c.is_deleted,
         c.part_id, p.code as part_no, p.name as part_name,
         s.name as supplier_name
         FROM checkpoints c
@@ -13,9 +13,12 @@ class Checkpoint_model extends CI_Model {
         ON c.part_id = p.id
         LEFT JOIN suppliers s
         ON c.supplier_id = s.id
-        WHERE c.product_id = ?
-        AND c.is_deleted = 0";
-        
+        WHERE c.product_id = ? ";
+          
+		if($this->user_type != 'Admin' && $this->user_type != 'LG Inspector'){ 
+        	$sql .= ' AND c.is_deleted = 0';
+        }
+		
         $pass_array = array($product_id);
         if(!empty($supplier_id)) {
             $sql .= ' AND c.supplier_id = ?';
@@ -445,6 +448,12 @@ class Checkpoint_model extends CI_Model {
         $sql = "SELECT * FROM `foolproof_timecheck`";
         
         return $this->db->query($sql)->row_array();;
+    }
+	
+    function check_checkpoint_num($chk_pt,$part_id){
+        
+        $sql = "SELECT * FROM `checkpoints` where checkpoint_no = ? AND part_id = ? AND product_id = ?";
+        return $this->db->query($sql, array($chk_pt,$part_id,$this->product_id))->result_array();;
     }
     
 	function update_tc_fp_status($data){

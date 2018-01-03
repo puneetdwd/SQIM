@@ -22,7 +22,20 @@ class Product_model extends CI_Model {
         
         return $this->db->query($sql)->result_array();
     }
+	function get_parts_id_by_part1($part_no) {
+		//$part_no = 'AAN75689719';
+		$sql = "SELECT a.part_id,a.part_no,tc.child_part_no FROM `timecheck_plans` tc inner join audits a on tc.part_id = a.part_id where a.product_id = ? AND a.part_no = ? GROUP by a.part_id,a.part_no,tc.child_part_no;";
+        
+        
+        return $this->db->query($sql,array($this->product_id,$part_no))->result_array();
+    }
     
+	function get_part_by_part_no($part_no) {
+        $this->db->where('code', $part_no);
+        $this->db->where('product_id', $this->product_id);
+
+        return $this->db->get('product_parts')->row_array();
+    }
     function get_all_phone_numbers($supplier_id) {
         $this->db->where('supplier_id', $supplier_id);
         $this->db->order_by('name');

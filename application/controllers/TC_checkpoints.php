@@ -25,13 +25,38 @@ class TC_Checkpoints extends Admin_Controller {
         
         $checkpoints = array();
         if($this->input->get('part_no')) {
+			$_SESSION['tc_part_filter'] = $this->input->get('part_no');
             $checkpoints = $this->TC_Checkpoint_model->get_checkpoints($this->product_id, $this->id, $this->input->get('part_no'));
         }
         
         $data['checkpoints'] =  $checkpoints;
-
+		// echo $this->db->last_query();exit;
         $this->template->write_view('content', 'tc_checkpoints/index', $data);
         $this->template->render();
+    }
+	public function download_checkpoints() {
+		$filters = $_SESSION['tc_part_filter'];
+		//print_r($filters);exit;
+        $this->load->model('Product_model');
+        $this->load->model('TC_Checkpoint_model');
+        
+        $checkpoints = array();
+		if($filters) {
+			$p = $this->Product_model->get_product($this->product_id);
+			//print_r($p['code']);exit;
+			$proc_code = $p['code'];
+			$checkpoints = $this->TC_Checkpoint_model->get_checkpoints($this->product_id, $this->id, $filters);
+		}
+        $data['checkpoints'] =  $checkpoints;
+        $data['proc_code'] =  $proc_code;
+		
+		// echo $this->db->last_query();exit;
+        $str = $this->load->view("tc_checkpoints/tc_checkpoint_list",$data,true);
+		header("Content-Type: application/force-download");
+		header("Content-Disposition: attachment; filename=tc_checkpoint_list.xls");
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
     }
     
     public function add_checkpoint($checkpoint_id = '') {

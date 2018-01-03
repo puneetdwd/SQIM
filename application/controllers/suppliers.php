@@ -22,6 +22,24 @@ class Suppliers extends Admin_Controller {
         $this->template->write_view('content', 'suppliers/index', $data);
         $this->template->render();
     }
+	public function supplier_export() {
+        $this->is_super_admin();
+        
+        $data = array();
+        $this->load->model('Supplier_model');
+        $data['suppliers'] = $this->Supplier_model->get_all_suppliers_new();
+
+       
+			$str = $this->load->view("suppliers/supplier_export",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=supplier_export.xls");
+        
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+    }
     
     public function add_supplier($supplier_id = '') {
         $this->is_super_admin();
@@ -218,7 +236,8 @@ class Suppliers extends Admin_Controller {
         
         $filters = $this->input->post() ? $this->input->post() : array() ;
         if($this->input->post()){
-            
+            $_SESSION['sp_filter'] = $filters;
+			
             $data['part_nums'] = $this->Product_model->get_all_part_numbers_by_part_name($this->input->post('part_name'));
             $data['sp_mappings'] = $this->Supplier_model->get_all_sp_mappings($filters);
         }else{
@@ -230,6 +249,20 @@ class Suppliers extends Admin_Controller {
 
         $this->template->write_view('content', 'suppliers/sp_mappings', $data);
         $this->template->render();
+    }
+	public function sp_mappings_export() {
+        $data = array();
+        $this->load->model('Product_model');
+        $this->load->model('Supplier_model');
+        $filters = $_SESSION['sp_filter'];
+		//print_r($filters);exit;
+		$data['sp_mappings'] = $this->Supplier_model->get_all_sp_mappings($filters);
+       	$str = $this->load->view("suppliers/sp_mappings_export",$data,true);
+		header("Content-Type: application/force-download");
+		header("Content-Disposition: attachment; filename=sp_mappings_export.xls");
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
     }
     
     public function add_sp_mapping($sp_mapping_id = '') {

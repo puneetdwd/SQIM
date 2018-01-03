@@ -98,17 +98,94 @@ class Timecheck_model extends CI_Model {
             $pass_array[] = $filters['start_range'];
             $pass_array[] = $filters['end_range'];
         }
-        //$filters['part_no']
-        if(!empty($filters['part_id'])) {
-			$wheres[] = "p.part_id = ?";
-            $pass_array[] = $filters['part_id'];
+        if(empty($filters['child_part_no'])){
+			if(!empty($filters['part_id'])) {
+				$wheres[] = "p.part_id = ?";
+				$pass_array[] = $filters['part_id'];
+			}
+			elseif(!empty($filters['part_no'])) {
+				$sql_part_id = "SELECT id FROM `product_parts` WHERE `code` LIKE '".$filters['part_no']."'";
+				$sql_part_id = $this->db->query($sql_part_id)->row_array();
+				$wheres[] = "p.part_id = ?";
+				$pass_array[] = $sql_part_id['id'];
+			}
+		}
+		else{
+			if(!empty($filters['child_part_no'])) {
+				$wheres[] = "p.child_part_no = ?";
+				$pass_array[] = $filters['child_part_no'];
+			}
+		}
+        
+        
+        if(!empty($filters['supplier_id'])) {
+            $wheres[] = " p.supplier_id = ?";
+            $pass_array[] = $filters['supplier_id'];
         }
-		elseif(!empty($filters['part_no'])) {
-			$sql_part_id = "SELECT id FROM `product_parts` WHERE `code` LIKE '".$filters['part_no']."'";
-			$sql_part_id = $this->db->query($sql_part_id)->row_array();
-			$wheres[] = "p.part_id = ?";
-            $pass_array[] = $sql_part_id['id'];
+        
+        if(!empty($wheres)) {
+            $sql .= " WHERE ".implode(' AND ', $wheres);
         }
+        
+        $sql .= " GROUP BY p.id";
+        
+        if($count) {
+            $sql = "SELECT count(*) as c FROM (".$sql.") as sub";
+        } else {
+            $sql .= " ".$limit;
+        }
+		
+		return $this->db->query($sql, $pass_array)->result_array();
+		
+    }
+	function get_timecheck_plan_report_new($filters, $count = false, $limit = '') {
+		//echo $this->product_id;
+		//print_r($filters);exit;
+        $pass_array = array();
+        $sql = "SELECT p.*, pp.code as part_no, pp.name as part_name,
+        COUNT(f.id) as frequency_count,
+        SUM(IF(f.result = 'OK', 1, 0)) as ok_count, 
+        SUM(IF(f.result = 'NG', 1, 0)) as ng_count,
+        GROUP_CONCAT(f.result ORDER BY f.freq_index) as freq_results,
+        GROUP_CONCAT(f.freq_index ORDER BY f.freq_index) as freq_indexs
+        FROM timecheck_plans p
+        LEFT JOIN product_parts pp
+        ON p.part_id = pp.id
+        LEFT JOIN tc_frequency_result f
+        ON p.id = f.plan_id";
+        
+        $wheres = array();
+        if($filters['product_all'] == 'all'){
+		
+		}
+        else if(empty($this->product_id)){
+			$wheres[] = "p.product_id = ? ";
+            $pass_array[] = $this->product_id;
+		}
+        if(!empty($filters['start_range']) && !empty($filters['end_range'])) {
+            $wheres[] = " p.plan_date BETWEEN ? AND ?";
+            $pass_array[] = $filters['start_range'];
+            $pass_array[] = $filters['end_range'];
+        }
+		
+        if(empty($filters['child_part_no'])){
+			if(!empty($filters['part_id'])) {
+				$wheres[] = "p.part_id = ?";
+				$pass_array[] = $filters['part_id'];
+			}
+			elseif(!empty($filters['part_no'])) {
+				$sql_part_id = "SELECT id FROM `product_parts` WHERE `code` LIKE '".$filters['part_no']."'";
+				$sql_part_id = $this->db->query($sql_part_id)->row_array();
+				$wheres[] = "p.part_id = ?";
+				$pass_array[] = $sql_part_id['id'];
+			}
+		}
+		else{
+			if(!empty($filters['child_part_no'])) {
+				$wheres[] = "p.child_part_no = ?";
+				$pass_array[] = $filters['child_part_no'];
+			}
+		}
         
         
         if(!empty($filters['supplier_id'])) {
@@ -142,7 +219,6 @@ class Timecheck_model extends CI_Model {
         } else {
             $this->db->where('id', $id);
             $data['modified'] = date("Y-m-d H:i:s");
-            
             return (($this->db->update('tc_frequency_result', $data)) ? $id : False);
         }
         

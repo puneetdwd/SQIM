@@ -6,7 +6,7 @@ class TC_Checkpoint_model extends CI_Model {
         c.checkpoint_no, c.insp_type, c.insp_item, c.spec, c.lsl, c.usl, c.tgt, c.unit, 
         c.status, c.instrument, c.stage, c.supplier_id, c.part_id, c.sample_qty, c.frequency, 
         c.measure_type, p.code as part_no, p.name as part_name,
-        s.name as supplier_name
+        s.name as supplier_name,s.supplier_no as supplier_no 
         FROM tc_checkpoints c
         INNER JOIN product_parts p
         ON c.part_id = p.id

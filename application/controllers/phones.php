@@ -22,6 +22,23 @@ class Phones extends Admin_Controller {
         $this->template->write_view('content', 'phones/index', $data);
         $this->template->render();
     }
+	public function phone_export() {
+        $data = array();
+        $this->load->model('Phone_model');
+        
+        $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
+        $data['phone_numbers'] = $this->Phone_model->get_all_phone_numbers($supplier_id);
+
+			$str = $this->load->view("phones/phone_list",$data,true);
+			
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=phone_list.xls");
+        
+        
+        header("Pragma: ");
+		header("Cache-Control: ");
+		echo $str;
+    }
         
     public function add_phone_number($phone_number_id = '') {
         $data = array();
