@@ -263,6 +263,7 @@ class Users extends Admin_Controller {
         $this->session->set_userdata('product_id', $product['id']);
         $this->session->set_userdata('product_name', $product['name']);
         $this->session->set_userdata('org_name', $product['org_name']);
+        $this->session->set_userdata('product_code', $product['code']);
         
         redirect($_SERVER['HTTP_REFERER']);
     }
