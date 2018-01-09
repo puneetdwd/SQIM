@@ -2,7 +2,7 @@
 class Checkpoint_model extends CI_Model {
 
     function get_checkpoints($product_id, $supplier_id = '', $part_code = '') {
-        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.measure_equipment, 
         c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,
         c.supplier_id, c.checkpoint_type, c.approved_by, c.has_multiple_specs,
 		c.images, c.created,c.is_deleted,
@@ -15,9 +15,9 @@ class Checkpoint_model extends CI_Model {
         ON c.supplier_id = s.id
         WHERE c.product_id = ? ";
           
-		if($this->user_type != 'Admin' && $this->user_type != 'LG Inspector'){ 
+		/* if($this->user_type != 'Admin' && $this->user_type != 'LG Inspector'){ 
         	$sql .= ' AND c.is_deleted = 0';
-        }
+        } */
 		
         $pass_array = array($product_id);
         if(!empty($supplier_id)) {
@@ -38,7 +38,7 @@ class Checkpoint_model extends CI_Model {
     }
 
     function get_product_wise_checkpoints($product_id, $part_code='') {
-        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.measure_equipment, 
         c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status, c.period, c.cycle,
         c.supplier_id, c.checkpoint_type, c.approved_by, c.has_multiple_specs,
         c.images, c.created, c.is_deleted, c.part_id, p.code as part_no, p.name as part_name,
@@ -127,7 +127,7 @@ class Checkpoint_model extends CI_Model {
     }
     
     function get_checkpoint($id, $supplier_id = '') {
-        $sql = "SELECT c.id, c.product_id, c.part_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
+        $sql = "SELECT c.id, c.product_id, c.part_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.measure_equipment, 
         c.insp_item3,c.images, c.insp_item4, c.spec, c.lsl, c.usl, c.tgt, c.unit, 
         c.supplier_id, c.checkpoint_type, c.approved_by
         FROM checkpoints c
@@ -178,7 +178,7 @@ class Checkpoint_model extends CI_Model {
 
     function update_checkpoint($data, $checkpoint_id){
 		// print_r($data);exit;
-        $needed_array = array('product_id', 'part_id', 'checkpoint_no', 'insp_item', 'insp_item2', 
+        $needed_array = array('product_id', 'part_id', 'checkpoint_no', 'insp_item', 'insp_item2', 'measure_equipment', 
         'spec', 'lsl', 'usl', 'tgt', 'unit', 'period', 'cycle', 'images', 'supplier_id', 'checkpoint_type', 'is_deleted');
         $data = array_intersect_key($data, array_flip($needed_array));
 		//print_r($data);exit;

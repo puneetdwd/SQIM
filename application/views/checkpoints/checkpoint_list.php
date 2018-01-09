@@ -170,7 +170,7 @@ table, td, th {
                                         </td>
                                         <td><?php echo $checkpoint['sample_qty']; ?></td>
                                         <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
+                                        <td><?php echo $checkpoint['measure_equipment']; ?></td>
                                         <td><?php echo $checkpoint['checkpoint_no']; ?></td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>

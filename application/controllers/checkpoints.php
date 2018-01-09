@@ -51,6 +51,7 @@ class Checkpoints extends Admin_Controller {
     }
 	
     public function checkpoint_export($part_no = '') {
+		ini_set("memory_limit","-1");
 		$filters = $_SESSION['part_filter'];
 		
 		$this->load->model('Product_model');
@@ -210,6 +211,11 @@ class Checkpoints extends Admin_Controller {
                 $checkpoint_no = $this->input->post('checkpoint_no');
                 $checkpoint_no = $this->input->post('insp_item2');
             
+				if(!empty($this->input->post('measure_equipment')))
+				{
+					$measure_equipment = $this->input->post('measure_equipment');
+					$post_data['measure_equipment'] = $measure_equipment;
+				}
                 if($this->user_type !== 'Supplier') {
                     $exists = $this->Checkpoint_model->is_checkpoint_no_exists($this->product_id, $post_data['part_id'], $checkpoint_no, $id);
                     if($exists) {
@@ -592,6 +598,8 @@ class Checkpoints extends Admin_Controller {
             $temp['unit']               = trim($row['AD']);
             $temp['checkpoint_no']      = trim($row['AW']);
             $temp['images']             = trim($row['BI']);
+			$temp['measure_equipment']  = trim($row['AV']);
+           
             
             if(trim($row['T']) == 'Y') {
                 $temp['period']         = trim($row['U']);

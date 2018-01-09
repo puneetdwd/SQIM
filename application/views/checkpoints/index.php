@@ -110,6 +110,7 @@
                                         <th>USL</th>
                                         <th>TGT</th>
                                         <th>Images</th>
+										<th>Measuring Equipment</th>                                       
                                         <th>Approved By</th>
                                         <th>Created Date</th>
                                         <th>Status</th>
@@ -120,7 +121,7 @@
                                 <tbody>
                                     <?php if($this->user_type !== 'Supplier') { ?>
                                         <tr class="warning">
-                                            <td colspan="16">LG Checkpoints</td>
+                                            <td colspan="17">LG Checkpoints</td>
                                         </tr>
                                     <?php } ?>
                                     <?php $first = true; ?>
@@ -128,7 +129,7 @@
                                     
                                         <?php if($this->user_type !== 'Supplier' && $checkpoint['checkpoint_type'] == 'Supplier' && $first) { ?>
                                             <tr class="warning">
-                                                <td colspan="15">Suppliers Checkpoints</td>
+                                                <td colspan="17">Suppliers Checkpoints</td>
                                             </tr>
                                             <?php $first = false; ?>
                                         <?php } ?>
@@ -168,6 +169,7 @@
                                                     
                                                 <?php } ?>
                                             </td>
+											<td><?php echo $checkpoint['measure_equipment']; ?></td>
 											
 											<td nowrap class="text-center">
                                                 <?php if(($checkpoint['checkpoint_type'] == 'LG' || $this->user_type === 'Supplier') && !empty($checkpoint['approved_by'])) { 

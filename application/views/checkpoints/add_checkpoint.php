@@ -115,6 +115,17 @@
                                         </span>
                                     </div>
                                 </div>
+								<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="checkpoint_no">Measuring Equipment:
+											<span class="required">*</span>
+										</label>
+                                        <input type="text" class="required form-control" id="measure_equipment" name="measure_equipment"
+                                        value="<?php echo isset($checkpoint['measure_equipment']) ? $checkpoint['measure_equipment'] : ''; ?>">
+                                        <span class="help-block">
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">

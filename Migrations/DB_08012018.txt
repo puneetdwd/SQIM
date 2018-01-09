@@ -1,0 +1,4 @@
+ALTER TABLE `checkpoints` ADD `instrument` VARCHAR(100) NULL DEFAULT NULL AFTER `cycle`;
+
+ALTER TABLE `checkpoints` CHANGE `instrument` `measure_equipment` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
+
