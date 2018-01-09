@@ -78,7 +78,7 @@
                             <i class="fa fa-plus"></i> Upload Checkpoints
                         </a>
 							<?php //if(!empty($checkpoints)) { ?>
-							<a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/checkpoint_export"; ?>">
+							<a class="button normals btn-circle" href="<?php echo base_url()."checkpoints/checkpoint_export/".$this->input->get('part_no'); ?>">
 								<i class="fa fa-download"></i> Download Checkpoints
 							</a>
 							<?php //} ?>
@@ -124,7 +124,7 @@
                                         </tr>
                                     <?php } ?>
                                     <?php $first = true; ?>
-                                    <?php foreach($checkpoints as $checkpoint) { ?>
+                                    <?php $i=1; foreach($checkpoints as $checkpoint) { ?>
                                     
                                         <?php if($this->user_type !== 'Supplier' && $checkpoint['checkpoint_type'] == 'Supplier' && $first) { ?>
                                             <tr class="warning">
@@ -134,7 +134,7 @@
                                         <?php } ?>
                                     
                                         <tr class="checkpoint-<?php echo $checkpoint['id']; ?>">
-                                            <td><?php echo $checkpoint['checkpoint_no']; ?></td>
+                                            <td><?php echo $i; ?></td>
                                             <td><?php echo $product['name']; ?></td>
                                             <td><?php echo $checkpoint['part_no']; ?></td>
                                             <td><?php echo $checkpoint['supplier_name'] ? $checkpoint['supplier_name'] : '--'; ?></td>
@@ -208,7 +208,7 @@
                                                 <?php } ?>
                                             </td>
                                         </tr>
-                                    <?php } ?>
+                                    <?php $i++; } ?>
                                 </tbody>
                             </table>
                         </div>

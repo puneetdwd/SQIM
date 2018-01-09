@@ -136,7 +136,7 @@
 			val = val.value;
 			val = val.trim();
 			vl= val.length;
-			alert(val.length);
+			//alert(val.length);
 			if(val.length > 0)
 			{
 				

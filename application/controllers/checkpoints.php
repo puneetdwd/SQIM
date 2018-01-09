@@ -50,17 +50,17 @@ class Checkpoints extends Admin_Controller {
         $this->template->render();
     }
 	
-    public function checkpoint_export() {
+    public function checkpoint_export($part_no = '') {
 		$filters = $_SESSION['part_filter'];
 		
 		$this->load->model('Product_model');
         $this->load->model('Checkpoint_model');
         
         $checkpoints = array();
-        if($filters) {
+        //if($filters) {
             $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
-            $checkpoints = $this->Checkpoint_model->get_product_wise_checkpoints($this->product_id );
-        }
+            $checkpoints = $this->Checkpoint_model->get_product_wise_checkpoints($this->product_id, $part_no);
+        //}
         //echo "<pre>";print_r($checkpoints);exit;
         $data['checkpoints'] =  $checkpoints;
 
@@ -590,6 +590,7 @@ class Checkpoints extends Admin_Controller {
             $temp['usl']                = trim($row['AE']);
             $temp['tgt']                = trim($row['AG']);
             $temp['unit']               = trim($row['AD']);
+            $temp['checkpoint_no']      = trim($row['AW']);
             $temp['images']             = trim($row['BI']);
             
             if(trim($row['T']) == 'Y') {

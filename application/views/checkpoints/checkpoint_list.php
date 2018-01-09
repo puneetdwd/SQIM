@@ -92,10 +92,10 @@ table, td, th {
                                 <tbody>
                                     
                                    
-                                    <?php foreach($checkpoints as $checkpoint) { ?>
+                                    <?php $i=1; foreach($checkpoints as $checkpoint) { ?>
                                     
                                         <tr class="checkpoint-<?php echo $checkpoint['id']; ?>">
-                                        <td><?php echo $checkpoint['checkpoint_no']; ?></td>
+                                        <td><?php echo $i; ?></td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
@@ -116,8 +116,8 @@ table, td, th {
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
+                                        <td><?php echo $checkpoint['period']?></td>
+                                        <td><?php echo $checkpoint['cycle']?></td>
                                         <td>&nbsp;</td>
                                         <td><?php echo $checkpoint['insp_item2']; ?></td>
                                         <td>&nbsp;</td>
@@ -125,37 +125,56 @@ table, td, th {
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td><?php echo $checkpoint['spec']; ?></td>
-                                        <td>&nbsp;</td>
+                                        <td><?php echo $checkpoint['unit']; ?></td>
                                         
-										<td >
-											<?php echo ($checkpoint['usl']) ? $checkpoint['usl'].' '.$checkpoint['unit'] : ''; ?>
+										<td>
+											<?php echo ($checkpoint['usl']) ? $checkpoint['usl'] : ''; ?>
 										</td>
 										<td>
-											<?php echo ($checkpoint['lsl']) ? $checkpoint['lsl'].' '.$checkpoint['unit'] : ''; ?>
+											<?php echo ($checkpoint['lsl']) ? $checkpoint['lsl'] : ''; ?>
 										</td>
 										<td >
-											<?php echo ($checkpoint['tgt']) ? $checkpoint['tgt'].' '.$checkpoint['unit'] : ''; ?>
+											<?php echo ($checkpoint['tgt']) ? $checkpoint['tgt'] : ''; ?>
 										</td>
 										
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
+                                        <td><?php if($checkpoint['sampling_type'] == 'Fixed'){ echo 'UD';}
+                                                  else if($checkpoint['sampling_type'] == 'C=0'){ echo 'C=0';} 
+                                                  else if($checkpoint['sampling_type'] == 'Auto'){ echo 'M105D';}
+                                            ?>
+                                        </td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
+                                        <td><?php if($checkpoint['sampling_type'] == 'C=0'){ echo $checkpoint['acceptable_quality'];} 
+                                                  else if($checkpoint['sampling_type'] == 'Auto'){ echo $checkpoint['acceptable_quality'];}
+                                            ?>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <?php if($checkpoint['sampling_type'] == 'Auto'){ 
+                                                if($checkpoint['inspection_level'] == 1){
+                                                    echo 'I';
+                                                }else if($checkpoint['inspection_level'] == 2){
+                                                    echo 'II';
+                                                }else if($checkpoint['inspection_level'] == 3){
+                                                    echo 'III';
+                                                }else{
+                                                    echo $checkpoint['inspection_level'];
+                                                } 
+                                            } ?>
+                                        </td>
+                                        <td><?php echo $checkpoint['sample_qty']; ?></td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
+                                        <td><?php echo $checkpoint['checkpoint_no']; ?></td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
+                                        <td><?php if($checkpoint['is_deleted'] == 0){ echo 'Y';}else{echo 'N';} ?></td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
@@ -169,7 +188,7 @@ table, td, th {
 										
                                             
                                         </tr>
-                                    <?php } ?>
+                                    <?php $i++; } ?>
                                 </tbody>
                             </table>
                         </div>

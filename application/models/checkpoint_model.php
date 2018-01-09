@@ -32,23 +32,20 @@ class Checkpoint_model extends CI_Model {
             $pass_array[] = $part_code;
         }
         
-        $sql .= " ORDER BY checkpoint_type DESC, checkpoint_no ASC";
+        $sql .= " ORDER BY c.part_id, c.checkpoint_no ASC, c.checkpoint_type DESC";
         
         return $this->db->query($sql, $pass_array)->result_array();
     }
 
-    function get_product_wise_checkpoints($product_id) {
+    function get_product_wise_checkpoints($product_id, $part_code='') {
         $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, 
-        c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status,
+        c.insp_item3, c.spec, c.lsl, c.usl, c.tgt, c.unit, c.status, c.period, c.cycle,
         c.supplier_id, c.checkpoint_type, c.approved_by, c.has_multiple_specs,
-        c.images, c.created,c.is_deleted,
-        c.part_id, p.code as part_no, p.name as part_name,
-        s.name as supplier_name
+        c.images, c.created, c.is_deleted, c.part_id, p.code as part_no, p.name as part_name,
+        ic.sampling_type, ic.inspection_level, ic.acceptable_quality, ic.sample_qty
         FROM checkpoints c
-        INNER JOIN product_parts p
-        ON c.part_id = p.id
-        LEFT JOIN suppliers s
-        ON c.supplier_id = s.id
+        INNER JOIN product_parts p ON c.part_id = p.id
+        LEFT JOIN inspection_config ic ON c.id = ic.checkpoint_id
         WHERE c.product_id = ? ";
           
         if($this->user_type != 'Admin' && $this->user_type != 'LG Inspector'){ 
@@ -58,8 +55,13 @@ class Checkpoint_model extends CI_Model {
         $pass_array = array($product_id);
 
         $sql .= " AND (c.checkpoint_type = 'LG' OR c.status IS NOT NULL)";
+
+        if(!empty($part_code)) {
+            $sql .= ' AND p.code = ?';
+            $pass_array[] = $part_code;
+        }
         
-        $sql .= " ORDER BY p.code, checkpoint_type DESC, checkpoint_no ASC";
+        $sql .= " ORDER BY p.code, checkpoint_no ASC, checkpoint_type DESC";
         
         return $this->db->query($sql, $pass_array)->result_array();
     }
