@@ -13,7 +13,7 @@ class Checkpoint_model extends CI_Model {
         ON c.part_id = p.id
         LEFT JOIN suppliers s
         ON c.supplier_id = s.id
-        WHERE c.product_id = ? ";
+        WHERE c.product_id = ? AND c.is_deleted = 0 ";
           
 		/* if($this->user_type != 'Admin' && $this->user_type != 'LG Inspector'){ 
         	$sql .= ' AND c.is_deleted = 0';
