@@ -110,7 +110,7 @@
                                         <label class="control-label" for="checkpoint_no">Checkpoint No:
 											<span class="required">*</span>
 										</label>
-                                        <input type="text" class="required form-control" onkeydown="return isNumberKey(event);"  id="add-checkpoint-no" name="checkpoint_no"
+                                        <input type="text" class="required form-control" onkeydown="return isNumberKey(event);"  id="add-checkpoint-no" name="checkpoint_no" title="Only Numbers allowed here."
                                         value="<?php echo isset($checkpoint['checkpoint_no']) ? $checkpoint['checkpoint_no'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
@@ -199,7 +199,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="lsl">LSL:</label>
-                                        <input type="text" class="form-control" name="lsl" onkeydown="return isNumberKey(event);" value="<?php echo isset($checkpoint['lsl']) ? $checkpoint['lsl'] : ''; ?>">
+                                        <input type="text" class="form-control" name="lsl" onkeydown="return isNumberKey(event);" title="Only Numbers allowed here." value="<?php echo isset($checkpoint['lsl']) ? $checkpoint['lsl'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
                                     </div>
@@ -208,7 +208,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="usl">USL:</label>
-                                        <input type="text" class="form-control" name="usl" onkeydown="return isNumberKey(event);" value="<?php echo isset($checkpoint['usl']) ? $checkpoint['usl'] : ''; ?>">
+                                        <input type="text" class="form-control" name="usl" onkeydown="return isNumberKey(event);" title="Only Numbers allowed here." value="<?php echo isset($checkpoint['usl']) ? $checkpoint['usl'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
                                     </div>
@@ -219,7 +219,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="tgt">TGT:</label>
-                                        <input type="text" class="form-control" name="tgt" onkeydown="return isNumberKey(event);" value="<?php echo isset($checkpoint['tgt']) ? $checkpoint['tgt'] : ''; ?>">
+                                        <input type="text" class="form-control" name="tgt" onkeydown="return isNumberKey(event);" title="Only Numbers allowed here." value="<?php echo isset($checkpoint['tgt']) ? $checkpoint['tgt'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
                                     </div>
