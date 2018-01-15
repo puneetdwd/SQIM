@@ -1,0 +1,2 @@
+ALTER TABLE `audit_checkpoints` ADD `measure_equipment` VARCHAR(500) NULL DEFAULT NULL AFTER `spec`;
+

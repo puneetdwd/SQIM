@@ -113,7 +113,8 @@
                                 <th class="text-center" style="vertical-align: middle;">Checkpoint No.</th>
                                 <th class="text-center" style="vertical-align: middle;">Insp. Type</th>
                                 <th class="text-center" style="vertical-align: middle;">Insp. Item</th>
-                                <th class="text-center" style="vertical-align: middle;">Spec.</th>
+								<th class="text-center" style="vertical-align: middle;">Spec.</th>
+                                <th class="text-center" style="vertical-align: middle;">Measuring Equipment</th>
                                 <th class="text-center" style="vertical-align: middle;">LSL</th>
                                 <th class="text-center" style="vertical-align: middle;">USL</th>
                                 <th class="text-center" style="vertical-align: middle;">TGT</th>
@@ -124,13 +125,13 @@
                         </thead>
                         <tbody>
                             <tr class="warning">
-                                <td colspan="11">LG Checkpoints</td>
+                                <td colspan="12">LG Checkpoints</td>
                             </tr>
                             <?php $first = true; ?>
                             <?php foreach($checkpoints as $checkpoint) { ?>
                                 <?php if($checkpoint['checkpoint_type'] == 'Supplier' && $first) { ?>
                                     <tr class="warning">
-                                        <td colspan="11">Suppliers Checkpoints</td>
+                                        <td colspan="12">Suppliers Checkpoints</td>
                                     </tr>
                                     <?php $first = false; ?>
                                 <?php } ?>
@@ -152,7 +153,8 @@
                                     <td><?php echo $checkpoint['checkpoint_no']; ?></td>
                                     <td><?php echo $checkpoint['insp_item']; ?></td>
                                     <td><?php echo $checkpoint['insp_item2']; ?></td>
-                                    <td><?php echo $checkpoint['spec']; ?></td>
+									<td><?php echo $checkpoint['spec']; ?></td>
+                                    <td><?php echo $checkpoint['measure_equipment']; ?></td>
                                     <td nowrap class="text-center">
                                         <?php echo ($checkpoint['lsl'] || $checkpoint['lsl'] === '0') ? $checkpoint['lsl'].' '.$checkpoint['unit'] : ''; ?>
                                     </td>

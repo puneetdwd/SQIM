@@ -295,7 +295,7 @@ class Auditer extends Admin_Controller {
         $this->load->model('Checkpoint_model');
         
         $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
-		 if($this->user_type == 'Supplier Inspector') {
+		if($this->user_type == 'Supplier Inspector') {
             $user = $this->User_model->get_supplier_inspector_user($this->id);
 			$supplier_id = $user['supplier_id'];
         } 
@@ -354,6 +354,7 @@ class Auditer extends Admin_Controller {
         } 
         $exclude = [];
         $checkpoints = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
+		
         foreach($checkpoints as $key => $checkpoint) {
             if(!empty($checkpoint['period']) && !empty($checkpoint['cycle'])) {
                 $date = date('Y-m-d', strtotime('-'.$checkpoint['cycle'].' days'));
@@ -364,6 +365,7 @@ class Auditer extends Admin_Controller {
                 }
             }
         }
+		
         if($this->user_type == 'Supplier Inspector'){
 			$this->load->model('supplier_model');
 			$supplier = $this->supplier_model->get_inspector($this->id);
@@ -371,6 +373,7 @@ class Auditer extends Admin_Controller {
 		}
         $exclude = implode(',', $exclude);
         $this->Audit_model->create_audit_checkpoints_admin_supplier($audit['product_id'], $audit['part_id'], $audit['id'], $case, $exclude, $supplier_id );
+		//echo "measure_equipment";exit;
         //echo $case;exit;
 		//echo $exclude;exit;
 		//echo $this->db->last_query();exit;
@@ -405,7 +408,7 @@ class Auditer extends Admin_Controller {
         //$checkpoint = $this->Checkpoint_model->get_checkpoints_for_audit($audit['product_id'], $audit['part_id'], $supplier_id);
         $checkpoint = $this->Audit_model->get_checkpoint($audit['id'], $this->session->userdata('current_checkpoint'));
 		//echo $this->db->last_query();exit;
-		
+		//echo "<pre>";print_r($checkpoint);
         $data['checkpoint'] = $checkpoint;
         
         $checkpoint_images = $this->Checkpoint_model->get_checkpoint_images($this->session->userdata('current_checkpoint'));

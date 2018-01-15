@@ -100,7 +100,7 @@ class Checkpoint_model extends CI_Model {
     } */
 	
 	function get_checkpoints_for_audit($product_id, $part_id, $supplier_id=''){
-        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.status,
+        $sql = "SELECT c.id, c.product_id, c.checkpoint_no, c.insp_item, c.insp_item2, c.status,c.measure_equipment,
             c.insp_item3, c.spec, c.has_multiple_specs, c.checkpoint_type, c.period, c.cycle,
             if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
             if(c.usl IS NULL, c.usl, c.usl) as usl,

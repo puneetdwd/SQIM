@@ -232,7 +232,16 @@ body {display:none;}
                                             </p>
                                         </div>
                                     </div>
-				    <div class="col-md-12">
+									<div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label"><b>Measuring Equipment:</b></label>
+                                            <p class="form-control-static">
+                                                <?php echo $checkpoint['measure_equipment']; ?>
+                                        
+                                            </p>
+                                        </div>
+                                    </div>
+									<div class="col-md-12">
                                         <div class="form-group">
                                             <label class="control-label"><b>Drawing:</b></label>
                                             <p class="form-control-static">

@@ -398,9 +398,9 @@ class Audit_model extends CI_Model {
         
         $pass_array = array($product_id, $part_id,$supplier_id);
         
-        $sql = "INSERT INTO audit_checkpoints(`org_checkpoint_id`, `audit_id`, `checkpoint_no`, `insp_item`, `insp_item2`, `spec`, `lsl`, `usl`, `tgt`, `unit`, `checkpoint_type`, `sampling_type`, `inspection_level`, `acceptable_quality`, `sampling_qty`, `created`)
+        $sql = "INSERT INTO audit_checkpoints(`org_checkpoint_id`, `audit_id`, `checkpoint_no`, `insp_item`, `insp_item2`, `spec`,`measure_equipment`, `lsl`, `usl`, `tgt`, `unit`, `checkpoint_type`, `sampling_type`, `inspection_level`, `acceptable_quality`, `sampling_qty`, `created`)
         SELECT c.id, ".$audit_id." as audit_id, c.checkpoint_no, 
-        c.insp_item, c.insp_item2, c.spec,
+        c.insp_item, c.insp_item2, c.spec,c.measure_equipment,
         if(c.lsl IS NULL, c.lsl, c.lsl) as lsl,
         if(c.usl IS NULL, c.usl, c.usl) as usl,
         if(c.tgt IS NULL, c.tgt, c.tgt) as tgt,
