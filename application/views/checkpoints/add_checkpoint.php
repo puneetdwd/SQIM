@@ -3,12 +3,13 @@
 
 	function isNumberKey(evt)
     {
+		//alert(this);exit;
 	  var charCode = (evt.which) ? evt.which : evt.keyCode;
 	  //alert(charCode);
 	  if ( charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105))
 		{ 
 		bootbox.dialog({
-                        message: 'Checkpoint No. should be number only.',
+                        message: 'This feild must have numbers only.',
                         title: 'Alert',
                         buttons: {
                             confirm: {
@@ -198,8 +199,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="lsl">LSL:</label>
-                                        <input type="text" class="form-control" name="lsl"
-                                        value="<?php echo isset($checkpoint['lsl']) ? $checkpoint['lsl'] : ''; ?>">
+                                        <input type="text" class="form-control" name="lsl" onkeydown="return isNumberKey(event);" value="<?php echo isset($checkpoint['lsl']) ? $checkpoint['lsl'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
                                     </div>
@@ -208,8 +208,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="usl">USL:</label>
-                                        <input type="text" class="form-control" name="usl"
-                                        value="<?php echo isset($checkpoint['usl']) ? $checkpoint['usl'] : ''; ?>">
+                                        <input type="text" class="form-control" name="usl" onkeydown="return isNumberKey(event);" value="<?php echo isset($checkpoint['usl']) ? $checkpoint['usl'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
                                     </div>
@@ -220,8 +219,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label" for="tgt">TGT:</label>
-                                        <input type="text" class="form-control" name="tgt"
-                                        value="<?php echo isset($checkpoint['tgt']) ? $checkpoint['tgt'] : ''; ?>">
+                                        <input type="text" class="form-control" name="tgt" onkeydown="return isNumberKey(event);" value="<?php echo isset($checkpoint['tgt']) ? $checkpoint['tgt'] : ''; ?>">
                                         <span class="help-block">
                                         </span>
                                     </div>
