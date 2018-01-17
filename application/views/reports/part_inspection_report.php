@@ -50,14 +50,14 @@
                                 //echo $total_col." ".$sign_cell1." ".$sign_cell2;
                             ?>
                             <tr>
-                                <td colspan="18">
+                                <td colspan="19">
                                     <span style="font-size: 24px; font-weight: bold;">Part Inspection Report</span>
                                 </td>
                                 <td class="text-center" colspan="<?php echo $sign_cell1; ?>">Vendor Inspector <br /> SIGN</td>
                                 <td class="text-center" colspan="<?php echo $sign_cell2; ?>">LG Inspector <br /> SIGN</td>
                             </tr>
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     Part Name: <?php echo $audit['part_name']; ?>
                                 </td>
                                 <td colspan="4">
@@ -73,7 +73,7 @@
                                 <td class="text-center" colspan="<?php echo $sign_cell2; ?>"></td>
                             </tr>
                             <tr>
-                                <td colspan="3">
+                                <td colspan="4">
                                     Supplier Name: <?php echo $audit['supplier_name']; ?>
                                 </td>
                                 <td colspan="1">
@@ -98,6 +98,7 @@
                                 <th>Inspection Type</th>
                                 <th>Inspection Item</th>
                                 <th style="min-width: 300px;">Specification</th>
+                                <th>Measurement Equipment</th>
                                 <th>LSL</th>
                                 <th>Target</th>
                                 <th>USL</th>
@@ -125,6 +126,7 @@
                                         <td rowspan="2"><?php echo $checkpoint['insp_item'];?></td>
                                         <td rowspan="2"><?php echo $checkpoint['insp_item2'];?></td>
                                         <td rowspan="2"><?php echo $checkpoint['spec'];?></td>
+                                        <td rowspan="2"><?php echo $checkpoint['measure_equipment'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['lsl'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['tgt'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['usl'];?></td>

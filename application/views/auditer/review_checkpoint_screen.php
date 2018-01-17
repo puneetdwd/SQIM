@@ -191,7 +191,7 @@ textarea.form-control {
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-5">
                                         <div class="form-group">
                                             <label class="control-label"><b>Spec:</b></label>
                                             <p class="form-control-static">
@@ -199,6 +199,13 @@ textarea.form-control {
                                             </p>
                                         </div>
                                     </div>
+									<div class="col-md-4">
+                                            <label class="control-label"><b>Measuring Equipment:</b></label>
+                                            <p class="form-control-static">
+                                                <?php echo $checkpoint['measure_equipment']; ?>
+                                        
+                                            </p>
+                                        </div>
                                     <?php //if($doc != ''){ ?>
                                     <div class="col-md-3">
                                         <div class="form-group">

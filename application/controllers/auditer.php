@@ -60,20 +60,20 @@ class Auditer extends Admin_Controller {
         }
         
         $checkpoint = $this->Audit_model->get_checkpoint($audit['id'], $this->session->userdata('current_checkpoint'));
+		//echo "<pre>";print_r($checkpoint);
         $data['checkpoint'] = $checkpoint;
         
         $this->load->model('Checkpoint_model');
         $checkpoint_images = $this->Checkpoint_model->get_checkpoint_images($this->session->userdata('current_checkpoint'));
 
         $data['checkpoint_images'] = explode(',',$checkpoint_images['images']);
-        
+    /*     
         $conn = $this->oracle_connect();	
 
 	$sql = "select part_code, drawing_name, drawing_no, doc
                 from lg_epis.xxsqis_part_drawing_v
                 WHERE part_code = '".$audit['part_no']."'";
         
-        //echo $sql; exit;
         
         $stid = oci_parse($conn, $sql);
         oci_execute($stid);
@@ -85,8 +85,8 @@ class Auditer extends Admin_Controller {
             $doc = '';
         }
         
-        //print $img; 
-	$data['doc'] = $doc;
+        
+	$data['doc'] = $doc; */
         
         $this->template->write('title', 'SQIM | Product Inspection | Checkpoint Screen');
         //$this->template->write_view('header', 'templates/header', $header);
