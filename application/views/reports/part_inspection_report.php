@@ -98,7 +98,7 @@
                                 <th>Inspection Type</th>
                                 <th>Inspection Item</th>
                                 <th style="min-width: 300px;">Specification</th>
-                                <th>Measurement Equipment</th>
+                                
                                 <th>LSL</th>
                                 <th>Target</th>
                                 <th>USL</th>
@@ -126,7 +126,6 @@
                                         <td rowspan="2"><?php echo $checkpoint['insp_item'];?></td>
                                         <td rowspan="2"><?php echo $checkpoint['insp_item2'];?></td>
                                         <td rowspan="2"><?php echo $checkpoint['spec'];?></td>
-                                        <td rowspan="2"><?php echo $checkpoint['measure_equipment'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['lsl'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['tgt'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['usl'];?></td>
@@ -140,7 +139,7 @@
                                                 echo $insp_level." (".$checkpoint['acceptable_quality'].")"; }
                                             else{ echo $checkpoint['acceptable_quality'];}?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['sampling_qty'];?></td>
-                                        <td rowspan="2"><?php echo '';?></td>
+                                         <td rowspan="2"><?php echo $checkpoint['measure_equipment'];?></td>
                                         <td rowspan="2" style="text-align:center;"><?php echo $checkpoint['unit'];?></td>
                                         <td>Supp</td>
                                         <?php $result = explode(',', $checkpoint['all_results']);
