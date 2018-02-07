@@ -97,7 +97,7 @@
                                 <th>Sr. No.</th>
                                 <th>Inspection Type</th>
                                 <th>Inspection Item</th>
-                                <th style="min-width: 300px;">Specification</th>
+                                <th style="min-width:150px;">Specification</th>
                                 
                                 <th>LSL</th>
                                 <th>Target</th>
@@ -111,7 +111,7 @@
                                 <?php 
                                 if($max_qty >= 10)
                                 {
-                                    $cols = 10;
+                                    $cols = $max_qty;
                                 }else{
                                     $cols = $max_qty;
                                 }   

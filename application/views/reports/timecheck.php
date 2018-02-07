@@ -81,6 +81,22 @@
                                                 </select>
                                             </div>
                                         </div>
+										
+										<div class="col-md-4">
+                                            <div class="form-group" id="report-sel-part-error">
+                                                <label class="control-label">Select Part:</label>
+                                                        
+                                                <select name="chld_part_no" class="form-control select2me"
+                                                    data-placeholder="Select Part" data-error-container="#report-sel-part-error">
+                                                    <option></option>
+                                                    <?php foreach($child_parts as $cpart) { ?>
+                                                        <option value="<?php echo $cpart['part_no']; ?>" <?php if($cpart['part_no'] == $this->input->post('part_no')) { ?> selected="selected" <?php } ?>>
+                                                            <?php echo $part['part_name'].' ('.$part['part_no'].')'; ?>
+                                                        </option>
+                                                    <?php } ?>        
+                                                </select>
+                                            </div>
+                                        </div>
 
                                     <?php if($this->user_type == 'Admin' || $this->user_type == 'LG Inspector'){ ?>
                                         <div class="col-md-4">
@@ -144,6 +160,7 @@
                                     <table class="table table-hover table-light" id="make-data-table">
                                         <thead>
                                             <tr>
+                                                <th>Product</th>
                                                 <th>Part</th>
                                                 <th>Date</th>
                                                 <th>From Time</th>
@@ -159,6 +176,7 @@
 												$bg = 'background-color:red;'; */
 											?>
                                                 <tr>
+                                                    <td><?php echo $plan['product_name']; ?></td>
                                                     <td><?php echo $plan['part_name'].' ('.$plan['part_no'].')'; ?></td>
                                                     <td><?php echo date('d M Y', strtotime($plan['plan_date'])); ?></td>
                                                     <td><?php echo $plan['from_time']; ?></td>

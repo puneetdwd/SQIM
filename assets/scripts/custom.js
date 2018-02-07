@@ -1827,12 +1827,55 @@ function int_n_float_only(event){
             }
         });
   } */
+function map_part_foolproof(part_id,i) {
+		var foolproof_id = $(this).attr('foolproof_selecter').value;
+			/* alert(part_id);
+			alert(foolproof_id);  
+			alert(ee);exit; */
+			ee = 'map_pf_'+i;
+			var c = document.getElementById(ee);
+			var checkbox_span_class = $('#map_pf_'+i).parent().prop('className');
+			alert(c.checked);
 
- function map_part_foolproof(part_id){
+			if(c.checked){
+			var s = 0;//Mapping
+			alert(s);
+			$.ajax({
+				type: 'POST',
+				url: 'save_pf_mapping',
+				data: { s:s,part_id: part_id , foolproof_id:foolproof_id},
+				//contentType: false,
+				cache: false,
+							
+				success: function() {
+					console.log("Success 1");
+				},
+			});
+		}else{
+			var s = 1;//NO Mapping
+			alert(s);
+			
+			$.ajax({
+				type: 'POST',				
+				//contentType: false,
+				cache: false,
+				url: 'save_pf_mapping_update',
+				data: { s:s,part_id: part_id , foolproof_id:foolproof_id},
+				success: function() {
+					//alert('insp');
+					console.log("Success 2");
+				},
+			});
+		}
+	}
+	
+	
+ function map_part_foolproof_1(part_id,i){
 	   var foolproof_id = $(this).attr('foolproof_selecter').value;
 	   /*  alert(part_id);
        alert(foolproof_id); */
-			var c = document.getElementById('map_pf');
+	   ee = 'map_pf_'+i;
+			var c = document.getElementById(ee);
 			if(c.checked){
 			var s = 0;
 			$.ajax({

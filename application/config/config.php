@@ -20,7 +20,7 @@ function __autoload($class) {
     }
 }
 
-$config['base_url']	= 'http://localhost/SQIM/';
+$config['base_url']	= 'http://localhost:90/SQIM/';
 //$config['base_url']	= 'http://10.101.0.80:90/SQIM/';
 
 /*

@@ -57,10 +57,10 @@
 											</label>													
 											<select name="checkpoint_status" class="form-control  select2me"
 												data-placeholder="Select Checkpoint" data-error-container="#sampling-dashboard-inspection-error" style='width: 20%;'>
-													<option <?php if($selected_status == 'All') { ?> selected="selected" <?php } ?> value="All">All</option>
-													<option <?php if($selected_status == 'Approved') { ?> selected="selected" <?php } ?> value="Approved">Approved</option>
 													<option <?php if($selected_status == 'Pending') { ?> selected="selected" <?php } ?> value="Pending">Pending</option>
+													<option <?php if($selected_status == 'Approved') { ?> selected="selected" <?php } ?> value="Approved">Approved</option>
 													<option <?php if($selected_status == 'Declined') { ?> selected="selected" <?php } ?> value="Declined">Declined</option>  
+													<option <?php if($selected_status == 'All') { ?> selected="selected" <?php } ?> value="All">All</option>
 											</select>
 										
 									</div>

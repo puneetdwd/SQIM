@@ -14,6 +14,7 @@
                             </thead>
                             <tbody>
                                 <?php 
+								$i = 0;
 								foreach($part_nums as $part_num) { ?>
 								<?php	$checked = ''; ?>
                                     <tr>
@@ -28,11 +29,14 @@
 															$checked = 'checked';
 												}
 											?>
-											<input <?php  echo $checked; ?> data-index="<?php echo $part_num['id']; ?>" type="checkbox" name="map_pf" id="map_pf" onClick="return map_part_foolproof(<?php echo $part_num['id']; ?>);" >
+											<!--input <?php  echo $checked; ?> data-index="<?php echo $part_num['id']; ?>" type="checkbox" name="map_pf" id="map_pf" onClick="return map_part_foolproof(<?php echo $part_num['id']; ?>);" -->
+											<input  <?php  echo $checked; ?>	data-index="<?php echo $part_num['id']; ?>" type="checkbox" name="map_pf_<?php echo $i; ?>" id="map_pf_<?php echo $i; ?>" onClick='map_part_foolproof(<?php echo $part_num['id'].",".$i; ?>);' >
 										</td>
                                        
                                     </tr>
-                                <?php } ?>
+                                <?php 
+								$i++;
+								} ?>
                             </tbody>
                         </table>
                     <?php } ?>

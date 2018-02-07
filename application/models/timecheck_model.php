@@ -142,7 +142,7 @@ class Timecheck_model extends CI_Model {
 		//echo $this->product_id;
 		//print_r($filters);exit;
         $pass_array = array();
-        $sql = "SELECT p.*, pp.code as part_no, pp.name as part_name,
+        $sql = "SELECT p.*,prd.name as product_name, pp.code as part_no, pp.name as part_name,
         COUNT(f.id) as frequency_count,
         SUM(IF(f.result = 'OK', 1, 0)) as ok_count, 
         SUM(IF(f.result = 'NG', 1, 0)) as ng_count,
@@ -152,7 +152,9 @@ class Timecheck_model extends CI_Model {
         LEFT JOIN product_parts pp
         ON p.part_id = pp.id
         LEFT JOIN tc_frequency_result f
-        ON p.id = f.plan_id";
+        ON p.id = f.plan_id
+		INNER JOIN products prd
+        ON p.product_id = prd.id";
         
         $wheres = array();
         if($filters['product_all'] == 'all'){

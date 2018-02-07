@@ -40,9 +40,9 @@ class Checkpoints extends Admin_Controller {
 			
             $supplier_id = $this->user_type == 'Supplier' ? $this->id : '';
             
-            $checkpoints = $this->Checkpoint_model->get_checkpoints($this->product_id, $supplier_id, $this->input->get('part_no'));
+            $checkpoints = $this->Checkpoint_model->get_checkpoints_new($this->product_id, $supplier_id, $this->input->get('part_no'));
         }
-        
+        // echo $this->db->last_query();exit;
         $data['checkpoints'] =  $checkpoints;
 
         //echo $this->db->last_query();exit;
@@ -691,8 +691,9 @@ class Checkpoints extends Admin_Controller {
         $data = array();
         
         $this->load->model('Checkpoint_model');
-        $data['approval_items'] = $this->Checkpoint_model->get_supplier_checkpoints_by_product($this->product_id);
+        $data['approval_items'] = $this->Checkpoint_model->get_checkpoints_by_status($this->product_id,'Pending');
 		$data['selected_status'] = '';
+         // echo $this->db->last_query();exit;
         
         //echo "<pre>";print_r($data['approval_items']);exit;
         $this->template->write_view('content', 'checkpoints/checkpoint_approval_index', $data);
@@ -700,15 +701,19 @@ class Checkpoints extends Admin_Controller {
     }
     
     public function search_checkpoints_by_status(){
-        
-        $sel_checkpoint = $this->input->post('checkpoint_status');		
-	$data = array();       
+        if(empty($this->input->post('checkpoint_status')))
+		{
+			$sel_checkpoint = 'Pending';
+        }else {
+			$sel_checkpoint = $this->input->post('checkpoint_status');		
+		}
+		$data = array();       
         $this->load->model('Checkpoint_model');
         if($sel_checkpoint != 'All')
             $data['approval_items'] = $this->Checkpoint_model->get_checkpoints_by_status($this->product_id,$sel_checkpoint);
         elseif($sel_checkpoint == 'All')
             $data['approval_items'] = $this->Checkpoint_model->get_supplier_checkpoints_by_product($this->product_id);
-        
+       //echo $this->db->last_query();exit;
         $data['selected_status'] = $sel_checkpoint;
         //echo "<pre>";print_r($data);exit;
         $this->template->write_view('content', 'checkpoints/checkpoint_approval_index', $data);

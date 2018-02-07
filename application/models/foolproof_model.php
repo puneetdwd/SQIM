@@ -657,11 +657,27 @@ class foolproof_model extends CI_Model {
     }
 	
 	function save_pf($part_id,$foolproof_id,$s) {
+		$data = array();
 		$data['checkpoint_id'] = $foolproof_id;
 		$data['part_id'] = $part_id;
 		$data['is_deleted'] = $s;
 		$data['created'] = date("Y-m-d H:i:s");
 		return (($this->db->insert('foolproof_pc_mapping', $data)) ? $this->db->insert_id() : False);
+        
+		// $sql = "INSERT INTO `foolproof_pc_mapping` (`id`, `checkpoint_id`, `part_id`, `is_deleted`, `modified`, `created`) VALUES (NULL, '284', '541', '0', NULL, NULL)";
+	}
+	function save_pf_update($part_id,$foolproof_id,$s) { 
+	$data = array();
+	//UPDATE foolproof_pc_mapping SET is_deleted=1,modified='2018-02-06 10:29:05' WHERE checkpoint_id=119 AND part_id=154
+
+		$sql = "UPDATE `foolproof_pc_mapping` SET `is_deleted` = ? ,`modified` = ? WHERE `part_id` = ? AND `checkpoint_id` = ?";
+		$data['is_deleted'] = $s;
+		$data['modified'] = date("Y-m-d H:i:s");
+		$data['part_id'] = $part_id;
+		$data['checkpoint_id'] = $foolproof_id;
+		 return $this->db->query($sql, $data);
+		//return (($this->db->update('foolproof_checkpoints', $data)) ? $checkpoint_id : False);
+		//return (($this->db->insert('foolproof_pc_mapping', $data)) ? $this->db->insert_id() : False);
         
 		// $sql = "INSERT INTO `foolproof_pc_mapping` (`id`, `checkpoint_id`, `part_id`, `is_deleted`, `modified`, `created`) VALUES (NULL, '284', '541', '0', NULL, NULL)";
 	}
@@ -738,8 +754,7 @@ class foolproof_model extends CI_Model {
 				$pass_array[] = $filters['part_name'];
 			}			
 		}
-        
-       
+		
 		$sql .= "group by part_id,checkpoint_id";
         
        return $this->db->query($sql,$pass_array)->result_array();

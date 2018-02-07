@@ -101,7 +101,7 @@ class TC_Checkpoints extends Admin_Controller {
                 }
                 
                 $post_data['status'] = 'Pending';
-                
+                // print_r($post_data);exit;
                 $checkpoint_id = $this->TC_Checkpoint_model->update_checkpoint($post_data, $id);
                 if($checkpoint_id) {
                     $this->session->set_flashdata('success', 'Checkpoint successfully '.(($checkpoint_id) ? 'updated' : 'added').'.');

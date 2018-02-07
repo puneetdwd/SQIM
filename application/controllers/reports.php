@@ -23,7 +23,7 @@ class Reports extends Admin_Controller {
         $data['parts'] = $this->Audit_model->get_all_audit_parts('', $sup_id);
         
         $this->load->model('Supplier_model');
-        $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+        $data['suppliers'] = $this->Supplier_model->get_all_suppliers_1();
         //print_r($_POST);exit;
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
@@ -123,7 +123,7 @@ class Reports extends Admin_Controller {
         $data['parts'] = $this->Audit_model->get_all_audit_parts('', $sup_id);
         
         $this->load->model('Supplier_model');
-        $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+        $data['suppliers'] = $this->Supplier_model->get_all_suppliers_1();
         
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
@@ -283,12 +283,14 @@ class Reports extends Admin_Controller {
         }else{
             $sup_id = '';            
             $this->load->model('Supplier_model');
-            $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+            $data['suppliers'] = $this->Supplier_model->get_all_suppliers_1();
         }
 
         $data['parts'] = $this->Audit_model->get_all_audit_parts('', $sup_id);
         //echo "123";exit;
-        $data['child_parts'] = array();//$this->Audit_model->get_all_audit_child_parts('', $sup_id);
+        //$data['child_parts'] = array();//$this->Audit_model->get_all_audit_child_parts('', $sup_id);
+        //$data['child_parts'] = $this->Audit_model->get_all_audit_child_parts('', $sup_id);
+		//print_r($data['child_parts']);exit;
         $filters = $this->input->post() ? $this->input->post() : array();
         $filters = array_filter($filters);
 		
@@ -324,9 +326,9 @@ class Reports extends Admin_Controller {
             $count = $count[0]['c'];
             $data['total_records'] = $count;
             $data['total_page'] = ceil($count/50);
-            // print_r($filters);exit;
             $data['plans'] = $this->Timecheck_model->get_timecheck_plan_report_new($filters, false);
-		//echo $this->db->last_query();exit;
+           // echo "123";print_r($plans);exit;
+		// echo $this->db->last_query();exit;
             // echo $this->db->last_query();exit;
         }
         
@@ -435,7 +437,7 @@ class Reports extends Admin_Controller {
             $sup_id = '';
             
             $this->load->model('Supplier_model');
-            $data['suppliers'] = $this->Supplier_model->get_all_suppliers();
+            $data['suppliers'] = $this->Supplier_model->get_all_suppliers_1();
         }
         
         $filters = $this->input->post() ? $this->input->post() : array();

@@ -48,8 +48,19 @@ class Supplier_model extends CI_Model {
     }
         
     function get_all_suppliers(){
+		// echo $this->product_id;exit;
         $sql = "SELECT s.* FROM suppliers s
                 INNER JOIN sp_mappings sp ON sp.supplier_id = s.id AND sp.product_id = ".$this->product_id."
+                INNER JOIN product_parts pp ON pp.id = sp.supplier_id
+                WHERE s.is_active = 1
+                GROUP BY sp.supplier_id";
+        
+        return $this->db->query($sql)->result_array();
+    }
+	function get_all_suppliers_1(){
+		// echo $this->product_id;exit;
+        $sql = "SELECT s.* FROM suppliers s
+                INNER JOIN sp_mappings sp ON sp.supplier_id = s.id 
                 INNER JOIN product_parts pp ON pp.id = sp.supplier_id
                 WHERE s.is_active = 1
                 GROUP BY sp.supplier_id";

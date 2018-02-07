@@ -728,6 +728,15 @@ class fool_proof extends Admin_Controller {
 		//echo $this->db->last_query();
 		echo json_encode($data);
 	}
+	function save_pf_mapping_update(){
+		$data = array('map' => array());
+        if($this->input->post('part_id') && $this->input->post('foolproof_id')) {
+            $this->load->model('foolproof_model');
+            $data['map'] = $this->foolproof_model->save_pf_update($this->input->post('part_id'), $this->input->post('foolproof_id'),$this->input->post('s'));
+        }
+		echo $this->db->last_query();
+		echo json_encode($data);
+	}
 	
 	/* function pf_mappings_view(){
 		echo "abc";
@@ -748,10 +757,11 @@ class fool_proof extends Admin_Controller {
 		$data['foolproofs'] = $this->foolproof_model->get_all_foolproofs($sid);
 		$data['suppliers'] = $this->Supplier_model->get_all_suppliers();
         $filters = $this->input->post() ? $this->input->post() : array() ;
-		// print_r($filters);exit;
+		//print_r($filters);exit;
 		if($this->input->post()){            
             $data['part_nums'] = $this->Product_model->get_all_part_numbers_by_part_name($this->input->post('part_name'));
 		    $data['sp_mappings'] =  $this->foolproof_model->pf_mappings_view($filters,$this->product_id);
+			// echo $this->db->last_query();exit;
 		}else{
             $data['part_nums'] = '';
             $data['sp_mappings'] = '';
